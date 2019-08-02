@@ -1,0 +1,82 @@
+package com.github.charlemaznable.guardians.general.decryption;
+
+import com.github.charlemaznable.guardians.PostGuardian;
+import com.github.charlemaznable.guardians.PreGuardian;
+import com.github.charlemaznable.guardians.general.Decryption;
+import com.github.charlemaznable.guardians.general.Decryption.DecryptKeySupplier;
+import com.github.charlemaznable.guardians.general.Decryption.DecryptPostConsumer;
+import com.github.charlemaznable.guardians.spring.GuardianContext;
+import com.github.charlemaznable.spring.MutableHttpServletUtils;
+import lombok.val;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.github.charlemaznable.codec.Json.json;
+import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Form;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.BodyRaw;
+import static com.github.charlemaznable.net.Http.dealRequestBodyStream;
+import static com.github.charlemaznable.net.Http.fetchParameterMap;
+import static com.github.charlemaznable.net.Http.responseJson;
+
+@Controller
+@RequestMapping("/decryption")
+@PreGuardian(DecryptionSimpleGuardian.class)
+@PostGuardian(DecryptionSimpleGuardian.class)
+public class DecryptionSimpleController {
+
+    @RequestMapping("/error")
+    public void error(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @Decryption(keyName = "p", postConsumers = DefaultGetConsumer.class)
+    @RequestMapping(value = "/defaultGet", method = RequestMethod.GET)
+    public void defaultGet(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @Decryption(extractorType = BodyRaw, postConsumers = DefaultPostConsumer.class)
+    @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
+    public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+    }
+
+    @Decryption(extractorType = BodyRaw, cipher = RSA, keySupplier = RSADecryptKeySupplier.class, postConsumers = DefaultPostConsumer.class)
+    @RequestMapping(value = "/rsa", method = RequestMethod.POST)
+    public void rsa(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+    }
+
+    public static class DefaultGetConsumer implements DecryptPostConsumer {
+
+        @Override
+        public void accept(String decryptedText) {
+            val decryptedMap = Form.parse(decryptedText, "UTF-8");
+            MutableHttpServletUtils.setRequestParameterMap(GuardianContext.request(), decryptedMap);
+        }
+    }
+
+    public static class DefaultPostConsumer implements DecryptPostConsumer {
+
+        @Override
+        public void accept(String decryptedText) {
+            MutableHttpServletUtils.setRequestBody(GuardianContext.request(), decryptedText);
+        }
+    }
+
+    public static class RSADecryptKeySupplier implements DecryptKeySupplier {
+
+        public static final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqWe6rB7l/aNDO4qZ5MQrqmHXjfNKTMZUgxi2m2tCygE1Pu5Myok05AVY3Le7g/4aByL0cl60w2zjetOS25ETb+WvaIcS+MMoHUhYgOa+bsgC9xVQ2zYltEQnd4sCD28C2Jsrfe8cEo06jzAmnmtrI7kfE9aav3BwnROVHDqbRlQIDAQAB";
+        public static final String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKpZ7qsHuX9o0M7ipnkxCuqYdeN80pMxlSDGLaba0LKATU+7kzKiTTkBVjct7uD/hoHIvRyXrTDbON605LbkRNv5a9ohxL4wygdSFiA5r5uyAL3FVDbNiW0RCd3iwIPbwLYmyt97xwSjTqPMCaea2sjuR8T1pq/cHCdE5UcOptGVAgMBAAECgYAjDeqNC0PisgD18bHsEml6qPDpZRA39eYIHn/abACyGrDODX1W2AsoBdxl8m/LoQlev54auiOLgDENsw+1iveYLk2i1vJ5Gy8PLzWDoH0DFJEwdAZcXrxKXFS/+rmCYQH2XqpzRoe1KxJp1Ow9KcZkrQwnxmuYXD70tlsq9Mn9QQJBAOQPrYLQWGnltYEJvVsYM+FpThz54gOE7LP3uFbIcGdxgMiK1Y9lu8HCOh2d0UBB/Cn3An4Zm+hVTz5ii9CjeEkCQQC/OGOo1rUrOyOlTJHVID2a+rvoKDWjA8Jfl+40DRZ7U5YXgVcWlCn2Zj2UCLVS5fmJ3v//cNra/5VyhjMGCMbtAkEAsKADvUAmeT1SKLGmWRqRc43e1Uoh5J/ZwjekKHHru/GHz8jWRMyBcTo/UBidqqpv5QBMieTDflgzmxkvN1KjIQJAU50jruNbyvCMMK6fohL7/TWgTu6uLX7qUoSLy0ThzMGLAvIyk5PsGWsxh/aa2wnmqMvTIu5FNLfHsJFP5FaYLQJAVOCTEL0VStKwtCed7PAhVvpP/myB97Cx39BzRPeJUAEMZThw/NM/fi4nJQecy8hzCbNwtDYfaIvybvZjCl7u1Q==";
+
+        @Override
+        public String get() {
+            return privateKey;
+        }
+    }
+}

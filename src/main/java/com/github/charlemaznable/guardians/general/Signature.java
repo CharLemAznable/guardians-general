@@ -1,0 +1,90 @@
+package com.github.charlemaznable.guardians.general;
+
+import com.github.charlemaznable.guardians.general.utils.ByteCodec;
+import com.github.charlemaznable.guardians.general.utils.Hasher;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser;
+import com.github.charlemaznable.guardians.utils.RequestValueExtractType;
+import com.github.charlemaznable.lang.Mapp;
+import com.google.common.base.Joiner;
+import lombok.val;
+import org.springframework.core.annotation.AliasFor;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Base64;
+import static com.github.charlemaznable.guardians.general.utils.Hasher.HMAC_MD5;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Form;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Parameter;
+import static com.github.charlemaznable.lang.Mapp.newHashMap;
+import static com.github.charlemaznable.lang.Str.isEmpty;
+import static com.github.charlemaznable.lang.Str.toStr;
+import static com.github.charlemaznable.net.Http.dealRequestBodyStream;
+import static com.github.charlemaznable.net.Http.fetchParameterMap;
+
+@Documented
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Signature {
+
+    @AliasFor("keyName")
+    String value() default "signature";
+
+    @AliasFor("value")
+    String keyName() default "signature";
+
+    RequestValueExtractType extractorType() default Parameter;
+
+    RequestBodyParser bodyParser() default Form;
+
+    String charsetName() default "UTF-8";
+
+    Hasher hasher() default HMAC_MD5;
+
+    ByteCodec codec() default Base64;
+
+    Class<? extends SignatureKeySupplier> keySupplier() default DefaultSignatureKeySupplier.class;
+
+    Class<? extends PlainTextBuildFunction> plainTextBuilder() default DefaultPlainTextBuildFunction.class;
+
+    interface SignatureKeySupplier extends Supplier<String> {}
+
+    interface PlainTextBuildFunction extends Function<HttpServletRequest, String> {}
+
+    class DefaultSignatureKeySupplier implements SignatureKeySupplier {
+
+        public static final String DefaultSignatureKey = "AWESOME MIX VOL1"; // Guardians of the Galaxy
+
+        @Override
+        public String get() {
+            return DefaultSignatureKey;
+        }
+    }
+
+    class DefaultPlainTextBuildFunction implements PlainTextBuildFunction {
+
+        @Override
+        public String apply(HttpServletRequest request) {
+            val parameterMap = request.getMethod().equalsIgnoreCase("GET")
+                    ? Mapp.<String, Object>newHashMap(fetchParameterMap(request))
+                    : Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8");
+            Map<String, String> plainMap = newHashMap();
+            for (val entry : parameterMap.entrySet()) {
+                val key = toStr(entry.getKey());
+                val value = toStr(entry.getValue());
+                if (isEmpty(key) || isEmpty(value) ||
+                        "signature".equals(key)) continue;
+                plainMap.put(key, value);
+            }
+            return Joiner.on("&").withKeyValueSeparator("=").join(new TreeMap<>(plainMap));
+        }
+    }
+}
