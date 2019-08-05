@@ -46,8 +46,19 @@ public class LoggingSimpleTest {
     @SneakyThrows
     @Test
     public void testSimple() {
+        val response = mockMvc.perform(get("/logging/simple"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
+        assertTrue(responseMap.isEmpty());
+    }
+
+    @SneakyThrows
+    @Test
+    public void testException() {
         assertDoesNotThrow(() -> {
-            val response = mockMvc.perform(get("/logging/simple"))
+            val response = mockMvc.perform(get("/logging/exception"))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             val responseContent = response.getContentAsString();

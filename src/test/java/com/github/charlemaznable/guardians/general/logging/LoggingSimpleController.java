@@ -14,12 +14,19 @@ import static com.github.charlemaznable.net.Http.responseJson;
 
 @Controller
 @RequestMapping("/logging")
-@PreGuardian(LoggingSimpleGuardian.class)
-@PostGuardian(LoggingSimpleGuardian.class)
 public class LoggingSimpleController {
 
+    @PreGuardian(LoggingSimpleGuardian.class)
+    @PostGuardian(LoggingSimpleGuardian.class)
     @RequestMapping("/simple")
-    public void error(HttpServletRequest request, HttpServletResponse response) {
+    public void simple(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @PreGuardian(LoggingSimpleExceptionGuardian.class)
+    @PostGuardian(LoggingSimpleExceptionGuardian.class)
+    @RequestMapping("/exception")
+    public void exception(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 }

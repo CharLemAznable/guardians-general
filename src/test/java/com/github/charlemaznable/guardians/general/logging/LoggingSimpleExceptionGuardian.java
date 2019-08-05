@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Component
-public class LoggingSimpleGuardian extends LoggingAbstractGuardian {
+public class LoggingSimpleExceptionGuardian extends LoggingAbstractGuardian {
 
     @Override
     public void loggingPreRequest(HttpServletRequest request, HttpServletResponse response) {
-        log.info("PreRequest: {}, {}", request, response);
+        throw new RuntimeException("loggingPreRequest");
     }
 
     @Override
     public void loggingPostResponse(HttpServletRequest request, HttpServletResponse response) {
-        log.info("PostResponse: {}, {}", request, response);
+        throw new RuntimeException("loggingPostResponse");
     }
 }
