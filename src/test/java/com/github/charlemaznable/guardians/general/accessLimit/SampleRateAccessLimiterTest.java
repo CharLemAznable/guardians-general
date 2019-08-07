@@ -2,7 +2,7 @@ package com.github.charlemaznable.guardians.general.accessLimit;
 
 import com.github.charlemaznable.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
-import lombok.val;
+import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -44,35 +44,58 @@ public class SampleRateAccessLimiterTest {
     @SneakyThrows
     @Test
     public void testSampleRate() {
-        val response1 = mockMvc.perform(get("/sampleRate/index"))
+        var response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        val responseContent1 = response1.getContentAsString();
-        val responseMap1 = unJson(responseContent1);
-        assertEquals("SUCCESS", responseMap1.get("result"));
-
-        val response2 = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        val responseContent2 = response2.getContentAsString();
-        val responseMap2 = unJson(responseContent2);
-        assertEquals("Access has been Denied", responseMap2.get("error"));
+        var responseContent = response.getContentAsString();
+        var responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
 
         Thread.sleep(1000);
 
-        val response3 = mockMvc.perform(get("/sampleRate/index"))
+        response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        val responseContent3 = response3.getContentAsString();
-        val responseMap3 = unJson(responseContent3);
-        assertEquals("SUCCESS", responseMap3.get("result"));
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
 
-        val response4 = mockMvc.perform(get("/sampleRate/index"))
+        response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        val responseContent4 = response4.getContentAsString();
-        val responseMap4 = unJson(responseContent4);
-        assertEquals("Access has been Denied", responseMap4.get("error"));
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        response = mockMvc.perform(get("/sampleRate/index"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("Access has been Denied", responseMap.get("error"));
+
+        Thread.sleep(1000);
+
+        response = mockMvc.perform(get("/sampleRate/index"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        response = mockMvc.perform(get("/sampleRate/index"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        response = mockMvc.perform(get("/sampleRate/index"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("Access has been Denied", responseMap.get("error"));
 
         Thread.sleep(1000);
     }

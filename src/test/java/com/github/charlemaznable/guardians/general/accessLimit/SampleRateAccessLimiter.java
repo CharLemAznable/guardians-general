@@ -18,7 +18,7 @@ public class SampleRateAccessLimiter extends AbstractRateAccessLimiter {
 
     @Override
     public RateLimiter buildRateLimiter(RateLimiterCacheKey cacheKey) {
-        return RateLimiter.create(1); // Only 1 access permits per second
+        return RateLimiter.create(2); // Only 2 access permits per second
     }
 
     @Override
