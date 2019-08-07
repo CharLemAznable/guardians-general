@@ -17,9 +17,13 @@ public abstract class AccessLimitAbstractGuardian {
 
         val limiterType = accessLimitAnnotation.limiter();
         val limiter = SpringUtils.getOrCreateBean(limiterType);
-        if (!limiter.tryAcquire(GuardianContext.request())) {
-            throw new AccessLimitGuardianException("Limited Access");
+        boolean acquired;
+        try {
+            acquired = limiter.tryAcquire(GuardianContext.request());
+        } catch (Exception e) {
+            throw new AccessLimitGuardianException(e.getMessage(), e);
         }
+        if (!acquired) throw new AccessLimitGuardianException("Limited Access");
         return true;
     }
 

@@ -38,12 +38,27 @@ public class AccessLimitSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
+    @AccessLimit(AccessLimiterSimpleException.class)
+    @RequestMapping("/exception")
+    public void exception(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
     @Component
     public static class AccessLimiterSimpleRefuse implements AccessLimiter {
 
         @Override
         public boolean tryAcquire(HttpServletRequest request) {
             return false;
+        }
+    }
+
+    @Component
+    public static class AccessLimiterSimpleException implements AccessLimiter {
+
+        @Override
+        public boolean tryAcquire(HttpServletRequest request) {
+            throw new RuntimeException("RuntimeException");
         }
     }
 }

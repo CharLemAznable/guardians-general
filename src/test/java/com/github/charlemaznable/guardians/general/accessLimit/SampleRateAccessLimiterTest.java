@@ -23,10 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = AccessLimitSimpleConfiguration.class)
+@ContextConfiguration(classes = SampleRateAccessLimiterConfiguration.class)
 @WebAppConfiguration
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccessLimitSimpleTest {
+public class SampleRateAccessLimiterTest {
 
     private static MockMvc mockMvc;
     @Autowired
@@ -44,45 +44,53 @@ public class AccessLimitSimpleTest {
 
     @SneakyThrows
     @Test
-    public void testSimple() {
-        val response = mockMvc.perform(get("/accessLimit/simple"))
+    public void testNormal() {
+        val response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertTrue(responseMap.isEmpty());
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        Thread.sleep(1000);
+
+        val response2 = mockMvc.perform(get("/sampleRate/index"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent2 = response2.getContentAsString();
+        val responseMap2 = unJson(responseContent2);
+        assertEquals("SUCCESS", responseMap2.get("result"));
+
+        Thread.sleep(2000);
     }
 
     @SneakyThrows
     @Test
-    public void testDefault() {
-        val response = mockMvc.perform(get("/accessLimit/default"))
+    public void testDenied() {
+        val response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertTrue(responseMap.isEmpty());
-    }
+        assertEquals("SUCCESS", responseMap.get("result"));
 
-    @SneakyThrows
-    @Test
-    public void testRefuse() {
-        val response = mockMvc.perform(get("/accessLimit/refuse"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        val responseContent = response.getContentAsString();
-        val responseMap = unJson(responseContent);
-        assertEquals("Limited Access", responseMap.get("error"));
-    }
+        int count = 0;
+        while (true) {
+            val response2 = mockMvc.perform(get("/sampleRate/index"))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            val responseContent2 = response2.getContentAsString();
+            val responseMap2 = unJson(responseContent2);
+            if ("Access has been Denied".equals(responseMap2.get("error"))) {
+                count++;
+            } else {
+                break;
+            }
+            Thread.sleep(100);
+        }
+        assertTrue(count > 0);
+        assertTrue(count <= 10);
 
-    @SneakyThrows
-    @Test
-    public void testException() {
-        val response = mockMvc.perform(get("/accessLimit/exception"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        val responseContent = response.getContentAsString();
-        val responseMap = unJson(responseContent);
-        assertEquals("RuntimeException", responseMap.get("error"));
+        Thread.sleep(2000);
     }
 }
