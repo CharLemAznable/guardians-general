@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Privilege(accessSuppliers = PrivilegeSimpleSupplier.class)
+@Privilege(privilegesSuppliers = PrivilegesSimpleSupplier.class)
 public @interface PrivilegeSimple {
 
     @AliasFor(attribute = "allow", annotation = Privilege.class)

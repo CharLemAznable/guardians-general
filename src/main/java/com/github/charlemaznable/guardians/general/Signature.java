@@ -2,8 +2,8 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser;
-import com.github.charlemaznable.guardians.utils.RequestValueExtractType;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat;
+import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
 import com.github.charlemaznable.lang.Mapp;
 import com.google.common.base.Joiner;
 import lombok.val;
@@ -17,13 +17,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Base64;
 import static com.github.charlemaznable.guardians.general.utils.Hasher.HMAC_MD5;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Parameter;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Parameter;
 import static com.github.charlemaznable.lang.Mapp.newHashMap;
 import static com.github.charlemaznable.lang.Str.isEmpty;
 import static com.github.charlemaznable.lang.Str.toStr;
@@ -41,9 +39,9 @@ public @interface Signature {
     @AliasFor("value")
     String keyName() default "signature";
 
-    RequestValueExtractType extractorType() default Parameter;
+    RequestValueExtractorType extractorType() default Parameter;
 
-    RequestBodyParser bodyParser() default Form;
+    RequestBodyFormat bodyFormat() default Form;
 
     String charsetName() default "UTF-8";
 
@@ -53,26 +51,32 @@ public @interface Signature {
 
     Class<? extends SignatureKeySupplier> keySupplier() default DefaultSignatureKeySupplier.class;
 
-    Class<? extends PlainTextBuildFunction> plainTextBuilder() default DefaultPlainTextBuildFunction.class;
+    Class<? extends PlainTextBuilder> plainTextBuilder() default DefaultPlainTextBuilder.class;
 
-    interface SignatureKeySupplier extends Supplier<String> {}
+    interface SignatureKeySupplier {
 
-    interface PlainTextBuildFunction extends Function<HttpServletRequest, String> {}
+        String supplySignatureKey();
+    }
+
+    interface PlainTextBuilder {
+
+        String buildPlainText(HttpServletRequest request);
+    }
 
     class DefaultSignatureKeySupplier implements SignatureKeySupplier {
 
         public static final String DefaultSignatureKey = "AWESOME MIX VOL1"; // Guardians of the Galaxy
 
         @Override
-        public String get() {
+        public String supplySignatureKey() {
             return DefaultSignatureKey;
         }
     }
 
-    class DefaultPlainTextBuildFunction implements PlainTextBuildFunction {
+    class DefaultPlainTextBuilder implements PlainTextBuilder {
 
         @Override
-        public String apply(HttpServletRequest request) {
+        public String buildPlainText(HttpServletRequest request) {
             val parameterMap = request.getMethod().equalsIgnoreCase("GET")
                     ? Mapp.<String, Object>newHashMap(fetchParameterMap(request))
                     : Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8");

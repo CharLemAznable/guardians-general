@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.codec.Json.json;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Json;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Body;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Cookie;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Header;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Path;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Json;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Cookie;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Path;
 import static com.github.charlemaznable.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.net.Http.responseJson;
 

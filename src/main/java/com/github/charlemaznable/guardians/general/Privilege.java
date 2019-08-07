@@ -7,7 +7,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.function.Supplier;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -20,7 +19,10 @@ public @interface Privilege {
     @AliasFor("value")
     String[] allow() default {};
 
-    Class<? extends AccessPrivilegeSupplier>[] accessSuppliers() default {};
+    Class<? extends AccessPrivilegesSupplier>[] privilegesSuppliers() default {};
 
-    interface AccessPrivilegeSupplier extends Supplier<String[]> {}
+    interface AccessPrivilegesSupplier {
+
+        String[] supplyAccessPrivileges();
+    }
 }

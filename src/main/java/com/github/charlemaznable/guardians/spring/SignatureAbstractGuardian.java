@@ -2,28 +2,17 @@ package com.github.charlemaznable.guardians.spring;
 
 import com.github.charlemaznable.guardians.Guard;
 import com.github.charlemaznable.guardians.general.Signature;
-import com.github.charlemaznable.guardians.general.Signature.DefaultPlainTextBuildFunction;
-import com.github.charlemaznable.guardians.general.Signature.DefaultSignatureKeySupplier;
-import com.github.charlemaznable.guardians.general.Signature.PlainTextBuildFunction;
-import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
 import com.github.charlemaznable.guardians.general.exception.SignatureGuardianException;
-import com.google.common.base.Supplier;
+import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
-import lombok.var;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.charlemaznable.guardians.general.utils.Hasher.HMAC_MD5;
-import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Base64;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Parameter;
 import static com.github.charlemaznable.lang.Condition.blankThen;
 import static com.github.charlemaznable.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.lang.Condition.checkNotNull;
-import static com.github.charlemaznable.lang.Condition.nullThen;
 import static com.google.common.base.Charsets.UTF_8;
-import static org.joor.Reflect.onClass;
 
 public abstract class SignatureAbstractGuardian {
 
@@ -33,25 +22,23 @@ public abstract class SignatureAbstractGuardian {
                 "Missing Annotation: " + Signature.class.getName()));
 
         val keyName = blankThen(signatureAnnotation.keyName(), () -> "signature");
-        val extractorType = nullThen(signatureAnnotation.extractorType(), () -> Parameter);
-        val bodyParser = nullThen(signatureAnnotation.bodyParser(), () -> Form);
+        val extractorType = signatureAnnotation.extractorType();
+        val bodyFormat = signatureAnnotation.bodyFormat();
         val charsetName = blankThen(signatureAnnotation.charsetName(), UTF_8::name);
-        val extractor = extractorType.extractor(keyName, bodyParser, charsetName);
-        var signText = checkNotBlank(extractor.apply(GuardianContext.request()),
+        val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
+        val signText = checkNotBlank(extractor.extract(GuardianContext.request()),
                 new SignatureGuardianException("Missing Request Signature: " + keyName));
 
-        val hasher = nullThen(signatureAnnotation.hasher(), () -> HMAC_MD5);
-        val codec = nullThen(signatureAnnotation.codec(), () -> Base64);
+        val hasher = signatureAnnotation.hasher();
+        val codec = signatureAnnotation.codec();
 
-        val keySupplier = nullThen(signatureAnnotation.keySupplier(),
-                (Supplier<Class<? extends SignatureKeySupplier>>) () -> DefaultSignatureKeySupplier.class);
-        SignatureKeySupplier supplier = onClass(keySupplier).create().get();
-        val key = supplier.get();
+        val keySupplier = signatureAnnotation.keySupplier();
+        val supplier = SpringUtils.getOrCreateBean(keySupplier);
+        val key = supplier.supplySignatureKey();
 
-        val plainTextBuilder = nullThen(signatureAnnotation.plainTextBuilder(),
-                (Supplier<Class<? extends PlainTextBuildFunction>>) () -> DefaultPlainTextBuildFunction.class);
-        PlainTextBuildFunction function = onClass(plainTextBuilder).create().get();
-        val plainText = function.apply(GuardianContext.request());
+        val plainTextBuilder = signatureAnnotation.plainTextBuilder();
+        val builder = SpringUtils.getOrCreateBean(plainTextBuilder);
+        val plainText = builder.buildPlainText(GuardianContext.request());
 
         if (hasher.verify(plainText, signText, codec, key)) return true;
         throw new SignatureGuardianException("Signature Mismatch");

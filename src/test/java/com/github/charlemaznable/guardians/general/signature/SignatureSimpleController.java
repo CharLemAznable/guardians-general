@@ -5,6 +5,7 @@ import com.github.charlemaznable.guardians.PreGuardian;
 import com.github.charlemaznable.guardians.general.Signature;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.codec.Json.json;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Hex;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyParser.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractType.Body;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
 import static com.github.charlemaznable.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.net.Http.responseJson;
@@ -104,13 +105,14 @@ public class SignatureSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
+    @Component
     public static class RSASignatureKeySupplier implements SignatureKeySupplier {
 
         public static final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqWe6rB7l/aNDO4qZ5MQrqmHXjfNKTMZUgxi2m2tCygE1Pu5Myok05AVY3Le7g/4aByL0cl60w2zjetOS25ETb+WvaIcS+MMoHUhYgOa+bsgC9xVQ2zYltEQnd4sCD28C2Jsrfe8cEo06jzAmnmtrI7kfE9aav3BwnROVHDqbRlQIDAQAB";
         public static final String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKpZ7qsHuX9o0M7ipnkxCuqYdeN80pMxlSDGLaba0LKATU+7kzKiTTkBVjct7uD/hoHIvRyXrTDbON605LbkRNv5a9ohxL4wygdSFiA5r5uyAL3FVDbNiW0RCd3iwIPbwLYmyt97xwSjTqPMCaea2sjuR8T1pq/cHCdE5UcOptGVAgMBAAECgYAjDeqNC0PisgD18bHsEml6qPDpZRA39eYIHn/abACyGrDODX1W2AsoBdxl8m/LoQlev54auiOLgDENsw+1iveYLk2i1vJ5Gy8PLzWDoH0DFJEwdAZcXrxKXFS/+rmCYQH2XqpzRoe1KxJp1Ow9KcZkrQwnxmuYXD70tlsq9Mn9QQJBAOQPrYLQWGnltYEJvVsYM+FpThz54gOE7LP3uFbIcGdxgMiK1Y9lu8HCOh2d0UBB/Cn3An4Zm+hVTz5ii9CjeEkCQQC/OGOo1rUrOyOlTJHVID2a+rvoKDWjA8Jfl+40DRZ7U5YXgVcWlCn2Zj2UCLVS5fmJ3v//cNra/5VyhjMGCMbtAkEAsKADvUAmeT1SKLGmWRqRc43e1Uoh5J/ZwjekKHHru/GHz8jWRMyBcTo/UBidqqpv5QBMieTDflgzmxkvN1KjIQJAU50jruNbyvCMMK6fohL7/TWgTu6uLX7qUoSLy0ThzMGLAvIyk5PsGWsxh/aa2wnmqMvTIu5FNLfHsJFP5FaYLQJAVOCTEL0VStKwtCed7PAhVvpP/myB97Cx39BzRPeJUAEMZThw/NM/fi4nJQecy8hzCbNwtDYfaIvybvZjCl7u1Q==";
 
         @Override
-        public String get() {
+        public String supplySignatureKey() {
             return publicKey;
         }
     }

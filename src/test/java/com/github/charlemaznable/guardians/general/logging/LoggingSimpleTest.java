@@ -2,7 +2,6 @@ package com.github.charlemaznable.guardians.general.logging;
 
 import com.github.charlemaznable.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration(classes = LoggingSimpleConfiguration.class)
 @WebAppConfiguration
 @TestInstance(Lifecycle.PER_CLASS)
-@Slf4j
 public class LoggingSimpleTest {
 
     private static MockMvc mockMvc;

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.codec.Json.json;
 import static com.github.charlemaznable.codec.Json.unJson;
-import static com.github.charlemaznable.guardians.general.accessId.AccessIdSimplePostFunction.ACCESS_ID_CONTEXT_KEY;
+import static com.github.charlemaznable.guardians.general.accessId.AccessIdSimplePostProcessor.ACCESS_ID_CONTEXT_KEY;
 import static com.github.charlemaznable.lang.Mapp.newHashMap;
 
 @Component
