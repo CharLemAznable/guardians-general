@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.general.accessId;
+package com.github.charlemaznable.guardians.general.requestField;
 
 import com.github.charlemaznable.guardians.PostGuardian;
 import com.github.charlemaznable.guardians.PreGuardian;
@@ -21,41 +21,41 @@ import static com.github.charlemaznable.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.net.Http.responseJson;
 
 @Controller
-@RequestMapping("/accessId")
-@PreGuardian(AccessIdSimpleGuardian.class)
-@PostGuardian(AccessIdSimpleGuardian.class)
-public class AccessIdSimpleController {
+@RequestMapping("/requestField")
+@PreGuardian(RequestFieldSimpleGuardian.class)
+@PostGuardian(RequestFieldSimpleGuardian.class)
+public class RequestFieldSimpleController {
 
     @RequestMapping("/error")
     public void error(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @AccessIdSimple(keyName = "appId")
+    @RequestFieldSimple(keyName = "appId")
     @RequestMapping("/param")
     public void param(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @AccessIdSimple(extractorType = Path)
+    @RequestFieldSimple(keyName = "accessId", extractorType = Path)
     @RequestMapping("/path/{accessId}")
     public void path(@PathVariable String accessId, HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @AccessIdSimple(extractorType = Header)
+    @RequestFieldSimple(keyName = "accessId", extractorType = Header)
     @RequestMapping("/header")
     public void header(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @AccessIdSimple(extractorType = Cookie)
+    @RequestFieldSimple(keyName = "accessId", extractorType = Cookie)
     @RequestMapping("/cookie")
     public void cookie(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @AccessIdSimple(extractorType = Body, bodyParser = Json)
+    @RequestFieldSimple(keyName = "accessId", extractorType = Body, bodyParser = Json)
     @RequestMapping("/body")
     public void body(@RequestBody SimpleBody requestBody, HttpServletResponse response) {
         responseJson(response, json(requestBody));

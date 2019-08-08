@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.general.accessId;
+package com.github.charlemaznable.guardians.general.requestField;
 
 import com.github.charlemaznable.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
@@ -25,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = AccessIdSimpleConfiguration.class)
+@ContextConfiguration(classes = RequestFieldSimpleConfiguration.class)
 @WebAppConfiguration
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccessIdSimpleTest {
+public class RequestFieldSimpleTest {
 
     private static MockMvc mockMvc;
     @Autowired
@@ -46,18 +46,18 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(get("/accessId/error"))
+        val response = mockMvc.perform(get("/requestField/error"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Annotation: com.github.charlemaznable.guardians.general.AccessId", responseMap.get("error"));
+        assertEquals("Missing Annotation: com.github.charlemaznable.guardians.general.RequestField", responseMap.get("error"));
     }
 
     @SneakyThrows
     @Test
     public void testParam() {
-        val response = mockMvc.perform(get("/accessId/param")
+        val response = mockMvc.perform(get("/requestField/param")
                 .param("appId", "paramAppId"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -70,18 +70,18 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testParamError() {
-        val response = mockMvc.perform(get("/accessId/param"))
+        val response = mockMvc.perform(get("/requestField/param"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Access Identification: appId", responseMap.get("error"));
+        assertEquals("Missing Request Field: appId", responseMap.get("error"));
     }
 
     @SneakyThrows
     @Test
     public void testPath() {
-        val response = mockMvc.perform(get("/accessId/path/pathAccessId"))
+        val response = mockMvc.perform(get("/requestField/path/pathAccessId"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -92,7 +92,7 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testHeader() {
-        val response = mockMvc.perform(get("/accessId/header")
+        val response = mockMvc.perform(get("/requestField/header")
                 .header("accessId", "headerAccessId"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -104,18 +104,18 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testHeaderError() {
-        val response = mockMvc.perform(get("/accessId/header"))
+        val response = mockMvc.perform(get("/requestField/header"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Access Identification: accessId", responseMap.get("error"));
+        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
     }
 
     @SneakyThrows
     @Test
     public void testCookie() {
-        val response = mockMvc.perform(get("/accessId/cookie")
+        val response = mockMvc.perform(get("/requestField/cookie")
                 .cookie(new MockCookie("accessId", "cookieAccessId")))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -127,18 +127,18 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testCookieError() {
-        val response = mockMvc.perform(get("/accessId/cookie"))
+        val response = mockMvc.perform(get("/requestField/cookie"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Access Identification: accessId", responseMap.get("error"));
+        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
     }
 
     @SneakyThrows
     @Test
     public void testBody() {
-        val response = mockMvc.perform(post("/accessId/body")
+        val response = mockMvc.perform(post("/requestField/body")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"accessId\":\"bodyAccessId\"}"))
                 .andExpect(status().isOk())
@@ -152,13 +152,13 @@ public class AccessIdSimpleTest {
     @SneakyThrows
     @Test
     public void testBodyError() {
-        val response = mockMvc.perform(post("/accessId/body")
+        val response = mockMvc.perform(post("/requestField/body")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"appId\":\"bodyAppId\"}"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Access Identification: accessId", responseMap.get("error"));
+        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
     }
 }

@@ -2,23 +2,23 @@ package com.github.charlemaznable.guardians.general.exception;
 
 import com.github.charlemaznable.guardians.exception.GuardianException;
 
-public class AccessIdGuardianException extends GuardianException {
+public class RequestFieldGuardianException extends GuardianException {
 
     private static final long serialVersionUID = 689725665645803503L;
 
-    public AccessIdGuardianException() {
+    public RequestFieldGuardianException() {
         super();
     }
 
-    public AccessIdGuardianException(String message) {
+    public RequestFieldGuardianException(String message) {
         super(message);
     }
 
-    public AccessIdGuardianException(String message, Throwable cause) {
+    public RequestFieldGuardianException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AccessIdGuardianException(Throwable cause) {
+    public RequestFieldGuardianException(Throwable cause) {
         super(cause);
     }
 }

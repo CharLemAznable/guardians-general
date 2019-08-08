@@ -16,13 +16,13 @@ import static com.github.charlemaznable.guardians.utils.RequestValueExtractorTyp
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AccessId {
+public @interface RequestField {
 
     @AliasFor("keyName")
-    String value() default "accessId";
+    String value() default "";
 
     @AliasFor("value")
-    String keyName() default "accessId";
+    String keyName() default "";
 
     RequestValueExtractorType extractorType() default Parameter;
 
@@ -30,10 +30,10 @@ public @interface AccessId {
 
     String charsetName() default "UTF-8";
 
-    Class<? extends AccessIdPostProcessor>[] postProcessors() default {};
+    Class<? extends RequestFieldPostProcessor>[] postProcessors() default {};
 
-    interface AccessIdPostProcessor {
+    interface RequestFieldPostProcessor {
 
-        String processAccessId(String accessId);
+        String processRequestField(String value);
     }
 }

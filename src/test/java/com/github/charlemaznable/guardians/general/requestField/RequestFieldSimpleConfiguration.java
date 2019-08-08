@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.general.accessId;
+package com.github.charlemaznable.guardians.general.requestField;
 
 import com.github.charlemaznable.guardians.spring.GuardiansImport;
 import com.github.charlemaznable.spring.FastJsonHttpMessageConverterBuilder;
@@ -16,7 +16,7 @@ import static com.google.common.base.Charsets.UTF_8;
 @Configuration
 @ComponentScan
 @GuardiansImport
-public class AccessIdSimpleConfiguration implements WebMvcConfigurer {
+public class RequestFieldSimpleConfiguration implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
