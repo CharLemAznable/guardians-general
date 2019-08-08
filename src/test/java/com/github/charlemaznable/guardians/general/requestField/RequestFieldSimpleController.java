@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.codec.Json.json;
+import static com.github.charlemaznable.codec.Json.jsonOf;
 import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Json;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Cookie;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Path;
+import static com.github.charlemaznable.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.net.Http.responseJson;
 
@@ -59,6 +62,12 @@ public class RequestFieldSimpleController {
     @RequestMapping("/body")
     public void body(@RequestBody SimpleBody requestBody, HttpServletResponse response) {
         responseJson(response, json(requestBody));
+    }
+
+    @RequestFieldSimple(extractorType = BodyRaw)
+    @RequestMapping("/bodyRaw")
+    public void bodyRaw(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, jsonOf("accessId", dealRequestBodyStream(request, "UTF-8")));
     }
 
     @Data

@@ -161,4 +161,28 @@ public class RequestFieldSimpleTest {
         val responseMap = unJson(responseContent);
         assertEquals("Missing Request Field: accessId", responseMap.get("error"));
     }
+
+    @SneakyThrows
+    @Test
+    public void testBodyRaw() {
+        val response = mockMvc.perform(post("/requestField/bodyRaw")
+                .content("bodyRawAccessId"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
+        assertEquals("bodyRawAccessId", responseMap.get("accessId"));
+        assertEquals("bodyRawAccessId", responseMap.get("responseId"));
+    }
+
+    @SneakyThrows
+    @Test
+    public void testBodyRawError() {
+        val response = mockMvc.perform(post("/requestField/bodyRaw"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
+        assertEquals("Missing Request Body", responseMap.get("error"));
+    }
 }
