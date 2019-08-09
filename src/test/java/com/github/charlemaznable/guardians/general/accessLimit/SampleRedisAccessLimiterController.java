@@ -18,8 +18,18 @@ import static com.github.charlemaznable.net.Http.responseJson;
 @AccessLimit(SampleRedisAccessLimiter.class)
 public class SampleRedisAccessLimiterController {
 
+    @RequestMapping("/unlimit")
+    public void unlimit(HttpServletResponse response) {
+        responseJson(response, jsonOf("result", "SUCCESS"));
+    }
+
     @RequestMapping("/index")
     public void index(HttpServletResponse response) {
+        responseJson(response, jsonOf("result", "SUCCESS"));
+    }
+
+    @RequestMapping("/tenSeconds")
+    public void tenSeconds(HttpServletResponse response) {
         responseJson(response, jsonOf("result", "SUCCESS"));
     }
 }

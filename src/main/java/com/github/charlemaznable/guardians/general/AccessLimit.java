@@ -22,6 +22,10 @@ public @interface AccessLimit {
 
     interface AccessLimiter {
 
+        default boolean unlimitRequest(HttpServletRequest request) {
+            return false;
+        }
+
         boolean tryAcquire(HttpServletRequest request);
     }
 
