@@ -155,21 +155,7 @@ public class SampleRedisAccessLimiterTest {
         var responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
-
-        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("Access has been Denied", responseMap.get("error"));
-
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
                 .andExpect(status().isOk())
@@ -199,6 +185,38 @@ public class SampleRedisAccessLimiterTest {
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
+
+        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
         assertEquals("Access has been Denied", responseMap.get("error"));
+
+        Thread.sleep(5000);
+
+        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("Access has been Denied", responseMap.get("error"));
+
+        Thread.sleep(5000);
+
+        response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        responseMap = unJson(responseContent);
+        assertEquals("SUCCESS", responseMap.get("result"));
     }
 }

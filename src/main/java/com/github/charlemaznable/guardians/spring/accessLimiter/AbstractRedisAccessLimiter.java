@@ -8,6 +8,7 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.HttpServletRequest;
 
 import static java.lang.System.currentTimeMillis;
+import static redis.clients.jedis.params.SetParams.setParams;
 
 public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
 
@@ -36,9 +37,9 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
             val passedTime = (int) (currentTime % maxBurstTime);
             // 在当前时间窗口中, 还剩余的时间, 设置为计时器的计时时间
             val lastTime = maxBurstTime - passedTime;
-            jedis.setex(timerKey, lastTime, "0");
+            jedis.set(timerKey, "0", setParams().ex(lastTime));
             // 重置计数器的值, 设置有效时间比计时器的有效时间长一秒
-            jedis.setex(counterKey, lastTime + 1, "0");
+            jedis.set(counterKey, "0", setParams().ex(lastTime + 1));
         }
 
         val maxPermits = maxPermitsPerBurstTime(request);
