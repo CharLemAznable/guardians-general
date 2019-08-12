@@ -75,7 +75,7 @@ public class RequestFieldSimpleTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Request Field: appId", responseMap.get("error"));
+        assertEquals("Missing Request AccessId", responseMap.get("error"));
     }
 
     @SneakyThrows
@@ -109,7 +109,7 @@ public class RequestFieldSimpleTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
+        assertEquals("Missing Request AccessId", responseMap.get("error"));
     }
 
     @SneakyThrows
@@ -132,7 +132,7 @@ public class RequestFieldSimpleTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
+        assertEquals("Missing Request AccessId", responseMap.get("error"));
     }
 
     @SneakyThrows
@@ -159,7 +159,7 @@ public class RequestFieldSimpleTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Request Field: accessId", responseMap.get("error"));
+        assertEquals("Missing Request AccessId", responseMap.get("error"));
     }
 
     @SneakyThrows
@@ -183,6 +183,6 @@ public class RequestFieldSimpleTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Request Body", responseMap.get("error"));
+        assertEquals("Missing Request AccessId", responseMap.get("error"));
     }
 }

@@ -10,9 +10,7 @@ import lombok.var;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.github.charlemaznable.lang.Condition.blankThen;
-import static com.github.charlemaznable.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
@@ -28,9 +26,7 @@ public abstract class RequestFieldAbstractGuardian {
         val bodyFormat = requestFieldAnnotation.bodyFormat();
         val charsetName = blankThen(requestFieldAnnotation.charsetName(), UTF_8::name);
         val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        var value = checkNotBlank(extractor.extract(GuardianContext.request()),
-                new RequestFieldGuardianException("Missing Request "
-                        + (BodyRaw == extractorType ? "Body" : ("Field: " + keyName))));
+        var value = extractor.extract(GuardianContext.request());
 
         val postProcessors = requestFieldAnnotation.postProcessors();
         for (val postProcessor : postProcessors) {

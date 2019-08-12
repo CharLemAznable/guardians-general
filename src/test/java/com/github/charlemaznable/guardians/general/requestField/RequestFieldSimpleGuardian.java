@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.codec.Json.json;
 import static com.github.charlemaznable.codec.Json.unJson;
 import static com.github.charlemaznable.guardians.general.requestField.RequestFieldSimplePostProcessor.REQUEST_FIELD_SIMPLE_CONTEXT_KEY;
+import static com.github.charlemaznable.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.lang.Mapp.newHashMap;
 
 @Component
@@ -21,6 +22,7 @@ public class RequestFieldSimpleGuardian extends RequestFieldAbstractGuardian {
 
     @Override
     public boolean checkRequestField(String accessId) {
+        checkNotBlank(accessId, new RequestFieldGuardianException("Missing Request AccessId"));
         return true;
     }
 
