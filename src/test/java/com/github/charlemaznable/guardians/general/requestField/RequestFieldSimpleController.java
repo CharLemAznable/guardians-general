@@ -58,7 +58,7 @@ public class RequestFieldSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @RequestFieldSimple(keyName = "accessId", extractorType = Body, bodyParser = Json)
+    @RequestFieldSimple(keyName = "accessId", extractorType = Body, bodyFormat = Json)
     @RequestMapping("/body")
     public void body(@RequestBody SimpleBody requestBody, HttpServletResponse response) {
         responseJson(response, json(requestBody));

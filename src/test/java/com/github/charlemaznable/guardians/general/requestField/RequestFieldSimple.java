@@ -27,5 +27,5 @@ public @interface RequestFieldSimple {
     RequestValueExtractorType extractorType() default Parameter;
 
     @AliasFor(attribute = "bodyFormat", annotation = RequestField.class)
-    RequestBodyFormat bodyParser() default Form;
+    RequestBodyFormat bodyFormat() default Form;
 }

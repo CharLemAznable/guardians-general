@@ -28,9 +28,9 @@ public class RequestFieldSimpleGuardian extends RequestFieldAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void handleRequestFieldException(HttpServletRequest request,
-                                            HttpServletResponse response,
-                                            RequestFieldGuardianException exception) {
+    public void handleGuardianException(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        RequestFieldGuardianException exception) {
         MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));
