@@ -18,9 +18,9 @@ public class SampleRateAccessLimiterGuardian extends AccessLimitAbstractGuardian
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void handleAccessLimitException(HttpServletRequest request,
-                                           HttpServletResponse response,
-                                           AccessLimitGuardianException exception) {
+    public void handleGuardianException(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AccessLimitGuardianException exception) {
         MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));

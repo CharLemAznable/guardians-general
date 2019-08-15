@@ -18,9 +18,9 @@ public class DecryptionSimpleGuardian extends DecryptionAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void handleDecryptionException(HttpServletRequest request,
-                                          HttpServletResponse response,
-                                          DecryptionGuardianException exception) {
+    public void handleGuardianException(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        DecryptionGuardianException exception) {
         MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));

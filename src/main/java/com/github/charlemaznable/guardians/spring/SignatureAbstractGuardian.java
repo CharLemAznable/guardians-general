@@ -6,15 +6,12 @@ import com.github.charlemaznable.guardians.general.exception.SignatureGuardianEx
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static com.github.charlemaznable.lang.Condition.blankThen;
 import static com.github.charlemaznable.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
-public abstract class SignatureAbstractGuardian {
+public abstract class SignatureAbstractGuardian implements PostGuardExceptionHandler<SignatureGuardianException> {
 
     @Guard(true)
     public boolean preGuard(Signature signatureAnnotation) {
@@ -43,16 +40,4 @@ public abstract class SignatureAbstractGuardian {
         if (hasher.verify(plainText, signText, codec, key)) return true;
         throw new SignatureGuardianException("Signature Mismatch");
     }
-
-    @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          SignatureGuardianException exception) {
-        if (null == exception) return;
-        handleSignatureException(request, response, exception);
-    }
-
-    public abstract void handleSignatureException(HttpServletRequest request,
-                                                  HttpServletResponse response,
-                                                  SignatureGuardianException exception);
 }

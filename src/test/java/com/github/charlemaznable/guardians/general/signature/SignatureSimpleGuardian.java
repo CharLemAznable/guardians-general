@@ -18,9 +18,9 @@ public class SignatureSimpleGuardian extends SignatureAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void handleSignatureException(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         SignatureGuardianException exception) {
+    public void handleGuardianException(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        SignatureGuardianException exception) {
         MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));

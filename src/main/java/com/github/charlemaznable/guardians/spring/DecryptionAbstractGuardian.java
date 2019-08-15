@@ -6,16 +6,13 @@ import com.github.charlemaznable.guardians.general.exception.DecryptionGuardianE
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.github.charlemaznable.lang.Condition.blankThen;
 import static com.github.charlemaznable.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
-public abstract class DecryptionAbstractGuardian {
+public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHandler<DecryptionGuardianException> {
 
     @Guard(true)
     public boolean preGuard(Decryption decryptionAnnotation) {
@@ -52,16 +49,4 @@ public abstract class DecryptionAbstractGuardian {
         }
         return true;
     }
-
-    @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          DecryptionGuardianException exception) {
-        if (null == exception) return;
-        handleDecryptionException(request, response, exception);
-    }
-
-    public abstract void handleDecryptionException(HttpServletRequest request,
-                                                   HttpServletResponse response,
-                                                   DecryptionGuardianException exception);
 }

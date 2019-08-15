@@ -6,14 +6,12 @@ import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianEx
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.github.charlemaznable.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.lang.Listt.newArrayList;
 
-public abstract class PrivilegeAbstractGuardian {
+public abstract class PrivilegeAbstractGuardian implements PostGuardExceptionHandler<PrivilegeGuardianException> {
 
     @Guard(true)
     public boolean preGuard(Privilege privilegeAnnotation) {
@@ -31,18 +29,6 @@ public abstract class PrivilegeAbstractGuardian {
         return checkPrivilege(privileges, accessPrivileges);
     }
 
-    @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          PrivilegeGuardianException exception) {
-        if (null == exception) return;
-        handlePrivilegeException(request, response, exception);
-    }
-
     public abstract boolean checkPrivilege(List<String> privileges,
                                            List<String> accessPrivileges);
-
-    public abstract void handlePrivilegeException(HttpServletRequest request,
-                                                  HttpServletResponse response,
-                                                  PrivilegeGuardianException exception);
 }

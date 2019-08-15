@@ -27,9 +27,9 @@ public class PrivilegeSimpleGuardian extends PrivilegeAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void handlePrivilegeException(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         PrivilegeGuardianException exception) {
+    public void handleGuardianException(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        PrivilegeGuardianException exception) {
         MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));

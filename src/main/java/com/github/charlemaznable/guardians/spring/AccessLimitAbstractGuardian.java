@@ -6,10 +6,7 @@ import com.github.charlemaznable.guardians.general.exception.AccessLimitGuardian
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public abstract class AccessLimitAbstractGuardian {
+public abstract class AccessLimitAbstractGuardian implements PostGuardExceptionHandler<AccessLimitGuardianException> {
 
     @Guard(true)
     public boolean preGuard(AccessLimit accessLimitAnnotation) {
@@ -28,16 +25,4 @@ public abstract class AccessLimitAbstractGuardian {
         if (!acquired) throw new AccessLimitGuardianException("Limited Access");
         return true;
     }
-
-    @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          AccessLimitGuardianException exception) {
-        if (null == exception) return;
-        handleAccessLimitException(request, response, exception);
-    }
-
-    public abstract void handleAccessLimitException(HttpServletRequest request,
-                                                    HttpServletResponse response,
-                                                    AccessLimitGuardianException exception);
 }
