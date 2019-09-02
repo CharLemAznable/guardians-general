@@ -190,13 +190,13 @@ public class SignatureSimpleTest {
 
         response = mockMvc.perform(get("/signature/hmacsha256")
                 .param("content", "Content内容")
-                .param("signature", DigestHMAC.SHA256.digestBase64("content=Content内容", DefaultSignatureKey)))
+                .param("signature", DigestHMAC.SHA256.digestHex("content=Content内容", DefaultSignatureKey).toUpperCase()))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("Content内容", responseMap.get("content"));
-        assertEquals(DigestHMAC.SHA256.digestBase64("content=Content内容", DefaultSignatureKey), responseMap.get("signature"));
+        assertEquals(DigestHMAC.SHA256.digestHex("content=Content内容", DefaultSignatureKey).toUpperCase(), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/hmacsha512")
                 .param("content", "Content内容")

@@ -4,6 +4,7 @@ import com.github.charlemaznable.guardians.PostGuardian;
 import com.github.charlemaznable.guardians.PreGuardian;
 import com.github.charlemaznable.guardians.general.Signature;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
+import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -81,7 +82,7 @@ public class SignatureSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(hasher = Hasher.HMAC_SHA256)
+    @Signature(hasher = Hasher.HMAC_SHA256, codec = ByteCodec.HexUpperCase)
     @RequestMapping("/hmacsha256")
     public void hmacsha256(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
