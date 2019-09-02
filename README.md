@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/CharLemAznable/guardians-general/branch/master/graph/badge.svg)](https://codecov.io/gh/CharLemAznable/guardians-general)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.charlemaznable/guardians-general/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.charlemaznable/guardians-general/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+![GitHub code size](https://img.shields.io/github/languages/code-size/CharLemAznable/guardians-general)
 
 Guardians通用模块.
 
@@ -13,6 +14,6 @@ Guardians通用模块.
 <dependency>
   <groupId>com.github.charlemaznable</groupId>
   <artifactId>guardians-general</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
 </dependency>
 ```
