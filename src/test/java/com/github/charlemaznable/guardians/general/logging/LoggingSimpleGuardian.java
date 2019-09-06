@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general.logging;
 
-import com.github.charlemaznable.guardians.spring.LoggingAbstractGuardian;
+import com.github.charlemaznable.guardians.general.LoggingAbstractGuardian;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

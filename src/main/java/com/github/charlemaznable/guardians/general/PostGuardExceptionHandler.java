@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
 import com.github.charlemaznable.guardians.exception.GuardianException;

@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general.privilege;
 
-import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
-import com.github.charlemaznable.guardians.spring.PrivilegeAbstractGuardian;
 import com.github.charlemaznable.core.spring.MutableHttpServletUtils;
+import com.github.charlemaznable.guardians.general.PrivilegeAbstractGuardian;
+import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
 import lombok.val;
 import org.springframework.stereotype.Component;
 

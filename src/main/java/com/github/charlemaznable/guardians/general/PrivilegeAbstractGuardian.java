@@ -1,7 +1,6 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
-import com.github.charlemaznable.guardians.general.Privilege;
 import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;

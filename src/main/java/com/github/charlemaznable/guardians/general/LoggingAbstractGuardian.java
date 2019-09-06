@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
 import lombok.extern.slf4j.Slf4j;

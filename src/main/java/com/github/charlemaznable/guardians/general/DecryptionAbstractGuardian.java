@@ -1,15 +1,15 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
-import com.github.charlemaznable.guardians.general.Decryption;
 import com.github.charlemaznable.guardians.general.exception.DecryptionGuardianException;
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
+import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.google.common.base.Charsets.UTF_8;
 
 public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHandler<DecryptionGuardianException> {

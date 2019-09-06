@@ -1,9 +1,9 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
-import com.github.charlemaznable.guardians.general.Signature;
 import com.github.charlemaznable.guardians.general.exception.SignatureGuardianException;
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
+import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;

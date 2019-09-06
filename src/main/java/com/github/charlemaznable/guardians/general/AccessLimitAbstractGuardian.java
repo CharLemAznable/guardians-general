@@ -1,9 +1,9 @@
-package com.github.charlemaznable.guardians.spring;
+package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
-import com.github.charlemaznable.guardians.general.AccessLimit;
 import com.github.charlemaznable.guardians.general.exception.AccessLimitGuardianException;
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
+import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 
 public abstract class AccessLimitAbstractGuardian implements PostGuardExceptionHandler<AccessLimitGuardianException> {

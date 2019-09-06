@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.codec.Json.json;
-import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Hex;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
+import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Hex;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
 
 @SuppressWarnings("deprecation")
 @Controller

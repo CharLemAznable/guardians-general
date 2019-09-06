@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general.privilege;
 
+import com.github.charlemaznable.core.lang.Mapp;
 import com.github.charlemaznable.guardians.general.Privilege.AccessPrivilegesSupplier;
 import com.github.charlemaznable.guardians.spring.GuardianContext;
-import com.github.charlemaznable.core.lang.Mapp;
 import lombok.val;
 import org.springframework.stereotype.Component;
 

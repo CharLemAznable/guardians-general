@@ -3,6 +3,9 @@ package com.github.charlemaznable.guardians.general.utils;
 import com.github.charlemaznable.core.crypto.AES;
 import lombok.val;
 
+import static com.github.charlemaznable.core.crypto.RSA.privateKey;
+import static com.github.charlemaznable.core.crypto.RSA.prvDecrypt;
+
 public enum Cipher {
 
     AES_128 {
@@ -14,8 +17,8 @@ public enum Cipher {
     RSA {
         @Override
         public String decrypt(String cipherText, ByteCodec codec, String key) {
-            val privateKey = com.github.charlemaznable.core.crypto.RSA.privateKey(key);
-            return com.github.charlemaznable.core.crypto.RSA.prvDecrypt(codec.decode(cipherText), privateKey);
+            val privateKey = privateKey(key);
+            return prvDecrypt(codec.decode(cipherText), privateKey);
         }
     };
 

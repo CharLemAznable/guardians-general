@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general.accessLimit;
 
-import com.github.charlemaznable.guardians.spring.accessLimiter.AbstractRateAccessLimiter;
+import com.github.charlemaznable.guardians.general.accessLimiter.AbstractRateAccessLimiter;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
