@@ -1,7 +1,7 @@
 package com.github.charlemaznable.guardians.general.requestFields;
 
 import com.github.charlemaznable.guardians.spring.GuardiansImport;
-import com.github.charlemaznable.spring.FastJsonHttpMessageConverterBuilder;
+import com.github.charlemaznable.core.spring.FastJsonHttpMessageConverterBuilder;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;

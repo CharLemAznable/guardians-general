@@ -9,9 +9,9 @@ import lombok.var;
 
 import java.util.List;
 
-import static com.github.charlemaznable.lang.Condition.blankThen;
-import static com.github.charlemaznable.lang.Condition.checkNotEmpty;
-import static com.github.charlemaznable.lang.Listt.newArrayList;
+import static com.github.charlemaznable.core.lang.Condition.blankThen;
+import static com.github.charlemaznable.core.lang.Condition.checkNotEmpty;
+import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 import static com.google.common.base.Charsets.UTF_8;
 
 public abstract class RequestFieldsAbstractGuardian implements PostGuardExceptionHandler<RequestFieldGuardianException> {

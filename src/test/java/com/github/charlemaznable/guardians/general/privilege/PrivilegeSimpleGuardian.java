@@ -2,7 +2,7 @@ package com.github.charlemaznable.guardians.general.privilege;
 
 import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
 import com.github.charlemaznable.guardians.spring.PrivilegeAbstractGuardian;
-import com.github.charlemaznable.spring.MutableHttpServletUtils;
+import com.github.charlemaznable.core.spring.MutableHttpServletUtils;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import static com.github.charlemaznable.codec.Json.json;
-import static com.github.charlemaznable.codec.Json.unJson;
-import static com.github.charlemaznable.lang.Mapp.newHashMap;
+import static com.github.charlemaznable.core.codec.Json.json;
+import static com.github.charlemaznable.core.codec.Json.unJson;
+import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
 
 @Component
 public class PrivilegeSimpleGuardian extends PrivilegeAbstractGuardian {

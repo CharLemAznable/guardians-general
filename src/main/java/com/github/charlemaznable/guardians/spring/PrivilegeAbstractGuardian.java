@@ -8,8 +8,8 @@ import lombok.val;
 
 import java.util.List;
 
-import static com.github.charlemaznable.lang.Condition.checkNotNull;
-import static com.github.charlemaznable.lang.Listt.newArrayList;
+import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 
 public abstract class PrivilegeAbstractGuardian implements PostGuardExceptionHandler<PrivilegeGuardianException> {
 

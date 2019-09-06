@@ -1,10 +1,10 @@
 package com.github.charlemaznable.guardians.general.signature;
 
-import com.github.charlemaznable.codec.Digest;
-import com.github.charlemaznable.codec.DigestHMAC;
-import com.github.charlemaznable.crypto.SHAXWithRSA;
+import com.github.charlemaznable.core.codec.Digest;
+import com.github.charlemaznable.core.codec.DigestHMAC;
+import com.github.charlemaznable.core.crypto.SHAXWithRSA;
 import com.github.charlemaznable.guardians.general.signature.SignatureSimpleController.RSASignatureKeySupplier;
-import com.github.charlemaznable.spring.MutableHttpServletFilter;
+import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
 import lombok.var;
@@ -20,9 +20,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.github.charlemaznable.codec.Json.unJson;
+import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.guardians.general.Signature.DefaultSignatureKeySupplier.DefaultSignatureKey;
-import static com.github.charlemaznable.lang.Str.toStr;
+import static com.github.charlemaznable.core.lang.Str.toStr;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

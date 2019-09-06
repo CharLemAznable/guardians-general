@@ -7,8 +7,8 @@ import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 import lombok.var;
 
-import static com.github.charlemaznable.lang.Condition.blankThen;
-import static com.github.charlemaznable.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Condition.blankThen;
+import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
 public abstract class RequestFieldAbstractGuardian implements PostGuardExceptionHandler<RequestFieldGuardianException> {

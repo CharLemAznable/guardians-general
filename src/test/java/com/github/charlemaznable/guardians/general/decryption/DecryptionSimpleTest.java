@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general.decryption;
 
-import com.github.charlemaznable.crypto.AES;
-import com.github.charlemaznable.crypto.RSA;
-import com.github.charlemaznable.spring.MutableHttpServletFilter;
+import com.github.charlemaznable.core.crypto.AES;
+import com.github.charlemaznable.core.crypto.RSA;
+import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,8 +17,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.github.charlemaznable.codec.Base64.base64;
-import static com.github.charlemaznable.codec.Json.unJson;
+import static com.github.charlemaznable.core.codec.Base64.base64;
+import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.guardians.general.decryption.DecryptionSimpleController.RSADecryptKeySupplier.publicKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.charlemaznable.codec.Json.json;
+import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Hex;
 import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
-import static com.github.charlemaznable.net.Http.dealRequestBodyStream;
-import static com.github.charlemaznable.net.Http.fetchParameterMap;
-import static com.github.charlemaznable.net.Http.responseJson;
+import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
+import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
+import static com.github.charlemaznable.core.net.Http.responseJson;
 
 @SuppressWarnings("deprecation")
 @Controller

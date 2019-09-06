@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general.utils;
 
-import com.github.charlemaznable.codec.Digest;
-import com.github.charlemaznable.codec.DigestHMAC;
-import com.github.charlemaznable.crypto.SHAXWithRSA;
+import com.github.charlemaznable.core.codec.Digest;
+import com.github.charlemaznable.core.codec.DigestHMAC;
+import com.github.charlemaznable.core.crypto.SHAXWithRSA;
 
 public enum Hasher {
 

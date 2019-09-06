@@ -7,9 +7,9 @@ import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
-import static com.github.charlemaznable.lang.Condition.blankThen;
-import static com.github.charlemaznable.lang.Condition.checkNotBlank;
-import static com.github.charlemaznable.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Condition.blankThen;
+import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
+import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
 public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHandler<DecryptionGuardianException> {

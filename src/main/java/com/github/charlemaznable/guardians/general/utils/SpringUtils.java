@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import java.util.function.Supplier;
 
-import static com.github.charlemaznable.spring.SpringContext.getBean;
+import static com.github.charlemaznable.core.spring.SpringContext.getBean;
 import static org.joor.Reflect.onClass;
 
 @UtilityClass

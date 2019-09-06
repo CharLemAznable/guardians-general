@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general.accessLimit;
 
-import com.github.charlemaznable.spring.MutableHttpServletFilter;
+import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.var;
 import org.junit.jupiter.api.AfterAll;
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import redis.embedded.RedisServer;
 
-import static com.github.charlemaznable.codec.Json.unJson;
+import static com.github.charlemaznable.core.codec.Json.unJson;
 import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

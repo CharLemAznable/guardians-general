@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.charlemaznable.codec.Json.json;
+import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Json;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Cookie;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Path;
-import static com.github.charlemaznable.net.Http.fetchParameterMap;
-import static com.github.charlemaznable.net.Http.responseJson;
+import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
+import static com.github.charlemaznable.core.net.Http.responseJson;
 
 @Controller
 @RequestMapping("/requestFields")

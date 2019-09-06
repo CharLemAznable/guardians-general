@@ -6,9 +6,9 @@ import com.github.charlemaznable.guardians.general.exception.SignatureGuardianEx
 import com.github.charlemaznable.guardians.general.utils.SpringUtils;
 import lombok.val;
 
-import static com.github.charlemaznable.lang.Condition.blankThen;
-import static com.github.charlemaznable.lang.Condition.checkNotBlank;
-import static com.github.charlemaznable.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Condition.blankThen;
+import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
+import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.google.common.base.Charsets.UTF_8;
 
 public abstract class SignatureAbstractGuardian implements PostGuardExceptionHandler<SignatureGuardianException> {
