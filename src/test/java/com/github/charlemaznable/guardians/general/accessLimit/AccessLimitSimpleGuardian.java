@@ -1,6 +1,5 @@
 package com.github.charlemaznable.guardians.general.accessLimit;
 
-import com.github.charlemaznable.core.spring.MutableHttpServletUtils;
 import com.github.charlemaznable.guardians.general.AccessLimitAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.AccessLimitGuardianException;
 import lombok.val;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
+import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
 public class AccessLimitSimpleGuardian extends AccessLimitAbstractGuardian {
@@ -21,7 +21,7 @@ public class AccessLimitSimpleGuardian extends AccessLimitAbstractGuardian {
     public void handleGuardianException(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AccessLimitGuardianException exception) {
-        MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
+        mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));
             contentMap.put("error", exception.getMessage());

@@ -2,13 +2,13 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
 import com.github.charlemaznable.guardians.general.exception.DecryptionGuardianException;
-import com.github.charlemaznable.guardians.general.utils.SpringUtils;
-import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.guardians.general.utils.SpringUtils.getOrCreateBean;
+import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 import static com.google.common.base.Charsets.UTF_8;
 
@@ -24,7 +24,7 @@ public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHa
         val bodyFormat = decryptionAnnotation.bodyFormat();
         val charsetName = blankThen(decryptionAnnotation.charsetName(), UTF_8::name);
         val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        val cipherText = checkNotBlank(extractor.extract(GuardianContext.request()),
+        val cipherText = checkNotBlank(extractor.extract(request()),
                 new DecryptionGuardianException("Missing Request Cipher Text: "
                         + (BodyRaw == extractorType ? "Request Body" : keyName)));
 
@@ -32,7 +32,7 @@ public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHa
         val codec = decryptionAnnotation.codec();
 
         val keySupplier = decryptionAnnotation.keySupplier();
-        val supplier = SpringUtils.getOrCreateBean(keySupplier);
+        val supplier = getOrCreateBean(keySupplier);
         val key = supplier.supplyDecryptionKey();
 
         String decryptedText;
@@ -44,7 +44,7 @@ public abstract class DecryptionAbstractGuardian implements PostGuardExceptionHa
 
         val postProcessors = decryptionAnnotation.postProcessors();
         for (val postProcessor : postProcessors) {
-            val processor = SpringUtils.getOrCreateBean(postProcessor);
+            val processor = getOrCreateBean(postProcessor);
             processor.processDecryptedText(decryptedText);
         }
         return true;

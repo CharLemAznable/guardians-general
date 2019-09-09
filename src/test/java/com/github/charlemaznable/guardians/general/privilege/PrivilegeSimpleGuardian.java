@@ -1,6 +1,5 @@
 package com.github.charlemaznable.guardians.general.privilege;
 
-import com.github.charlemaznable.core.spring.MutableHttpServletUtils;
 import com.github.charlemaznable.guardians.general.PrivilegeAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
 import lombok.val;
@@ -13,6 +12,7 @@ import java.util.List;
 import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
+import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
 public class PrivilegeSimpleGuardian extends PrivilegeAbstractGuardian {
@@ -30,7 +30,7 @@ public class PrivilegeSimpleGuardian extends PrivilegeAbstractGuardian {
     public void handleGuardianException(HttpServletRequest request,
                                         HttpServletResponse response,
                                         PrivilegeGuardianException exception) {
-        MutableHttpServletUtils.mutateResponse(response, mutableResponse -> {
+        mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));
             contentMap.put("error", exception.getMessage());

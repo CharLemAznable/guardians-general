@@ -1,8 +1,9 @@
 package com.github.charlemaznable.guardians.general.requestFields;
 
 import com.github.charlemaznable.guardians.general.RequestField.RequestFieldPostProcessor;
-import com.github.charlemaznable.guardians.spring.GuardianContext;
 import org.springframework.stereotype.Component;
+
+import static com.github.charlemaznable.guardians.spring.GuardianContext.set;
 
 @Component
 public class RequestFieldsParameterPostProcessor implements RequestFieldPostProcessor {
@@ -11,7 +12,7 @@ public class RequestFieldsParameterPostProcessor implements RequestFieldPostProc
 
     @Override
     public String processRequestField(String value) {
-        GuardianContext.set(REQUEST_FIELDS_PARAMETER_CONTEXT_KEY, value);
+        set(REQUEST_FIELDS_PARAMETER_CONTEXT_KEY, value);
         return value;
     }
 }

@@ -1,7 +1,8 @@
 package com.github.charlemaznable.guardians.general.requestFields;
 
 import com.github.charlemaznable.guardians.general.RequestField.RequestFieldPostProcessor;
-import com.github.charlemaznable.guardians.spring.GuardianContext;
+
+import static com.github.charlemaznable.guardians.spring.GuardianContext.set;
 
 public class RequestFieldsCookiePostProcessor implements RequestFieldPostProcessor {
 
@@ -9,7 +10,7 @@ public class RequestFieldsCookiePostProcessor implements RequestFieldPostProcess
 
     @Override
     public String processRequestField(String value) {
-        GuardianContext.set(REQUEST_FIELDS_COOKIE_CONTEXT_KEY, value);
+        set(REQUEST_FIELDS_COOKIE_CONTEXT_KEY, value);
         return value;
     }
 }

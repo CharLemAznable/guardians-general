@@ -212,13 +212,13 @@ public class SignatureSimpleTest {
     @SneakyThrows
     @Test
     public void testSHA1WithRSA() {
-        var response = mockMvc.perform(get("/signature/sha1withrsa")
+        val response = mockMvc.perform(get("/signature/sha1withrsa")
                 .param("content", "Content内容")
                 .param("signature", SHAXWithRSA.SHA1WithRSA.signBase64("content=Content内容", RSASignatureKeySupplier.privateKey)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        var responseContent = response.getContentAsString();
-        var responseMap = unJson(responseContent);
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
         assertEquals("Content内容", responseMap.get("content"));
         assertTrue(SHAXWithRSA.SHA1WithRSA.verifyBase64("content=Content内容",
                 toStr(responseMap.get("signature")), RSASignatureKeySupplier.publicKey));
@@ -227,13 +227,13 @@ public class SignatureSimpleTest {
     @SneakyThrows
     @Test
     public void testSHA256WithRSA() {
-        var response = mockMvc.perform(get("/signature/sha256withrsa")
+        val response = mockMvc.perform(get("/signature/sha256withrsa")
                 .param("content", "Content内容")
                 .param("signature", SHAXWithRSA.SHA256WithRSA.signHex("content=Content内容", RSASignatureKeySupplier.privateKey)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        var responseContent = response.getContentAsString();
-        var responseMap = unJson(responseContent);
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
         assertEquals("Content内容", responseMap.get("content"));
         assertTrue(SHAXWithRSA.SHA256WithRSA.verifyHex("content=Content内容",
                 toStr(responseMap.get("signature")), RSASignatureKeySupplier.publicKey));

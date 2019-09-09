@@ -1,12 +1,10 @@
 package com.github.charlemaznable.guardians.general.decryption;
 
-import com.github.charlemaznable.core.spring.MutableHttpServletUtils;
 import com.github.charlemaznable.guardians.PostGuardian;
 import com.github.charlemaznable.guardians.PreGuardian;
 import com.github.charlemaznable.guardians.general.Decryption;
 import com.github.charlemaznable.guardians.general.Decryption.DecryptedTextPostProcessor;
 import com.github.charlemaznable.guardians.general.Decryption.DecryptionKeySupplier;
-import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,10 @@ import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
+import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestBody;
+import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestParameterMap;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
+import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
 
@@ -59,7 +60,7 @@ public class DecryptionSimpleController {
         @Override
         public void processDecryptedText(String decryptedText) {
             val decryptedMap = Form.parse(decryptedText, "UTF-8");
-            MutableHttpServletUtils.setRequestParameterMap(GuardianContext.request(), decryptedMap);
+            setRequestParameterMap(request(), decryptedMap);
         }
     }
 
@@ -68,7 +69,7 @@ public class DecryptionSimpleController {
 
         @Override
         public void processDecryptedText(String decryptedText) {
-            MutableHttpServletUtils.setRequestBody(GuardianContext.request(), decryptedText);
+            setRequestBody(request(), decryptedText);
         }
     }
 

@@ -2,7 +2,6 @@ package com.github.charlemaznable.guardians.general.privilege;
 
 import com.github.charlemaznable.core.lang.Mapp;
 import com.github.charlemaznable.guardians.general.Privilege.AccessPrivilegesSupplier;
-import com.github.charlemaznable.guardians.spring.GuardianContext;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
+import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 
 @Component
 public class PrivilegesSimpleSupplier implements AccessPrivilegesSupplier {
@@ -22,7 +22,7 @@ public class PrivilegesSimpleSupplier implements AccessPrivilegesSupplier {
 
     @Override
     public String[] supplyAccessPrivileges() {
-        val accessId = GuardianContext.request().getParameter("accessId");
+        val accessId = request().getParameter("accessId");
         val accessPrivileges = newArrayList(mockPrivilegesMap.get(accessId));
         return accessPrivileges.toArray(new String[0]);
     }
