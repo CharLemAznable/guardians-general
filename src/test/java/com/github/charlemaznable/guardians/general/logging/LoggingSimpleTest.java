@@ -64,4 +64,30 @@ public class LoggingSimpleTest {
             assertTrue(responseMap.isEmpty());
         });
     }
+
+    @SneakyThrows
+    @Test
+    public void testAsyncSimple() {
+        val response = mockMvc.perform(get("/logging/async/simple"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
+        assertTrue(responseMap.isEmpty());
+        Thread.sleep(1000);
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAsyncException() {
+        assertDoesNotThrow(() -> {
+            val response = mockMvc.perform(get("/logging/async/exception"))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            val responseContent = response.getContentAsString();
+            val responseMap = unJson(responseContent);
+            assertTrue(responseMap.isEmpty());
+        });
+        Thread.sleep(1000);
+    }
 }

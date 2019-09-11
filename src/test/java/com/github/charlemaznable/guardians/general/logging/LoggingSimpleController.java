@@ -29,4 +29,18 @@ public class LoggingSimpleController {
     public void exception(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
+
+    @PreGuardian(LoggingSimpleAsyncGuardian.class)
+    @PostGuardian(LoggingSimpleAsyncGuardian.class)
+    @RequestMapping("/async/simple")
+    public void asyncSimple(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @PreGuardian(LoggingSimpleAsyncExceptionGuardian.class)
+    @PostGuardian(LoggingSimpleAsyncExceptionGuardian.class)
+    @RequestMapping("/async/exception")
+    public void asyncException(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
 }
