@@ -5,6 +5,8 @@ import com.github.charlemaznable.guardians.general.exception.RequestFieldGuardia
 import lombok.val;
 import lombok.var;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
@@ -14,7 +16,7 @@ import static com.github.charlemaznable.guardians.general.utils.SpringUtils.getO
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static com.google.common.base.Charsets.UTF_8;
 
-public abstract class RequestFieldsAbstractGuardian implements PostGuardExceptionHandler<RequestFieldGuardianException> {
+public abstract class RequestFieldsAbstractGuardian {
 
     @Guard(true)
     public boolean preGuard(List<RequestField> requestFieldAnnotations) {
@@ -42,4 +44,16 @@ public abstract class RequestFieldsAbstractGuardian implements PostGuardExceptio
     }
 
     public abstract boolean checkRequestFields(List<RequestField> requestFieldAnnotations, List<String> values);
+
+    @Guard(true)
+    public void postGuard(HttpServletRequest request,
+                          HttpServletResponse response,
+                          RequestFieldGuardianException exception) {
+        if (null == exception) return;
+        handleGuardianException(request, response, exception);
+    }
+
+    public abstract void handleGuardianException(HttpServletRequest request,
+                                                 HttpServletResponse response,
+                                                 RequestFieldGuardianException exception);
 }
