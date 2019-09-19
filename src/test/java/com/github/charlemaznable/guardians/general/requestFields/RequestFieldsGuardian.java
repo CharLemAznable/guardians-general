@@ -1,6 +1,7 @@
 package com.github.charlemaznable.guardians.general.requestFields;
 
 import com.github.charlemaznable.guardians.Guard;
+import com.github.charlemaznable.guardians.general.RequestField;
 import com.github.charlemaznable.guardians.general.RequestFieldsAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.RequestFieldGuardianException;
 import lombok.val;
@@ -26,7 +27,7 @@ import static com.github.charlemaznable.guardians.spring.GuardianContext.get;
 public class RequestFieldsGuardian extends RequestFieldsAbstractGuardian {
 
     @Override
-    public boolean checkRequestFields(List<String> values) {
+    public boolean checkRequestFields(List<RequestField> requestFieldAnnotations, List<String> values) {
         checkNotBlank(values.get(0), new RequestFieldGuardianException("Missing Parameter Request Field"));
         checkNotBlank(values.get(1), new RequestFieldGuardianException("Missing Path Request Field"));
         checkNotBlank(values.get(2), new RequestFieldGuardianException("Missing Header Request Field"));

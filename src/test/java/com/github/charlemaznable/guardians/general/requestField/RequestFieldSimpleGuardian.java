@@ -1,6 +1,7 @@
 package com.github.charlemaznable.guardians.general.requestField;
 
 import com.github.charlemaznable.guardians.Guard;
+import com.github.charlemaznable.guardians.general.RequestField;
 import com.github.charlemaznable.guardians.general.RequestFieldAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.RequestFieldGuardianException;
 import lombok.val;
@@ -21,7 +22,7 @@ import static com.github.charlemaznable.guardians.spring.GuardianContext.get;
 public class RequestFieldSimpleGuardian extends RequestFieldAbstractGuardian {
 
     @Override
-    public boolean checkRequestField(String accessId) {
+    public boolean checkRequestField(RequestField requestFieldAnnotation, String accessId) {
         checkNotBlank(accessId, new RequestFieldGuardianException("Missing Request AccessId"));
         return true;
     }

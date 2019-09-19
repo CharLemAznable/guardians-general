@@ -36,6 +36,6 @@ public @interface RequestField {
 
     interface RequestFieldPostProcessor {
 
-        String processRequestField(String value);
+        String processRequestField(RequestField requestField, String value);
     }
 }

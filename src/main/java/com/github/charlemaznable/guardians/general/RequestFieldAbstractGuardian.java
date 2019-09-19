@@ -28,11 +28,11 @@ public abstract class RequestFieldAbstractGuardian implements PostGuardException
         val postProcessors = requestFieldAnnotation.postProcessors();
         for (val postProcessor : postProcessors) {
             val processor = getOrCreateBean(postProcessor);
-            value = processor.processRequestField(value);
+            value = processor.processRequestField(requestFieldAnnotation, value);
         }
 
-        return checkRequestField(value);
+        return checkRequestField(requestFieldAnnotation, value);
     }
 
-    public abstract boolean checkRequestField(String value);
+    public abstract boolean checkRequestField(RequestField requestFieldAnnotation, String value);
 }
