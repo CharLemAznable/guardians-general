@@ -9,7 +9,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockCookie;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.github.charlemaznable.core.codec.Json.unJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -60,7 +60,7 @@ public class RequestFieldsTest {
                 .param("appId", "paramAppId")
                 .header("accessId", "headerAccessId")
                 .cookie(new MockCookie("accessId", "cookieAccessId"))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON)
                 .content("{\"accessId\":\"bodyAccessId\"}"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
