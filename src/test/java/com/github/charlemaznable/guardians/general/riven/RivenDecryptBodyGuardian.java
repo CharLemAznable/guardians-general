@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
 @Component
-public class RivenDecryptBodyGuardian extends DecryptionAbstractGuardian {
+public class RivenDecryptBodyGuardian implements DecryptionAbstractGuardian {
 
     @Override
     public void handleGuardianException(HttpServletRequest request, HttpServletResponse response,

@@ -11,8 +11,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Parameter;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -24,8 +24,8 @@ public @interface RequestFieldSimple {
     String keyName() default "";
 
     @AliasFor(attribute = "extractorType", annotation = RequestField.class)
-    RequestValueExtractorType extractorType() default Parameter;
+    RequestValueExtractorType extractorType() default PARAMETER;
 
     @AliasFor(attribute = "bodyFormat", annotation = RequestField.class)
-    RequestBodyFormat bodyFormat() default Form;
+    RequestBodyFormat bodyFormat() default FORM;
 }

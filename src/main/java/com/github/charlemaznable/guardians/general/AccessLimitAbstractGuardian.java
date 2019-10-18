@@ -7,17 +7,17 @@ import lombok.val;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.charlemaznable.guardians.general.utils.SpringUtils.getOrCreateBean;
+import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 
-public abstract class AccessLimitAbstractGuardian {
+public interface AccessLimitAbstractGuardian {
 
     @Guard(true)
-    public boolean preGuard(AccessLimit accessLimitAnnotation) {
-        if (null == accessLimitAnnotation) return true;
+    default boolean preGuard(AccessLimit accessLimitAnnotation) {
+        if (null == accessLimitAnnotation) return false;
 
         val limiterType = accessLimitAnnotation.limiter();
-        val limiter = getOrCreateBean(limiterType);
+        val limiter = getBeanOrCreate(limiterType);
         if (limiter.unlimitRequest(request())) return true;
 
         boolean acquired;
@@ -26,19 +26,19 @@ public abstract class AccessLimitAbstractGuardian {
         } catch (Exception e) {
             throw new AccessLimitGuardianException(e.getMessage(), e);
         }
-        if (!acquired) throw new AccessLimitGuardianException("Limited Access");
-        return true;
+        if (acquired) return true;
+        throw new AccessLimitGuardianException("Limited Access");
     }
 
     @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          AccessLimitGuardianException exception) {
+    default void postGuard(HttpServletRequest request,
+                           HttpServletResponse response,
+                           AccessLimitGuardianException exception) {
         if (null == exception) return;
         handleGuardianException(request, response, exception);
     }
 
-    public abstract void handleGuardianException(HttpServletRequest request,
-                                                 HttpServletResponse response,
-                                                 AccessLimitGuardianException exception);
+    void handleGuardianException(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 AccessLimitGuardianException exception);
 }

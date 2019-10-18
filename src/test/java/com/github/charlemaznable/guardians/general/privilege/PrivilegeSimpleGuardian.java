@@ -15,7 +15,7 @@ import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
-public class PrivilegeSimpleGuardian extends PrivilegeAbstractGuardian {
+public class PrivilegeSimpleGuardian implements PrivilegeAbstractGuardian {
 
     @Override
     public boolean checkPrivilege(List<String> privileges,

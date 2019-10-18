@@ -7,7 +7,7 @@ import static com.github.charlemaznable.core.codec.Hex.unHex;
 
 public enum ByteCodec {
 
-    Base64 {
+    BASE64 {
         @Override
         public String encode(byte[] bytes) {
             return base64(bytes);
@@ -18,7 +18,7 @@ public enum ByteCodec {
             return unBase64(value);
         }
     },
-    Hex {
+    HEX {
         @Override
         public String encode(byte[] bytes) {
             return hex(bytes);
@@ -29,7 +29,7 @@ public enum ByteCodec {
             return unHex(value);
         }
     },
-    HexUpperCase {
+    HEX_UPPER_CASE {
         @Override
         public String encode(byte[] bytes) {
             return hex(bytes).toUpperCase();

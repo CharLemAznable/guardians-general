@@ -14,7 +14,7 @@ import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
-public class SampleRateAccessLimiterGuardian extends AccessLimitAbstractGuardian {
+public class SampleRateAccessLimiterGuardian implements AccessLimitAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override

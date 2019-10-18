@@ -16,12 +16,12 @@ import static com.github.charlemaznable.core.codec.Json.jsonOf;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Json;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Cookie;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Path;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.JSON;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.COOKIE;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.HEADER;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PATH;
 
 @Controller
 @RequestMapping("/requestField")
@@ -40,31 +40,31 @@ public class RequestFieldSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @RequestFieldSimple(keyName = "accessId", extractorType = Path)
+    @RequestFieldSimple(keyName = "accessId", extractorType = PATH)
     @RequestMapping("/path/{accessId}")
     public void path(@PathVariable String accessId, HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @RequestFieldSimple(keyName = "accessId", extractorType = Header)
+    @RequestFieldSimple(keyName = "accessId", extractorType = HEADER)
     @RequestMapping("/header")
     public void header(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @RequestFieldSimple(keyName = "accessId", extractorType = Cookie)
+    @RequestFieldSimple(keyName = "accessId", extractorType = COOKIE)
     @RequestMapping("/cookie")
     public void cookie(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @RequestFieldSimple(keyName = "accessId", extractorType = Body, bodyFormat = Json)
+    @RequestFieldSimple(keyName = "accessId", extractorType = BODY, bodyFormat = JSON)
     @RequestMapping("/body")
     public void body(@RequestBody SimpleBody requestBody, HttpServletResponse response) {
         responseJson(response, json(requestBody));
     }
 
-    @RequestFieldSimple(extractorType = BodyRaw)
+    @RequestFieldSimple(extractorType = BODY_RAW)
     @RequestMapping("/bodyRaw")
     public void bodyRaw(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, jsonOf("accessId", dealRequestBodyStream(request, "UTF-8")));

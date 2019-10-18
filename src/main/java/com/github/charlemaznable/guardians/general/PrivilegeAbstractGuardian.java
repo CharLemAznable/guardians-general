@@ -10,12 +10,12 @@ import java.util.List;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
-import static com.github.charlemaznable.guardians.general.utils.SpringUtils.getOrCreateBean;
+import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 
-public abstract class PrivilegeAbstractGuardian {
+public interface PrivilegeAbstractGuardian {
 
     @Guard(true)
-    public boolean preGuard(Privilege privilegeAnnotation) {
+    default boolean preGuard(Privilege privilegeAnnotation) {
         checkNotNull(privilegeAnnotation, new PrivilegeGuardianException(
                 "Missing Annotation: " + Privilege.class.getName()));
 
@@ -24,24 +24,24 @@ public abstract class PrivilegeAbstractGuardian {
         List<String> accessPrivileges = newArrayList();
         val privilegesSuppliers = privilegeAnnotation.privilegesSuppliers();
         for (val privilegesSupplier : privilegesSuppliers) {
-            val supplier = getOrCreateBean(privilegesSupplier);
+            val supplier = getBeanOrCreate(privilegesSupplier);
             accessPrivileges.addAll(newArrayList(supplier.supplyAccessPrivileges()));
         }
         return checkPrivilege(privileges, accessPrivileges);
     }
 
-    public abstract boolean checkPrivilege(List<String> privileges,
-                                           List<String> accessPrivileges);
+    boolean checkPrivilege(List<String> privileges,
+                           List<String> accessPrivileges);
 
     @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          PrivilegeGuardianException exception) {
+    default void postGuard(HttpServletRequest request,
+                           HttpServletResponse response,
+                           PrivilegeGuardianException exception) {
         if (null == exception) return;
         handleGuardianException(request, response, exception);
     }
 
-    public abstract void handleGuardianException(HttpServletRequest request,
-                                                 HttpServletResponse response,
-                                                 PrivilegeGuardianException exception);
+    void handleGuardianException(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 PrivilegeGuardianException exception);
 }

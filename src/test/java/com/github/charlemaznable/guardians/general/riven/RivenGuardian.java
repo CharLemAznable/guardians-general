@@ -17,24 +17,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
-import static com.github.charlemaznable.guardians.general.utils.Hasher.SHA256WithRSA;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
+import static com.github.charlemaznable.guardians.general.utils.Hasher.SHA256_WITH_RSA;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.HEADER;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @PreGuardian(RivenAppIdGuardian.class)
 @PostGuardian(RivenAppIdGuardian.class)
-@RequestField(keyName = "App-Id", extractorType = Header)
+@RequestField(keyName = "App-Id", extractorType = HEADER)
 @PreGuardian(RivenDecryptBodyGuardian.class)
 @PostGuardian(RivenDecryptBodyGuardian.class)
-@Decryption(extractorType = BodyRaw, cipher = RSA,
+@Decryption(extractorType = BODY_RAW, cipher = RSA,
         keySupplier = RivenDecryptKeySupplier.class,
         postProcessors = RivenDecryptedProcessor.class)
 @PreGuardian(RivenSignGuardian.class)
 @PostGuardian(RivenSignGuardian.class)
-@Signature(keyName = "App-Sign", extractorType = Header, hasher = SHA256WithRSA,
+@Signature(keyName = "App-Sign", extractorType = HEADER, hasher = SHA256_WITH_RSA,
         keySupplier = RivenSignKeySupplier.class,
         plainTextBuilder = RivenSignPlainTextBuilder.class)
 public @interface RivenGuardian {

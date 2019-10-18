@@ -1,7 +1,7 @@
 package com.github.charlemaznable.guardians.general.accessLimit;
 
 import com.github.charlemaznable.core.lang.Mapp;
-import com.github.charlemaznable.guardians.general.accessLimiter.AbstractRedisAccessLimiter;
+import com.github.charlemaznable.guardians.general.accesslimiter.AbstractRedisAccessLimiter;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;

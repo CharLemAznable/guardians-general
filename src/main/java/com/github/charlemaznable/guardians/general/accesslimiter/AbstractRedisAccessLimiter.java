@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.general.accessLimiter;
+package com.github.charlemaznable.guardians.general.accesslimiter;
 
 import com.github.charlemaznable.guardians.general.AccessLimit.AccessLimiter;
 import lombok.val;

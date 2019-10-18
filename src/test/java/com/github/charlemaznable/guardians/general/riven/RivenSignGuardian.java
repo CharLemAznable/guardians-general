@@ -3,6 +3,7 @@ package com.github.charlemaznable.guardians.general.riven;
 import com.github.charlemaznable.guardians.general.Signature.PlainTextBuilder;
 import com.github.charlemaznable.guardians.general.SignatureAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.SignatureGuardianException;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
 @Component
-public class RivenSignGuardian extends SignatureAbstractGuardian {
+public class RivenSignGuardian implements SignatureAbstractGuardian {
 
     @Override
     public void handleGuardianException(HttpServletRequest request, HttpServletResponse response,
@@ -28,7 +29,7 @@ public class RivenSignGuardian extends SignatureAbstractGuardian {
     public static class RivenSignPlainTextBuilder implements PlainTextBuilder {
 
         @Override
-        public String buildPlainText(HttpServletRequest request) {
+        public String buildPlainText(HttpServletRequest request, RequestBodyFormat bodyFormat, String charsetName) {
             return checkNotNull(mutableRequest(request)).getRequestBody();
         }
     }

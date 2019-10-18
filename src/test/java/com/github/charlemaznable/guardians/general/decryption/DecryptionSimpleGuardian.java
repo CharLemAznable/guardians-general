@@ -14,7 +14,7 @@ import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
-public class DecryptionSimpleGuardian extends DecryptionAbstractGuardian {
+public class DecryptionSimpleGuardian implements DecryptionAbstractGuardian {
 
     @SuppressWarnings("Duplicates")
     @Override

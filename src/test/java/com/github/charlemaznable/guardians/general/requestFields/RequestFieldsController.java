@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Json;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Cookie;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Header;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Path;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.JSON;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.COOKIE;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.HEADER;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PATH;
 
 @Controller
 @RequestMapping("/requestFields")
@@ -33,10 +33,10 @@ public class RequestFieldsController {
     }
 
     @RequestField(keyName = "appId", postProcessors = RequestFieldsParameterPostProcessor.class)
-    @RequestField(keyName = "accessId", extractorType = Path, postProcessors = RequestFieldsPathPostProcessor.class)
-    @RequestField(keyName = "accessId", extractorType = Header, postProcessors = RequestFieldsHeaderPostProcessor.class)
-    @RequestField(keyName = "accessId", extractorType = Cookie, postProcessors = RequestFieldsCookiePostProcessor.class)
-    @RequestField(keyName = "accessId", extractorType = Body, bodyFormat = Json, postProcessors = RequestFieldsBodyPostProcessor.class)
+    @RequestField(keyName = "accessId", extractorType = PATH, postProcessors = RequestFieldsPathPostProcessor.class)
+    @RequestField(keyName = "accessId", extractorType = HEADER, postProcessors = RequestFieldsHeaderPostProcessor.class)
+    @RequestField(keyName = "accessId", extractorType = COOKIE, postProcessors = RequestFieldsCookiePostProcessor.class)
+    @RequestField(keyName = "accessId", extractorType = BODY, bodyFormat = JSON, postProcessors = RequestFieldsBodyPostProcessor.class)
     @RequestMapping("/composite/{accessId}")
     public void param(HttpServletRequest request,
                       @PathVariable String accessId,

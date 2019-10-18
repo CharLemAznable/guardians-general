@@ -12,10 +12,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Base64;
+import static com.github.charlemaznable.guardians.general.utils.ByteCodec.BASE64;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.AES_128;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Parameter;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -28,15 +28,15 @@ public @interface Decryption {
     @AliasFor("value")
     String keyName() default "";
 
-    RequestValueExtractorType extractorType() default Parameter;
+    RequestValueExtractorType extractorType() default PARAMETER;
 
-    RequestBodyFormat bodyFormat() default Form;
+    RequestBodyFormat bodyFormat() default FORM;
 
     String charsetName() default "UTF-8";
 
     Cipher cipher() default AES_128;
 
-    ByteCodec codec() default Base64;
+    ByteCodec codec() default BASE64;
 
     Class<? extends DecryptionKeySupplier> keySupplier() default DefaultDecryptionKeySupplier.class;
 
@@ -54,11 +54,11 @@ public @interface Decryption {
 
     class DefaultDecryptionKeySupplier implements DecryptionKeySupplier {
 
-        public static final String DefaultDecryptKey = "AWESOME MIX VOL1"; // Guardians of the Galaxy
+        public static final String DEFAULT_DECRYPT_KEY = "AWESOME MIX VOL1"; // Guardians of the Galaxy
 
         @Override
         public String supplyDecryptionKey() {
-            return DefaultDecryptKey;
+            return DEFAULT_DECRYPT_KEY;
         }
     }
 }

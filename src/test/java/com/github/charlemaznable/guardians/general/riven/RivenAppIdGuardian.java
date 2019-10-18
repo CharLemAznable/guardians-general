@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
 @Component
-public class RivenAppIdGuardian extends RequestFieldAbstractGuardian {
+public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
 
     private static final String RIVEN_APP_ID_KEY = "RivenAppId";
     private static final String RIVEN_APP_PRV_KEY = "RivenAppPrvKey";

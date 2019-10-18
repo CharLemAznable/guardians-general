@@ -15,7 +15,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Duration;
+
 import static com.github.charlemaznable.core.codec.Json.unJson;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -74,7 +77,8 @@ public class LoggingSimpleTest {
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
         assertTrue(responseMap.isEmpty());
-        Thread.sleep(1000);
+
+        await().pollDelay(Duration.ofMillis(1000)).until(() -> true);
     }
 
     @SneakyThrows
@@ -88,6 +92,7 @@ public class LoggingSimpleTest {
             val responseMap = unJson(responseContent);
             assertTrue(responseMap.isEmpty());
         });
-        Thread.sleep(1000);
+
+        await().pollDelay(Duration.ofMillis(1000)).until(() -> true);
     }
 }

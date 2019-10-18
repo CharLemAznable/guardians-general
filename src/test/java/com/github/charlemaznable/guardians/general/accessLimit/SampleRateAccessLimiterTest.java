@@ -2,6 +2,7 @@ package com.github.charlemaznable.guardians.general.accessLimit;
 
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
+import lombok.val;
 import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Duration;
+
 import static com.github.charlemaznable.core.codec.Json.unJson;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,59 +48,63 @@ public class SampleRateAccessLimiterTest {
     @SneakyThrows
     @Test
     public void testSampleRate() {
-        var response = mockMvc.perform(get("/sampleRate/index"))
+        val response = mockMvc.perform(get("/sampleRate/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        var responseContent = response.getContentAsString();
-        var responseMap = unJson(responseContent);
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        Thread.sleep(1000);
+        await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
+            var response2 = mockMvc.perform(get("/sampleRate/index"))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            var responseContent2 = response2.getContentAsString();
+            var responseMap2 = unJson(responseContent2);
+            assertEquals("SUCCESS", responseMap2.get("result"));
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
+            response2 = mockMvc.perform(get("/sampleRate/index"))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            responseContent2 = response2.getContentAsString();
+            responseMap2 = unJson(responseContent2);
+            assertEquals("SUCCESS", responseMap2.get("result"));
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("Access has been Denied", responseMap.get("error"));
+            response2 = mockMvc.perform(get("/sampleRate/index"))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            responseContent2 = response2.getContentAsString();
+            responseMap2 = unJson(responseContent2);
+            assertEquals("Access has been Denied", responseMap2.get("error"));
 
-        Thread.sleep(1000);
+            await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
+                var response3 = mockMvc.perform(get("/sampleRate/index"))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse();
+                var responseContent3 = response3.getContentAsString();
+                var responseMap3 = unJson(responseContent3);
+                assertEquals("SUCCESS", responseMap3.get("result"));
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
+                response3 = mockMvc.perform(get("/sampleRate/index"))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse();
+                responseContent3 = response3.getContentAsString();
+                responseMap3 = unJson(responseContent3);
+                assertEquals("SUCCESS", responseMap3.get("result"));
 
-        response = mockMvc.perform(get("/sampleRate/index"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("Access has been Denied", responseMap.get("error"));
+                response3 = mockMvc.perform(get("/sampleRate/index"))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse();
+                responseContent3 = response3.getContentAsString();
+                responseMap3 = unJson(responseContent3);
+                assertEquals("Access has been Denied", responseMap3.get("error"));
 
-        Thread.sleep(1000);
+                return true;
+            });
+
+            return true;
+        });
     }
 }

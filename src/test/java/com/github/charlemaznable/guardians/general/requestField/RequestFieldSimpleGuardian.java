@@ -19,7 +19,7 @@ import static com.github.charlemaznable.guardians.general.requestField.RequestFi
 import static com.github.charlemaznable.guardians.spring.GuardianContext.get;
 
 @Component
-public class RequestFieldSimpleGuardian extends RequestFieldAbstractGuardian {
+public class RequestFieldSimpleGuardian implements RequestFieldAbstractGuardian {
 
     @Override
     public boolean checkRequestField(RequestField requestFieldAnnotation, String accessId) {

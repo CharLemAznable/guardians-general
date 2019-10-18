@@ -62,16 +62,16 @@ public enum Hasher {
             return codec.encode(DigestHMAC.SHA512.digest(plainText, key)).equals(signText);
         }
     },
-    SHA1WithRSA {
+    SHA1_WITH_RSA {
         @Override
         public boolean verify(String plainText, String signText, ByteCodec codec, String key) {
-            return SHAXWithRSA.SHA1WithRSA.verify(plainText, codec.decode(signText), key);
+            return SHAXWithRSA.SHA1_WITH_RSA.verify(plainText, codec.decode(signText), key);
         }
     },
-    SHA256WithRSA {
+    SHA256_WITH_RSA {
         @Override
         public boolean verify(String plainText, String signText, ByteCodec codec, String key) {
-            return SHAXWithRSA.SHA256WithRSA.verify(plainText, codec.decode(signText), key);
+            return SHAXWithRSA.SHA256_WITH_RSA.verify(plainText, codec.decode(signText), key);
         }
     };
 

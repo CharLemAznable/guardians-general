@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general.accessLimit;
 
-import com.github.charlemaznable.guardians.general.accessLimiter.AbstractRateAccessLimiter;
+import com.github.charlemaznable.guardians.general.accesslimiter.AbstractRateAccessLimiter;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class SampleRateAccessLimiter extends AbstractRateAccessLimiter {
 
     @Getter
     @EqualsAndHashCode(callSuper = false)
-    public static class SampleRateLimiterCacheKey extends RateLimiterCacheKey {
+    public static class SampleRateLimiterCacheKey implements RateLimiterCacheKey {
 
         private String requestURI;
         private String appId;

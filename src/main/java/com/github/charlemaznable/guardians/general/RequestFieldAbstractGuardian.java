@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
-import static com.github.charlemaznable.guardians.general.utils.SpringUtils.getOrCreateBean;
+import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.google.common.base.Charsets.UTF_8;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-public abstract class RequestFieldAbstractGuardian {
+public interface RequestFieldAbstractGuardian {
 
     @Guard(true)
-    public boolean preGuard(RequestField requestFieldAnnotation) {
+    default boolean preGuard(RequestField requestFieldAnnotation) {
         checkNotNull(requestFieldAnnotation, new RequestFieldGuardianException(
                 "Missing Annotation: " + RequestField.class.getName()));
 
@@ -30,24 +30,24 @@ public abstract class RequestFieldAbstractGuardian {
 
         val postProcessors = requestFieldAnnotation.postProcessors();
         for (val postProcessor : postProcessors) {
-            val processor = getOrCreateBean(postProcessor);
+            val processor = getBeanOrCreate(postProcessor);
             value = processor.processRequestField(requestFieldAnnotation, value);
         }
 
         return checkRequestField(requestFieldAnnotation, value);
     }
 
-    public abstract boolean checkRequestField(RequestField requestFieldAnnotation, String value);
+    boolean checkRequestField(RequestField requestFieldAnnotation, String value);
 
     @Guard(true)
-    public void postGuard(HttpServletRequest request,
-                          HttpServletResponse response,
-                          RequestFieldGuardianException exception) {
+    default void postGuard(HttpServletRequest request,
+                           HttpServletResponse response,
+                           RequestFieldGuardianException exception) {
         if (null == exception) return;
         handleGuardianException(request, response, exception);
     }
 
-    public abstract void handleGuardianException(HttpServletRequest request,
-                                                 HttpServletResponse response,
-                                                 RequestFieldGuardianException exception);
+    void handleGuardianException(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 RequestFieldGuardianException exception);
 }

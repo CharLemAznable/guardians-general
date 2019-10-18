@@ -22,8 +22,8 @@ import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setR
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestParameterMap;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BodyRaw;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 
 @Controller
 @RequestMapping("/decryption")
@@ -42,16 +42,16 @@ public class DecryptionSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Decryption(extractorType = BodyRaw, postProcessors = DefaultPostProcessConsumer.class)
+    @Decryption(extractorType = BODY_RAW, postProcessors = DefaultPostProcessConsumer.class)
     @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
     public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
-        responseJson(response, json(Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+        responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
     }
 
-    @Decryption(extractorType = BodyRaw, cipher = RSA, keySupplier = RSADecryptKeySupplier.class, postProcessors = DefaultPostProcessConsumer.class)
+    @Decryption(extractorType = BODY_RAW, cipher = RSA, keySupplier = RSADecryptKeySupplier.class, postProcessors = DefaultPostProcessConsumer.class)
     @RequestMapping(value = "/rsa", method = RequestMethod.POST)
     public void rsa(HttpServletRequest request, HttpServletResponse response) {
-        responseJson(response, json(Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+        responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
     }
 
     @Component
@@ -59,7 +59,7 @@ public class DecryptionSimpleController {
 
         @Override
         public void processDecryptedText(String decryptedText) {
-            val decryptedMap = Form.parse(decryptedText, "UTF-8");
+            val decryptedMap = FORM.parse(decryptedText, "UTF-8");
             setRequestParameterMap(request(), decryptedMap);
         }
     }

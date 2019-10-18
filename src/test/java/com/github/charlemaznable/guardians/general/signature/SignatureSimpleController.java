@@ -18,9 +18,9 @@ import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
-import static com.github.charlemaznable.guardians.general.utils.ByteCodec.Hex;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.Form;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.Body;
+import static com.github.charlemaznable.guardians.general.utils.ByteCodec.HEX;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
 
 @SuppressWarnings("deprecation")
 @Controller
@@ -34,16 +34,16 @@ public class SignatureSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(codec = Hex)
+    @Signature(codec = HEX)
     @RequestMapping(value = "/defaultGet", method = RequestMethod.GET)
     public void defaultGet(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(extractorType = Body)
+    @Signature(extractorType = BODY)
     @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
     public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
-        responseJson(response, json(Form.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+        responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
     }
 
     @Signature(hasher = Hasher.MD5)
@@ -82,7 +82,7 @@ public class SignatureSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(hasher = Hasher.HMAC_SHA256, codec = ByteCodec.HexUpperCase)
+    @Signature(hasher = Hasher.HMAC_SHA256, codec = ByteCodec.HEX_UPPER_CASE)
     @RequestMapping("/hmacsha256")
     public void hmacsha256(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
@@ -94,13 +94,13 @@ public class SignatureSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(hasher = Hasher.SHA1WithRSA, keySupplier = RSASignatureKeySupplier.class)
+    @Signature(hasher = Hasher.SHA1_WITH_RSA, keySupplier = RSASignatureKeySupplier.class)
     @RequestMapping("/sha1withrsa")
     public void sha1withrsa(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Signature(hasher = Hasher.SHA256WithRSA, codec = Hex, keySupplier = RSASignatureKeySupplier.class)
+    @Signature(hasher = Hasher.SHA256_WITH_RSA, codec = HEX, keySupplier = RSASignatureKeySupplier.class)
     @RequestMapping("/sha256withrsa")
     public void sha256withrsa(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.github.charlemaznable.core.codec.Json.unJson;
+import static com.github.charlemaznable.core.lang.Str.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -48,9 +49,9 @@ public class AccessLimitSimpleTest {
         val response = mockMvc.perform(get("/accessLimit/simple"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
+        System.out.println(response.getStatus());
         val responseContent = response.getContentAsString();
-        val responseMap = unJson(responseContent);
-        assertTrue(responseMap.isEmpty());
+        assertTrue(isEmpty(responseContent));
     }
 
     @SneakyThrows

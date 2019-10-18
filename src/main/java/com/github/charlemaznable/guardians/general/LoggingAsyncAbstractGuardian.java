@@ -16,21 +16,21 @@ public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecuto
 
     @Guard(true)
     public boolean preGuard() {
-        post(new PreGuardEvent());
+        post(new PreGuardEvent() {});
         return true;
     }
 
     @Guard(true)
     public void postGuard() {
-        post(new PostGuardEvent());
+        post(new PostGuardEvent() {});
     }
 
     @Subscribe
     public void preGuardSubscriber(PreGuardEvent event) {
         try {
             loggingPreRequest(request(), response());
-        } catch (Throwable throwable) {
-            log.error("catch & ignore exception: ", throwable);
+        } catch (Exception e) {
+            log.error("catch & ignore exception: ", e);
         }
     }
 
@@ -38,8 +38,8 @@ public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecuto
     public void postGuardSubscriber(PostGuardEvent event) {
         try {
             loggingPostResponse(request(), response());
-        } catch (Throwable throwable) {
-            log.error("catch & ignore exception: ", throwable);
+        } catch (Exception e) {
+            log.error("catch & ignore exception: ", e);
         }
     }
 
@@ -49,7 +49,7 @@ public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecuto
     public abstract void loggingPostResponse(HttpServletRequest request,
                                              HttpServletResponse response);
 
-    static class PreGuardEvent {}
+    interface PreGuardEvent {}
 
-    static class PostGuardEvent {}
+    interface PostGuardEvent {}
 }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.github.charlemaznable</groupId>
         <artifactId>complex-dependencies</artifactId>
-        <version>0.3.2</version>
+        <version>0.3.3</version>
     </parent>
 
     <artifactId>guardians-general</artifactId>
@@ -25,7 +25,7 @@
     </scm>
 
     <properties>
-        <guardians-core.version>0.4.2</guardians-core.version>
+        <guardians-core.version>0.4.3</guardians-core.version>
         <embedded-redis.version>0.6</embedded-redis.version>
     </properties>
 
