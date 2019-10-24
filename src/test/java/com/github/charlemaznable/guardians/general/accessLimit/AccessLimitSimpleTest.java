@@ -49,7 +49,6 @@ public class AccessLimitSimpleTest {
         val response = mockMvc.perform(get("/accessLimit/simple"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        System.out.println(response.getStatus());
         val responseContent = response.getContentAsString();
         assertTrue(isEmpty(responseContent));
     }

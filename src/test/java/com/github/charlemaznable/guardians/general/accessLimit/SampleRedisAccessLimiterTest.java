@@ -154,7 +154,6 @@ public class SampleRedisAccessLimiterTest {
         await().forever().until(() -> {
             if ((currentTimeMillis() / 1000) % 10 != 5) return false;
 
-            System.out.println("1");
             var response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
