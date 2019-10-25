@@ -33,3 +33,13 @@ Guardians通用模块.
   <version>0.5.4</version>
 </dependency>
 ```
+
+##### Maven Dependency SNAPSHOT
+
+```xml
+<dependency>
+  <groupId>com.github.charlemaznable</groupId>
+  <artifactId>guardians-general</artifactId>
+  <version>0.6.0-SNAPSHOT</version>
+</dependency>
+```
