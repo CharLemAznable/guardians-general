@@ -2,6 +2,7 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.core.lang.concurrent.EventBusCachedExecutor;
 import com.github.charlemaznable.guardians.Guard;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +26,7 @@ public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecuto
         post(new PostGuardEvent() {});
     }
 
+    @AllowConcurrentEvents
     @Subscribe
     public void preGuardSubscriber(PreGuardEvent event) {
         try {
@@ -34,6 +36,7 @@ public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecuto
         }
     }
 
+    @AllowConcurrentEvents
     @Subscribe
     public void postGuardSubscriber(PostGuardEvent event) {
         try {
