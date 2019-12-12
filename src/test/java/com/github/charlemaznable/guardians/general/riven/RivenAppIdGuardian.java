@@ -29,12 +29,8 @@ public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
     private static final String RIVEN_APP_PRV_KEY = "RivenAppPrvKey";
     private static final String RIVEN_APP_SIGN_KEY = "RivenAppSignKey";
 
-    private AppDao appDao;
-
     @Autowired
-    public RivenAppIdGuardian(AppDao appDao) {
-        this.appDao = appDao;
-    }
+    private AppDao appDao;
 
     @Override
     public boolean checkRequestField(RequestField requestField, String value) {

@@ -15,7 +15,6 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
     private static final String TIMER_PREFIX = "AccessLimiterTimer:";
     private static final String COUNTER_PREFIX = "AccessLimiterCounter:";
 
-    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
     @Autowired
     private Jedis jedis;
 
