@@ -23,7 +23,7 @@ public abstract class AbstractRateAccessLimiter implements AccessLimiter {
             });
 
     @Override
-    public boolean tryAcquire(HttpServletRequest request) {
+    public final boolean tryAcquire(HttpServletRequest request) {
         val cacheKey = buildRateLimiterCacheKey(request);
         val rateLimiter = get(limiterCache, cacheKey);
         updateRateIfNeeded(cacheKey, rateLimiter);

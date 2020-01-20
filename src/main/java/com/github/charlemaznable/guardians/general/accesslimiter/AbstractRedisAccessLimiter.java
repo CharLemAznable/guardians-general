@@ -22,7 +22,7 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
      * 使用一个计时器和一个计数器实现按时间窗口限流.
      */
     @Override
-    public boolean tryAcquire(HttpServletRequest request) {
+    public final boolean tryAcquire(HttpServletRequest request) {
         val redisKey = buildRedisKey(request);
         val timerKey = buildRedisTimerKey(redisKey);
         val counterKey = buildRedisCounterKey(redisKey);

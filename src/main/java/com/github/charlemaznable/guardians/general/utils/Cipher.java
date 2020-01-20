@@ -10,13 +10,13 @@ public enum Cipher {
 
     AES_128 {
         @Override
-        public String decrypt(String cipherText, ByteCodec codec, String key) {
+        public final String decrypt(String cipherText, ByteCodec codec, String key) {
             return AES.decrypt(codec.decode(cipherText), key);
         }
     },
     RSA {
         @Override
-        public String decrypt(String cipherText, ByteCodec codec, String key) {
+        public final String decrypt(String cipherText, ByteCodec codec, String key) {
             val privateKey = privateKey(key);
             return prvDecrypt(codec.decode(cipherText), privateKey);
         }

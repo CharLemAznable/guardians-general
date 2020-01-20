@@ -9,7 +9,7 @@ import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreat
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class RequestFieldElf {
+public final class RequestFieldElf {
 
     private RequestFieldElf() {}
 

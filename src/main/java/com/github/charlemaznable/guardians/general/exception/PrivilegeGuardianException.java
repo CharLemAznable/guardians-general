@@ -2,7 +2,7 @@ package com.github.charlemaznable.guardians.general.exception;
 
 import com.github.charlemaznable.guardians.exception.GuardianException;
 
-public class PrivilegeGuardianException extends GuardianException {
+public final class PrivilegeGuardianException extends GuardianException {
 
     private static final long serialVersionUID = -7514422615283221887L;
 

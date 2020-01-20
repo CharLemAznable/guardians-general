@@ -9,34 +9,34 @@ public enum ByteCodec {
 
     BASE64 {
         @Override
-        public String encode(byte[] bytes) {
+        public final String encode(byte[] bytes) {
             return base64(bytes);
         }
 
         @Override
-        public byte[] decode(String value) {
+        public final byte[] decode(String value) {
             return unBase64(value);
         }
     },
     HEX {
         @Override
-        public String encode(byte[] bytes) {
+        public final String encode(byte[] bytes) {
             return hex(bytes);
         }
 
         @Override
-        public byte[] decode(String value) {
+        public final byte[] decode(String value) {
             return unHex(value);
         }
     },
     HEX_UPPER_CASE {
         @Override
-        public String encode(byte[] bytes) {
+        public final String encode(byte[] bytes) {
             return hex(bytes).toUpperCase();
         }
 
         @Override
-        public byte[] decode(String value) {
+        public final byte[] decode(String value) {
             return unHex(value);
         }
     };
