@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(resourcePattern = "**/SampleRate*.class")
+@ComponentScan(resourcePattern = "**/SampleRateAccessLimiter*.class")
 @GuardiansImport
 public class SampleRateAccessLimiterConfiguration {
 }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
-import static com.github.charlemaznable.guardians.general.utils.RequestFieldElf.extractRequestFieldValue;
+import static com.github.charlemaznable.guardians.general.utils.ExtractElf.extractRequestFieldValue;
 
 public interface RequestFieldAbstractGuardian {
 

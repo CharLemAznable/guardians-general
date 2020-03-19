@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotEmpty;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
-import static com.github.charlemaznable.guardians.general.utils.RequestFieldElf.extractRequestFieldValue;
+import static com.github.charlemaznable.guardians.general.utils.ExtractElf.extractRequestFieldValue;
 
 public interface RequestFieldsAbstractGuardian {
 

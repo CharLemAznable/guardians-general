@@ -1,4 +1,4 @@
-package com.github.charlemaznable.guardians.general.accessLimit;
+package com.github.charlemaznable.guardians.general.uniqueNonsense;
 
 import com.github.charlemaznable.guardians.spring.GuardiansImport;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +9,9 @@ import redis.clients.jedis.Jedis;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(resourcePattern = "**/SampleRedisAccessLimiter*.class")
+@ComponentScan(resourcePattern = "**/SampleRedisUniqueChecker*.class")
 @GuardiansImport
-public class SampleRedisAccessLimiterConfiguration {
+public class SampleRedisUniqueCheckerConfiguration {
 
     @Bean
     public Jedis jedis() {

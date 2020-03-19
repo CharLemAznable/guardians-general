@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(resourcePattern = "**/*Simple*.class")
+@ComponentScan(resourcePattern = "**/AccessLimitSimple*.class")
 @GuardiansImport
 public class AccessLimitSimpleConfiguration {
 }
