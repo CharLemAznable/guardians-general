@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Mapp.getStr;
 import static com.github.charlemaznable.core.lang.Str.toStr;
 import static com.github.charlemaznable.core.net.Http.errorText;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.get;
@@ -33,8 +35,8 @@ public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
     private AppDao appDao;
 
     @Override
-    public boolean checkRequestField(RequestField requestField, String value) {
-        val appId = checkNotBlank(value,
+    public boolean checkRequestField(RequestField requestField, Map<String, Object> valueMap) {
+        val appId = checkNotBlank(getStr(valueMap, "App-Id"),
                 new RequestFieldGuardianException("Missing AppId"));
         val app = checkNotNull(appDao.queryApp(appId),
                 new RequestFieldGuardianException("Illegal App"));

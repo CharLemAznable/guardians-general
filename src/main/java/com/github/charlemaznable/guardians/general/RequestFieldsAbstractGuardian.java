@@ -7,6 +7,7 @@ import lombok.val;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotEmpty;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
@@ -19,14 +20,15 @@ public interface RequestFieldsAbstractGuardian {
         checkNotEmpty(requestFieldAnnotations, new RequestFieldGuardianException(
                 "Missing Annotation: " + RequestField.class.getName()));
 
-        List<String> values = newArrayList();
+        List<Map<String, Object>> valueMaps = newArrayList();
         for (val requestFieldAnnotation : requestFieldAnnotations) {
-            values.add(extractRequestFieldValue(requestFieldAnnotation));
+            valueMaps.add(extractRequestFieldValue(requestFieldAnnotation));
         }
-        return checkRequestFields(requestFieldAnnotations, values);
+        return checkRequestFields(requestFieldAnnotations, valueMaps);
     }
 
-    boolean checkRequestFields(List<RequestField> requestFieldAnnotations, List<String> values);
+    boolean checkRequestFields(List<RequestField> requestFieldAnnotations,
+                               List<Map<String, Object>> valueMaps);
 
     @Guard(true)
     default void postGuard(HttpServletRequest request,

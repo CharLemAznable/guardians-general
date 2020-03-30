@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Str.toStr;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.general.Signature.DEFAULT_SIGNATURE_KEY_NAME;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public interface SignatureAbstractGuardian {
@@ -27,8 +29,9 @@ public interface SignatureAbstractGuardian {
         val bodyFormat = signatureAnnotation.bodyFormat();
         val charsetName = blankThen(signatureAnnotation.charsetName(), UTF_8::name);
         val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        val signText = checkNotBlank(extractor.extract(request()),
-                new SignatureGuardianException("Missing Request Signature: " + keyName));
+        val signText = checkNotBlank(toStr(extractor.extractValue(request())),
+                new SignatureGuardianException("Missing Request Signature: "
+                        + (BODY_RAW == extractorType ? "Request Body" : keyName)));
 
         val hasher = signatureAnnotation.hasher();
         val codec = signatureAnnotation.codec();

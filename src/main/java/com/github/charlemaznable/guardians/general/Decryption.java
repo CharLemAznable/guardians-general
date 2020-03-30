@@ -2,7 +2,7 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Cipher;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
 import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
 import org.springframework.core.annotation.AliasFor;
 
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.BASE64;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.AES_128;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
 
 @Documented

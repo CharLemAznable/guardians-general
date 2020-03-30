@@ -3,7 +3,7 @@ package com.github.charlemaznable.guardians.general.riven;
 import com.github.charlemaznable.guardians.general.Signature.PlainTextBuilder;
 import com.github.charlemaznable.guardians.general.SignatureAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.SignatureGuardianException;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

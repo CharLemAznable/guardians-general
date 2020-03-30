@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
+import static com.github.charlemaznable.core.lang.Str.toStr;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
@@ -27,7 +28,7 @@ public interface DecryptionAbstractGuardian {
         val bodyFormat = decryptionAnnotation.bodyFormat();
         val charsetName = blankThen(decryptionAnnotation.charsetName(), UTF_8::name);
         val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        val cipherText = checkNotBlank(extractor.extract(request()),
+        val cipherText = checkNotBlank(toStr(extractor.extractValue(request())),
                 new DecryptionGuardianException("Missing Request Cipher Text: "
                         + (BODY_RAW == extractorType ? "Request Body" : keyName)));
 

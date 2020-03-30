@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general;
 
-import com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
 import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
 import org.springframework.core.annotation.AliasFor;
 
@@ -10,8 +10,9 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Map;
 
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
 
 @Documented
@@ -20,11 +21,11 @@ import static com.github.charlemaznable.guardians.utils.RequestValueExtractorTyp
 @Repeatable(RequestFields.class)
 public @interface RequestField {
 
-    @AliasFor("keyName")
-    String value() default "";
+    @AliasFor("keyNames")
+    String[] value() default {};
 
     @AliasFor("value")
-    String keyName() default "";
+    String[] keyNames() default {};
 
     RequestValueExtractorType extractorType() default PARAMETER;
 
@@ -36,6 +37,7 @@ public @interface RequestField {
 
     interface RequestFieldPostProcessor {
 
-        String processRequestField(RequestField requestField, String value);
+        Map<String, Object> processRequestField(RequestField requestField,
+                                                Map<String, Object> valueMap);
     }
 }

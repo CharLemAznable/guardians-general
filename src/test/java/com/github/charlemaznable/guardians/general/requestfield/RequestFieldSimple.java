@@ -1,5 +1,6 @@
-package com.github.charlemaznable.guardians.general;
+package com.github.charlemaznable.guardians.general.requestfield;
 
+import com.github.charlemaznable.guardians.general.RequestField;
 import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
 import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
 import org.springframework.core.annotation.AliasFor;
@@ -16,35 +17,15 @@ import static com.github.charlemaznable.guardians.utils.RequestValueExtractorTyp
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueNonsense {
+@RequestField(postProcessors = RequestFieldSimplePostProcessor.class)
+public @interface RequestFieldSimple {
 
-    String DEFAULT_NONSENSE_KEY_NAME = "nonsense";
-    String DEFAULT_CHARSET_NAME = "UTF-8";
+    @AliasFor(attribute = "keyNames", annotation = RequestField.class)
+    String[] keyNames() default "";
 
-    @AliasFor("keyName")
-    String value() default DEFAULT_NONSENSE_KEY_NAME;
-
-    @AliasFor("value")
-    String keyName() default DEFAULT_NONSENSE_KEY_NAME;
-
+    @AliasFor(attribute = "extractorType", annotation = RequestField.class)
     RequestValueExtractorType extractorType() default PARAMETER;
 
+    @AliasFor(attribute = "bodyFormat", annotation = RequestField.class)
     RequestBodyFormat bodyFormat() default FORM;
-
-    String charsetName() default DEFAULT_CHARSET_NAME;
-
-    Class<? extends UniqueChecker> checker() default DefaultUniqueChecker.class;
-
-    interface UniqueChecker {
-
-        boolean checkUnique(String nonsense);
-    }
-
-    class DefaultUniqueChecker implements UniqueChecker {
-
-        @Override
-        public boolean checkUnique(String nonsense) {
-            return true;
-        }
-    }
 }

@@ -26,7 +26,7 @@ import static com.github.charlemaznable.guardians.utils.RequestValueExtractorTyp
 @Retention(RetentionPolicy.RUNTIME)
 @PreGuardian(RivenAppIdGuardian.class)
 @PostGuardian(RivenAppIdGuardian.class)
-@RequestField(keyName = "App-Id", extractorType = HEADER)
+@RequestField(keyNames = "App-Id", extractorType = HEADER)
 @PreGuardian(RivenDecryptBodyGuardian.class)
 @PostGuardian(RivenDecryptBodyGuardian.class)
 @Decryption(extractorType = BODY_RAW, cipher = RSA,

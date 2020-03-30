@@ -5,6 +5,7 @@ import com.github.charlemaznable.guardians.general.exception.RequestFieldGuardia
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.guardians.general.utils.ExtractElf.extractRequestFieldValue;
@@ -20,7 +21,8 @@ public interface RequestFieldAbstractGuardian {
                 extractRequestFieldValue(requestFieldAnnotation));
     }
 
-    boolean checkRequestField(RequestField requestFieldAnnotation, String value);
+    boolean checkRequestField(RequestField requestFieldAnnotation,
+                              Map<String, Object> valueMap);
 
     @Guard(true)
     default void postGuard(HttpServletRequest request,

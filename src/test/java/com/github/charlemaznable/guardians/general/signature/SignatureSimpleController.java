@@ -19,7 +19,7 @@ import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.HEX;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
 
 @SuppressWarnings("deprecation")

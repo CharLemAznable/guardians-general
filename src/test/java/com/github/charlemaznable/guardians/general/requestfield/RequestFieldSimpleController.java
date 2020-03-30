@@ -1,0 +1,78 @@
+package com.github.charlemaznable.guardians.general.requestfield;
+
+import com.github.charlemaznable.guardians.PostGuardian;
+import com.github.charlemaznable.guardians.PreGuardian;
+import lombok.Data;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.github.charlemaznable.core.codec.Json.json;
+import static com.github.charlemaznable.core.codec.Json.jsonOf;
+import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
+import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
+import static com.github.charlemaznable.core.net.Http.responseJson;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.JSON;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.COOKIE;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.HEADER;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PATH;
+
+@Controller
+@RequestMapping("/requestField")
+@PreGuardian(RequestFieldSimpleGuardian.class)
+@PostGuardian(RequestFieldSimpleGuardian.class)
+public class RequestFieldSimpleController {
+
+    @RequestMapping("/error")
+    public void error(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @RequestFieldSimple(keyNames = "appId")
+    @RequestMapping("/param")
+    public void param(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @RequestFieldSimple(keyNames = "accessId", extractorType = PATH)
+    @RequestMapping("/path/{accessId}")
+    public void path(@PathVariable String accessId, HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @RequestFieldSimple(keyNames = "accessId", extractorType = HEADER)
+    @RequestMapping("/header")
+    public void header(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @RequestFieldSimple(keyNames = "accessId", extractorType = COOKIE)
+    @RequestMapping("/cookie")
+    public void cookie(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @RequestFieldSimple(keyNames = {"accessId", "userId"}, extractorType = BODY, bodyFormat = JSON)
+    @RequestMapping("/body")
+    public void body(@RequestBody SimpleBody requestBody, HttpServletResponse response) {
+        responseJson(response, json(requestBody));
+    }
+
+    @RequestFieldSimple(extractorType = BODY_RAW)
+    @RequestMapping("/bodyRaw")
+    public void bodyRaw(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, jsonOf("accessId", dealRequestBodyStream(request, "UTF-8")));
+    }
+
+    @Data
+    public static class SimpleBody {
+
+        private String accessId;
+    }
+}

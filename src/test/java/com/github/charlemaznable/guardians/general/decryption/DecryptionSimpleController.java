@@ -22,7 +22,7 @@ import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setR
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestParameterMap;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormatExtractor.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 
 @Controller
