@@ -24,7 +24,7 @@ public class SampleRedisUniqueCheckerGuardian implements UniqueNonsenseAbstractG
         mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));
-            contentMap.put("error", "Access has been Denied");
+            contentMap.put("error", "Access has been Denied: " + exception.getMessage());
             mutableResponse.setContentByString(json(contentMap));
         });
     }

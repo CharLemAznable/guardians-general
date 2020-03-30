@@ -24,6 +24,7 @@ import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.core.lang.Str.toStr;
 import static com.github.charlemaznable.guardians.general.Signature.DefaultSignatureKeySupplier.DEFAULT_SIGNATURE_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -118,6 +119,36 @@ public class SignatureSimpleTest {
         val responseMap3 = unJson(responseContent3);
         assertEquals("Content内容", responseMap3.get("content"));
         assertEquals(DigestHMAC.MD5.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY), responseMap3.get("signature"));
+    }
+
+    @SneakyThrows
+    @Test
+    public void testDefaultPostRaw() {
+        val response = mockMvc.perform(post("/signature/defaultPostRaw"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent = response.getContentAsString();
+        val responseMap = unJson(responseContent);
+        assertEquals("Missing Request Signature: Request Body", responseMap.get("error"));
+
+        val response2 = mockMvc.perform(post("/signature/defaultPostRaw")
+                .param("content", "Content内容")
+                .content(DigestHMAC.MD5.digestBase64("content=内容Content", DEFAULT_SIGNATURE_KEY)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent2 = response2.getContentAsString();
+        val responseMap2 = unJson(responseContent2);
+        assertEquals("Signature Mismatch", responseMap2.get("error"));
+
+        val response3 = mockMvc.perform(post("/signature/defaultPostRaw?content=Content内容")
+                .param("content", "Content内容")
+                .content(DigestHMAC.MD5.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        val responseContent3 = response3.getContentAsString();
+        val responseMap3 = unJson(responseContent3);
+        assertEquals("Content内容", responseMap3.get("content"));
+        assertNull(responseMap3.get("signature"));
     }
 
     @SuppressWarnings("deprecation")

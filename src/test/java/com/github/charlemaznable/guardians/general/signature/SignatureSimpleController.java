@@ -3,9 +3,11 @@ package com.github.charlemaznable.guardians.general.signature;
 import com.github.charlemaznable.guardians.PostGuardian;
 import com.github.charlemaznable.guardians.PreGuardian;
 import com.github.charlemaznable.guardians.general.Signature;
+import com.github.charlemaznable.guardians.general.Signature.PlainTextBuilder;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
+import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
@@ -21,6 +25,7 @@ import static com.github.charlemaznable.core.net.Http.responseJson;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.HEX;
 import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
+import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 
 @SuppressWarnings("deprecation")
 @Controller
@@ -44,6 +49,12 @@ public class SignatureSimpleController {
     @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
     public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
+    }
+
+    @Signature(extractorType = BODY_RAW, plainTextBuilder = RawPlainTextBuilder.class)
+    @RequestMapping(value = "/defaultPostRaw", method = RequestMethod.POST)
+    public void defaultPostRaw(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
     }
 
     @Signature(hasher = Hasher.MD5)
@@ -115,6 +126,17 @@ public class SignatureSimpleController {
         @Override
         public String supplySignatureKey() {
             return publicKey;
+        }
+    }
+
+    @Component
+    public static class RawPlainTextBuilder implements PlainTextBuilder {
+
+        @Override
+        public String buildPlainText(HttpServletRequest request, RequestBodyFormat parser, String charsetName) {
+            return new TreeMap<>(fetchParameterMap(request)).entrySet().stream()
+                    .map(e -> e.getKey() + "=" + e.getValue())
+                    .collect(Collectors.joining("&"));
         }
     }
 }
