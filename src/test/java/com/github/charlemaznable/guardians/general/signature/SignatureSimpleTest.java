@@ -110,7 +110,7 @@ public class SignatureSimpleTest {
         assertEquals("Signature Mismatch", responseMap2.get("error"));
 
         val response3 = mockMvc.perform(post("/signature/defaultPost")
-                .content("content=Content内容&signature="
+                .content("content=Content内容&=emptyKey&emptyValue=&signature="
                         + DigestHMAC.MD5.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
