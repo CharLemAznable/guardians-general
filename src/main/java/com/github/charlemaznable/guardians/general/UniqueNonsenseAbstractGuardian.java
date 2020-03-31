@@ -14,7 +14,6 @@ import static com.github.charlemaznable.core.lang.Str.toStr;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.general.UniqueNonsense.DEFAULT_NONSENSE_KEY_NAME;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public interface UniqueNonsenseAbstractGuardian {
@@ -28,10 +27,9 @@ public interface UniqueNonsenseAbstractGuardian {
         val extractorType = uniqueNonsenseAnnotation.extractorType();
         val bodyFormat = uniqueNonsenseAnnotation.bodyFormat();
         val charsetName = blankThen(uniqueNonsenseAnnotation.charsetName(), UTF_8::name);
-        val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        val nonsense = checkNotBlank(toStr(extractor.extractValue(request())),
-                new UniqueNonsenseGuardianException("Missing Nonsense Field: "
-                        + (BODY_RAW == extractorType ? "Request Body" : keyName)));
+        val valueMap = extractorType.extract(request(), bodyFormat, charsetName);
+        val nonsense = checkNotBlank(toStr(valueMap.get(keyName)),
+                new UniqueNonsenseGuardianException("Missing Nonsense Field: " + keyName));
 
         val checkerType = uniqueNonsenseAnnotation.checker();
         val checker = getBeanOrCreate(checkerType);

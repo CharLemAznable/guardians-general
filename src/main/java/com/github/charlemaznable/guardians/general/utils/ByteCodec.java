@@ -37,7 +37,7 @@ public enum ByteCodec {
 
         @Override
         public final byte[] decode(String value) {
-            return unHex(value);
+            return unHex(value.toLowerCase());
         }
     };
 

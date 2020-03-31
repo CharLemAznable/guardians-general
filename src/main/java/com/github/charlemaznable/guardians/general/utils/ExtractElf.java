@@ -1,35 +1,52 @@
 package com.github.charlemaznable.guardians.general.utils;
 
-import com.github.charlemaznable.guardians.general.RequestField;
+import com.github.charlemaznable.guardians.general.RequestValidate;
+import com.github.charlemaznable.guardians.general.RequestValidate.RequestValidateProcessor;
 import lombok.val;
-import lombok.var;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static com.github.charlemaznable.core.codec.Json.spec;
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.joor.Reflect.onClass;
 
 public final class ExtractElf {
 
     private ExtractElf() {}
 
-    public static Map<String, Object> extractRequestFieldValue(RequestField requestFieldAnnotation) {
-        val keyNames = newArrayList(requestFieldAnnotation.keyNames());
-        val extractorType = requestFieldAnnotation.extractorType();
-        val bodyFormat = requestFieldAnnotation.bodyFormat();
-        val charsetName = blankThen(requestFieldAnnotation.charsetName(), UTF_8::name);
-        val extractor = extractorType.extractor(keyNames, bodyFormat, charsetName);
-        var valueMap = extractor.extract(request());
-
-        val postProcessors = requestFieldAnnotation.postProcessors();
-        for (val postProcessor : postProcessors) {
-            val processor = getBeanOrCreate(postProcessor);
-            valueMap = processor.processRequestField(requestFieldAnnotation, valueMap);
+    public static Object extractRequestValidate(RequestValidate requestValidate) {
+        val validateType = requestValidate.validateType();
+        val keyNames = Map.class == validateType ? newArrayList(requestValidate.keyNames())
+                : newArrayList(onClass(validateType).create().fields().keySet());
+        val extractorType = requestValidate.extractorType();
+        val bodyFormat = requestValidate.bodyFormat();
+        val charsetName = blankThen(requestValidate.charsetName(), UTF_8::name);
+        val valueMap = extractorType.extract(request(), bodyFormat, charsetName);
+        val validateValueMap = valueMap.entrySet().stream().filter(e -> keyNames.contains(e.getKey()))
+                .<Map<String, Object>>collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll);
+        List<RequestValidateProcessor> processors = newArrayList();
+        val processorTypes = requestValidate.processors();
+        for (val processorType : processorTypes) {
+            processors.add(getBeanOrCreate(processorType));
         }
-
-        return valueMap;
+        for (val processor : processors) {
+            for (val validateEntry : validateValueMap.entrySet()) {
+                String key = validateEntry.getKey();
+                Object value = validateEntry.getValue();
+                validateValueMap.put(key, processor
+                        .processRequestValidate(requestValidate, key, value));
+            }
+        }
+        Object validateObject = validateValueMap;
+        if (Map.class != validateType) {
+            validateObject = spec(validateValueMap, validateType);
+        }
+        return validateObject;
     }
 }

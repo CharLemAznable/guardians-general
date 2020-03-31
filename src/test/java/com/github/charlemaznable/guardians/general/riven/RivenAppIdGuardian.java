@@ -1,10 +1,10 @@
 package com.github.charlemaznable.guardians.general.riven;
 
 import com.github.charlemaznable.guardians.general.Decryption.DecryptionKeySupplier;
-import com.github.charlemaznable.guardians.general.RequestField;
-import com.github.charlemaznable.guardians.general.RequestFieldAbstractGuardian;
+import com.github.charlemaznable.guardians.general.RequestValidate;
+import com.github.charlemaznable.guardians.general.RequestValidateAbstractGuardian;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
-import com.github.charlemaznable.guardians.general.exception.RequestFieldGuardianException;
+import com.github.charlemaznable.guardians.general.exception.RequestValidateGuardianException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
 @Component
-public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
+public class RivenAppIdGuardian implements RequestValidateAbstractGuardian {
 
     private static final String RIVEN_APP_ID_KEY = "RivenAppId";
     private static final String RIVEN_APP_PRV_KEY = "RivenAppPrvKey";
@@ -34,12 +34,15 @@ public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
     @Autowired
     private AppDao appDao;
 
+    @SuppressWarnings("unchecked")
     @Override
-    public boolean checkRequestField(RequestField requestField, Map<String, Object> valueMap) {
+    public boolean validateRequest(RequestValidate requestValidate,
+                                   Object requestValidateObject) {
+        Map<String, Object> valueMap = (Map<String, Object>) requestValidateObject;
         val appId = checkNotBlank(getStr(valueMap, "App-Id"),
-                new RequestFieldGuardianException("Missing AppId"));
+                new RequestValidateGuardianException("Missing AppId"));
         val app = checkNotNull(appDao.queryApp(appId),
-                new RequestFieldGuardianException("Illegal App"));
+                new RequestValidateGuardianException("Illegal App"));
 
         set(RIVEN_APP_ID_KEY, appId);
         set(RIVEN_APP_PRV_KEY, app.getPrvKey());
@@ -49,7 +52,7 @@ public class RivenAppIdGuardian implements RequestFieldAbstractGuardian {
 
     @Override
     public void handleGuardianException(HttpServletRequest request, HttpServletResponse response,
-                                        RequestFieldGuardianException exception) {
+                                        RequestValidateGuardianException exception) {
         log.error("RivenRequestFieldsGuardian handled exception: ", exception);
         errorText(response, FORBIDDEN.value(), FORBIDDEN.getReasonPhrase());
     }

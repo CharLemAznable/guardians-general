@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestFields {
+public @interface RequestBodyRawValidate {
 
-    RequestField[] value();
+    String charsetName() default "UTF-8";
 }

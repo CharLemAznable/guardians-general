@@ -23,7 +23,6 @@ import static com.github.charlemaznable.core.codec.Json.unJson;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -114,54 +113,6 @@ public class SampleRedisUniqueCheckerTest {
             assertEquals("SUCCESS", responseMap2.get("result"));
 
             response2 = mockMvc.perform(get("/unique-nonsense/index?nonsense=123"))
-                    .andExpect(status().isOk())
-                    .andReturn().getResponse();
-            responseContent2 = response2.getContentAsString();
-            responseMap2 = unJson(responseContent2);
-            assertEquals("Access has been Denied: Violating Unique Nonsense", responseMap2.get("error"));
-
-            return true;
-        });
-    }
-
-    @SneakyThrows
-    @Test
-    public void testSampleRedisUniqueCheckerRaw() {
-        var response = mockMvc.perform(post("/unique-nonsense/raw"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        var responseContent = response.getContentAsString();
-        var responseMap = unJson(responseContent);
-        assertEquals("Access has been Denied: Missing Nonsense Field: Request Body", responseMap.get("error"));
-
-        response = mockMvc.perform(post("/unique-nonsense/raw")
-                .content("456"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("SUCCESS", responseMap.get("result"));
-
-        response = mockMvc.perform(post("/unique-nonsense/raw")
-                .content("456"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-        responseContent = response.getContentAsString();
-        responseMap = unJson(responseContent);
-        assertEquals("Access has been Denied: Violating Unique Nonsense", responseMap.get("error"));
-
-        await().pollDelay(Duration.ofMillis(1000)).until(() -> {
-
-            var response2 = mockMvc.perform(post("/unique-nonsense/raw")
-                    .content("456"))
-                    .andExpect(status().isOk())
-                    .andReturn().getResponse();
-            var responseContent2 = response2.getContentAsString();
-            var responseMap2 = unJson(responseContent2);
-            assertEquals("SUCCESS", responseMap2.get("result"));
-
-            response2 = mockMvc.perform(post("/unique-nonsense/raw")
-                    .content("456"))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();

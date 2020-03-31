@@ -3,8 +3,8 @@ package com.github.charlemaznable.guardians.general;
 import com.github.charlemaznable.core.lang.Mapp;
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
-import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
+import com.github.charlemaznable.guardians.general.utils.RequestBodyFormat;
+import com.github.charlemaznable.guardians.general.utils.RequestValueExtractor;
 import lombok.val;
 import org.springframework.core.annotation.AliasFor;
 
@@ -25,8 +25,8 @@ import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.BASE64;
 import static com.github.charlemaznable.guardians.general.utils.Hasher.HMAC_MD5;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
+import static com.github.charlemaznable.guardians.general.utils.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.PARAMETER;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -42,7 +42,7 @@ public @interface Signature {
     @AliasFor("value")
     String keyName() default DEFAULT_SIGNATURE_KEY_NAME;
 
-    RequestValueExtractorType extractorType() default PARAMETER;
+    RequestValueExtractor extractorType() default PARAMETER;
 
     RequestBodyFormat bodyFormat() default FORM;
 

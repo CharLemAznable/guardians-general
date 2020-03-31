@@ -7,7 +7,7 @@ import com.github.charlemaznable.guardians.general.Signature.PlainTextBuilder;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
+import com.github.charlemaznable.guardians.general.utils.RequestBodyFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +23,9 @@ import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.net.Http.fetchParameterMap;
 import static com.github.charlemaznable.core.net.Http.responseJson;
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.HEX;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
+import static com.github.charlemaznable.guardians.general.utils.ByteCodec.HEX_UPPER_CASE;
+import static com.github.charlemaznable.guardians.general.utils.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.BODY;
 
 @SuppressWarnings("deprecation")
 @Controller
@@ -49,12 +49,6 @@ public class SignatureSimpleController {
     @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
     public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
-    }
-
-    @Signature(extractorType = BODY_RAW, plainTextBuilder = RawPlainTextBuilder.class)
-    @RequestMapping(value = "/defaultPostRaw", method = RequestMethod.POST)
-    public void defaultPostRaw(HttpServletRequest request, HttpServletResponse response) {
-        responseJson(response, json(fetchParameterMap(request)));
     }
 
     @Signature(hasher = Hasher.MD5)
@@ -114,6 +108,12 @@ public class SignatureSimpleController {
     @Signature(hasher = Hasher.SHA256_WITH_RSA, codec = HEX, keySupplier = RSASignatureKeySupplier.class)
     @RequestMapping("/sha256withrsa")
     public void sha256withrsa(HttpServletRequest request, HttpServletResponse response) {
+        responseJson(response, json(fetchParameterMap(request)));
+    }
+
+    @Signature(hasher = Hasher.SHA256_WITH_RSA, codec = HEX_UPPER_CASE, keySupplier = RSASignatureKeySupplier.class)
+    @RequestMapping("/sha256withrsa2")
+    public void sha256withrsa2(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(fetchParameterMap(request)));
     }
 

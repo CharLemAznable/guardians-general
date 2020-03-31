@@ -21,9 +21,8 @@ import static com.github.charlemaznable.core.net.Http.responseJson;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestBody;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.setRequestParameterMap;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.RSA;
+import static com.github.charlemaznable.guardians.general.utils.RequestBodyFormat.FORM;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 
 @Controller
 @RequestMapping("/decryption")
@@ -42,13 +41,13 @@ public class DecryptionSimpleController {
         responseJson(response, json(fetchParameterMap(request)));
     }
 
-    @Decryption(extractorType = BODY_RAW, postProcessors = DefaultPostProcessConsumer.class)
+    @Decryption(cipherBodyRaw = true, postProcessors = DefaultPostProcessConsumer.class)
     @RequestMapping(value = "/defaultPost", method = RequestMethod.POST)
     public void defaultPost(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));
     }
 
-    @Decryption(extractorType = BODY_RAW, cipher = RSA, keySupplier = RSADecryptKeySupplier.class, postProcessors = DefaultPostProcessConsumer.class)
+    @Decryption(cipherBodyRaw = true, cipher = RSA, keySupplier = RSADecryptKeySupplier.class, postProcessors = DefaultPostProcessConsumer.class)
     @RequestMapping(value = "/rsa", method = RequestMethod.POST)
     public void rsa(HttpServletRequest request, HttpServletResponse response) {
         responseJson(response, json(FORM.parse(dealRequestBodyStream(request, "UTF-8"), "UTF-8")));

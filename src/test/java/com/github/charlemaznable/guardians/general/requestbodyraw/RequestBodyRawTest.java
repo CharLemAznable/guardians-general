@@ -1,15 +1,15 @@
-package com.github.charlemaznable.guardians.general.requestfields;
+package com.github.charlemaznable.guardians.general.requestbodyraw;
 
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
+import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockCookie;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,16 +18,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.github.charlemaznable.core.codec.Json.unJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = RequestFieldsConfiguration.class)
+@ContextConfiguration(classes = RequestBodyRawConfiguration.class)
 @WebAppConfiguration
 @TestInstance(Lifecycle.PER_CLASS)
-public class RequestFieldsTest {
+public class RequestBodyRawTest {
 
     private static MockMvc mockMvc;
     @Autowired
@@ -45,31 +44,29 @@ public class RequestFieldsTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(get("/requestFields/error"))
+        val response = mockMvc.perform(post("/requestBodyRaw/error"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("Missing Annotation: com.github.charlemaznable.guardians.general.RequestField", responseMap.get("error"));
+        assertEquals("Missing Annotation: com.github.charlemaznable.guardians.general.RequestBodyRawValidate", responseMap.get("error"));
     }
 
     @SneakyThrows
     @Test
     public void testParam() {
-        val response = mockMvc.perform(get("/requestFields/composite/pathAccessId")
-                .param("appId", "paramAppId")
-                .header("accessId", "headerAccessId")
-                .cookie(new MockCookie("accessId", "cookieAccessId"))
-                .contentType(APPLICATION_JSON)
-                .content("{\"accessId\":\"bodyAccessId\"}"))
+        var response = mockMvc.perform(post("/requestBodyRaw/index"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
-        val responseContent = response.getContentAsString();
-        val responseMap = unJson(responseContent);
-        assertEquals("paramAppId", responseMap.get("parameterId"));
-        assertEquals("pathAccessId", responseMap.get("pathId"));
-        assertEquals("headerAccessId", responseMap.get("headerId"));
-        assertEquals("cookieAccessId", responseMap.get("cookieId"));
-        assertEquals("bodyAccessId", responseMap.get("bodyId"));
+        var responseContent = response.getContentAsString();
+        var responseMap = unJson(responseContent);
+        assertEquals("Missing Request Body", responseMap.get("error"));
+
+        response = mockMvc.perform(post("/requestBodyRaw/index")
+                .content("requestbody"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        responseContent = response.getContentAsString();
+        assertEquals("requestbody", responseContent);
     }
 }

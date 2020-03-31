@@ -2,8 +2,8 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Cipher;
-import com.github.charlemaznable.guardians.utils.RequestBodyFormat;
-import com.github.charlemaznable.guardians.utils.RequestValueExtractorType;
+import com.github.charlemaznable.guardians.general.utils.RequestBodyFormat;
+import com.github.charlemaznable.guardians.general.utils.RequestValueExtractor;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.Documented;
@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
 
 import static com.github.charlemaznable.guardians.general.utils.ByteCodec.BASE64;
 import static com.github.charlemaznable.guardians.general.utils.Cipher.AES_128;
-import static com.github.charlemaznable.guardians.utils.RequestBodyFormat.FORM;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.PARAMETER;
+import static com.github.charlemaznable.guardians.general.utils.RequestBodyFormat.FORM;
+import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.PARAMETER;
 
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -28,11 +28,13 @@ public @interface Decryption {
     @AliasFor("value")
     String keyName() default "";
 
-    RequestValueExtractorType extractorType() default PARAMETER;
+    RequestValueExtractor extractorType() default PARAMETER;
 
     RequestBodyFormat bodyFormat() default FORM;
 
     String charsetName() default "UTF-8";
+
+    boolean cipherBodyRaw() default false;
 
     Cipher cipher() default AES_128;
 

@@ -11,31 +11,36 @@ import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.lang.Str.toStr;
+import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
-import static com.github.charlemaznable.guardians.utils.RequestValueExtractorType.BODY_RAW;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public interface DecryptionAbstractGuardian {
 
     @Guard(true)
-    default boolean preGuard(Decryption decryptionAnnotation) {
-        checkNotNull(decryptionAnnotation, new DecryptionGuardianException(
+    default boolean preGuard(Decryption decryption) {
+        checkNotNull(decryption, new DecryptionGuardianException(
                 "Missing Annotation: " + Decryption.class.getName()));
 
-        val keyName = blankThen(decryptionAnnotation.keyName(), () -> "");
-        val extractorType = decryptionAnnotation.extractorType();
-        val bodyFormat = decryptionAnnotation.bodyFormat();
-        val charsetName = blankThen(decryptionAnnotation.charsetName(), UTF_8::name);
-        val extractor = extractorType.extractor(keyName, bodyFormat, charsetName);
-        val cipherText = checkNotBlank(toStr(extractor.extractValue(request())),
-                new DecryptionGuardianException("Missing Request Cipher Text: "
-                        + (BODY_RAW == extractorType ? "Request Body" : keyName)));
+        String cipherText;
+        if (decryption.cipherBodyRaw()) {
+            cipherText = checkNotBlank(dealRequestBodyStream(request(), decryption.charsetName()),
+                    new DecryptionGuardianException("Missing Request Cipher Text: Request Body"));
+        } else {
+            val extractorType = decryption.extractorType();
+            val bodyFormat = decryption.bodyFormat();
+            val charsetName = blankThen(decryption.charsetName(), UTF_8::name);
+            val valueMap = extractorType.extract(request(), bodyFormat, charsetName);
+            val keyName = blankThen(decryption.keyName(), () -> "");
+            cipherText = checkNotBlank(toStr(valueMap.get(keyName)),
+                    new DecryptionGuardianException("Missing Request Cipher Text: " + keyName));
+        }
 
-        val cipher = decryptionAnnotation.cipher();
-        val codec = decryptionAnnotation.codec();
+        val cipher = decryption.cipher();
+        val codec = decryption.codec();
 
-        val keySupplier = decryptionAnnotation.keySupplier();
+        val keySupplier = decryption.keySupplier();
         val supplier = getBeanOrCreate(keySupplier);
         val key = supplier.supplyDecryptionKey();
 
@@ -46,7 +51,7 @@ public interface DecryptionAbstractGuardian {
             throw new DecryptionGuardianException("Decryption Failed", e);
         }
 
-        val postProcessors = decryptionAnnotation.postProcessors();
+        val postProcessors = decryption.postProcessors();
         for (val postProcessor : postProcessors) {
             val processor = getBeanOrCreate(postProcessor);
             processor.processDecryptedText(decryptedText);
