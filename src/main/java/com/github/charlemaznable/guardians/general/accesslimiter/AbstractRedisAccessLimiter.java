@@ -36,9 +36,11 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
             val passedTime = (int) (currentTime % maxBurstTime);
             // 在当前时间窗口中, 还剩余的时间, 设置为计时器的计时时间
             val lastTime = maxBurstTime - passedTime;
-            jedis.set(timerKey, "0", setParams().ex(lastTime));
-            // 重置计数器的值, 设置有效时间比计时器的有效时间长一秒
-            jedis.set(counterKey, "0", setParams().ex(lastTime + 1));
+            // SET if Not eXists
+            if ("OK".equals(jedis.set(timerKey, "0", setParams().nx().ex(lastTime)))) {
+                // 重置计数器的值, 设置有效时间比计时器的有效时间长一秒
+                jedis.set(counterKey, "0", setParams().ex(lastTime + 1));
+            }
         }
 
         val maxPermits = maxPermitsPerBurstTime(request);
