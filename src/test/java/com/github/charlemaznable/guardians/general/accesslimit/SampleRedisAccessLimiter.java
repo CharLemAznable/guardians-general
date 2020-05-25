@@ -2,6 +2,7 @@ package com.github.charlemaznable.guardians.general.accesslimit;
 
 import com.github.charlemaznable.core.lang.Mapp;
 import com.github.charlemaznable.guardians.general.accesslimiter.AbstractRedisAccessLimiter;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,10 @@ public class SampleRedisAccessLimiter extends AbstractRedisAccessLimiter {
     private Map<String, Integer> permitsMap = Mapp.of(
             "/sampleRedis/index", 2,
             "/sampleRedis/tenSeconds", 2);
+
+    public SampleRedisAccessLimiter(RedissonClient redissonClient) {
+        super(redissonClient);
+    }
 
     @Override
     public boolean unlimitRequest(HttpServletRequest request) {

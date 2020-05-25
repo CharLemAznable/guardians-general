@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.uniquenonsense;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.var;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import redis.embedded.RedisServer;
 
 import java.time.Duration;
 
@@ -32,26 +30,17 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestInstance(Lifecycle.PER_CLASS)
 public class SampleRedisUniqueCheckerTest {
 
-    private static RedisServer redisServer;
     private static MockMvc mockMvc;
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MutableHttpServletFilter mutableHttpServletFilter;
 
-    @SneakyThrows
     @BeforeAll
     public void setup() {
-        redisServer = new RedisServer(6379);
-        redisServer.start();
         mockMvc = webAppContextSetup(webApplicationContext)
                 .addFilters(mutableHttpServletFilter)
                 .build();
-    }
-
-    @AfterAll
-    public void teardown() {
-        redisServer.stop();
     }
 
     @SneakyThrows

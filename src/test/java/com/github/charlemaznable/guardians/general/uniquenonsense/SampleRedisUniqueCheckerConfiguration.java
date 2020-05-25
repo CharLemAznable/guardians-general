@@ -1,11 +1,19 @@
 package com.github.charlemaznable.guardians.general.uniquenonsense;
 
 import com.github.charlemaznable.guardians.spring.GuardiansImport;
+import lombok.SneakyThrows;
+import lombok.val;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import redis.clients.jedis.Jedis;
+import redis.embedded.RedisServer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @EnableWebMvc
 @Configuration
@@ -13,8 +21,24 @@ import redis.clients.jedis.Jedis;
 @GuardiansImport
 public class SampleRedisUniqueCheckerConfiguration {
 
+    private static RedisServer redisServer;
+
+    @SneakyThrows
+    @PostConstruct
+    public void postConstruct() {
+        redisServer = new RedisServer(6382);
+        redisServer.start();
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        redisServer.stop();
+    }
+
     @Bean
-    public Jedis jedis() {
-        return new Jedis("127.0.0.1", 6379);
+    public RedissonClient redissonClient() {
+        val config = new Config();
+        config.useSingleServer().setAddress("redis://127.0.0.1:6382");
+        return Redisson.create(config);
     }
 }
