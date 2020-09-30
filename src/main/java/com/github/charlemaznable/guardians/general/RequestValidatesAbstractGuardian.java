@@ -11,6 +11,7 @@ import java.util.List;
 import static com.github.charlemaznable.core.lang.Condition.checkNotEmpty;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 import static com.github.charlemaznable.guardians.general.utils.ExtractElf.extractRequestValidate;
+import static java.util.Objects.isNull;
 
 public interface RequestValidatesAbstractGuardian {
 
@@ -32,7 +33,7 @@ public interface RequestValidatesAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            RequestValidateGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

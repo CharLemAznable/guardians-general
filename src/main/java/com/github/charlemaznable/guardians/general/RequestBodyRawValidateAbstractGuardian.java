@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
+import static java.util.Objects.isNull;
 
 public interface RequestBodyRawValidateAbstractGuardian {
 
@@ -28,7 +29,7 @@ public interface RequestBodyRawValidateAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            RequestBodyRawValidateGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

@@ -26,6 +26,7 @@
 
     <properties>
         <guardians-core.version>0.5.10-SNAPSHOT</guardians-core.version>
+        <joda-time.version>2.10.6</joda-time.version>
 
         <embedded-redis.version>0.6</embedded-redis.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
@@ -41,6 +42,11 @@
             <groupId>com.github.charlemaznable</groupId>
             <artifactId>guardians-core</artifactId>
             <version>${guardians-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
 
         <dependency>

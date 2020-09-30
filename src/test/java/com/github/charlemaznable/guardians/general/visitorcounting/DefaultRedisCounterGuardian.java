@@ -1,7 +1,7 @@
-package com.github.charlemaznable.guardians.general.uniquenonsense;
+package com.github.charlemaznable.guardians.general.visitorcounting;
 
-import com.github.charlemaznable.guardians.general.UniqueNonsenseAbstractGuardian;
-import com.github.charlemaznable.guardians.general.exception.UniqueNonsenseGuardianException;
+import com.github.charlemaznable.guardians.general.CountingAbstractGuardian;
+import com.github.charlemaznable.guardians.general.exception.CountingGuardianException;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +14,16 @@ import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
 import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
 
 @Component
-public class SampleRedisUniqueCheckerGuardian implements UniqueNonsenseAbstractGuardian {
+public class DefaultRedisCounterGuardian implements CountingAbstractGuardian {
 
     @Override
     public void handleGuardianException(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        UniqueNonsenseGuardianException exception) {
+                                        CountingGuardianException exception) {
         mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));
-            contentMap.put("error", "Access has been Denied: " + exception.getMessage());
+            contentMap.put("error", "Counting Exception: " + exception.getMessage());
             mutableResponse.setContentByString(json(contentMap));
         });
     }

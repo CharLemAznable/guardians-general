@@ -25,6 +25,7 @@ import static com.github.charlemaznable.guardians.general.utils.RequestValueExtr
 import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.PARAMETER;
 import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.PATH;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.all;
+import static java.util.Objects.isNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Component
@@ -78,7 +79,7 @@ public class RequestValidateSampleGuardian implements RequestValidateAbstractGua
     public void handleFormatError(HttpServletRequest request,
                                   HttpServletResponse response,
                                   RequestBodyFormatError exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         mutateResponse(response, mutableResponse -> {
             val contentAsString = mutableResponse.getContentAsString();
             val contentMap = newHashMap(unJson(contentAsString));

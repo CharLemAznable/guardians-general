@@ -11,6 +11,7 @@ import java.util.List;
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
+import static java.util.Objects.isNull;
 
 public interface PrivilegeAbstractGuardian {
 
@@ -37,7 +38,7 @@ public interface PrivilegeAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            PrivilegeGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

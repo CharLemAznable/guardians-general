@@ -15,6 +15,7 @@ import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreat
 import static com.github.charlemaznable.guardians.general.UniqueNonsense.DEFAULT_NONSENSE_KEY_NAME;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.isNull;
 
 public interface UniqueNonsenseAbstractGuardian {
 
@@ -41,7 +42,7 @@ public interface UniqueNonsenseAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            UniqueNonsenseGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

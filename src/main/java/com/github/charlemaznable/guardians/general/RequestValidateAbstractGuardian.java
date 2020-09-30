@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.guardians.general.utils.ExtractElf.extractRequestValidate;
+import static java.util.Objects.isNull;
 
 public interface RequestValidateAbstractGuardian {
 
@@ -27,7 +28,7 @@ public interface RequestValidateAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            RequestValidateGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

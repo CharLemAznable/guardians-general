@@ -15,6 +15,7 @@ import static com.github.charlemaznable.core.net.Http.dealRequestBodyStream;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.isNull;
 
 public interface DecryptionAbstractGuardian {
 
@@ -63,7 +64,7 @@ public interface DecryptionAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            DecryptionGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 

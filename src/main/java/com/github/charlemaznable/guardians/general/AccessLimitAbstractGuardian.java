@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
+import static java.util.Objects.isNull;
 
 public interface AccessLimitAbstractGuardian {
 
     @Guard(true)
     default boolean preGuard(AccessLimit accessLimitAnnotation) {
-        if (null == accessLimitAnnotation) return false;
+        if (isNull(accessLimitAnnotation)) return false;
 
         val limiterType = accessLimitAnnotation.limiter();
         val limiter = getBeanOrCreate(limiterType);
@@ -34,7 +35,7 @@ public interface AccessLimitAbstractGuardian {
     default void postGuard(HttpServletRequest request,
                            HttpServletResponse response,
                            AccessLimitGuardianException exception) {
-        if (null == exception) return;
+        if (isNull(exception)) return;
         handleGuardianException(request, response, exception);
     }
 
