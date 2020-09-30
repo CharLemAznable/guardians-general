@@ -2,12 +2,17 @@ package com.github.charlemaznable.guardians.general.visitorcounting;
 
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
+import lombok.val;
 import lombok.var;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.github.charlemaznable.core.codec.Json.unJson;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +38,9 @@ public class DefaultRedisCounterTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MutableHttpServletFilter mutableHttpServletFilter;
+    @Autowired
+    private RedissonClient redissonClient;
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @BeforeAll
     public void setup() {
@@ -43,12 +52,24 @@ public class DefaultRedisCounterTest {
     @SneakyThrows
     @Test
     public void testDefaultRedisCounter() {
+        val now = dateTimeFormatter.print(DateTime.now());
+
         var response = mockMvc.perform(get("/default-counter/missing"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
+
+        await().untilAsserted(() -> {
+            val pvMissing = redissonClient.getAtomicLong(
+                    "PV:/default-counter/missing@" + now).get();
+            assertEquals(0, pvMissing);
+
+            val uvMissing = redissonClient.<String>getHyperLogLog(
+                    "UV:/default-counter/missing@" + now).count();
+            assertEquals(0, uvMissing);
+        });
 
         response = mockMvc.perform(get("/default-counter/abstract-page-view"))
                 .andExpect(status().isOk())
@@ -84,5 +105,15 @@ public class DefaultRedisCounterTest {
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
+
+        await().untilAsserted(() -> {
+            val pvIndex = redissonClient.getAtomicLong(
+                    "PV:/default-counter/index@" + now).get();
+            assertEquals(1, pvIndex);
+
+            val uvIndex = redissonClient.<String>getHyperLogLog(
+                    "UV:/default-counter/index@" + now).count();
+            assertEquals(1, uvIndex);
+        });
     }
 }
