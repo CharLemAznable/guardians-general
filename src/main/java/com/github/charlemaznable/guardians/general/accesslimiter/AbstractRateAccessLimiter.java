@@ -14,10 +14,10 @@ import static com.github.charlemaznable.core.lang.LoadingCachee.simpleCache;
 
 public abstract class AbstractRateAccessLimiter implements AccessLimiter {
 
-    private LoadingCache<RateLimiterCacheKey, RateLimiter> limiterCache =
-            simpleCache(new CacheLoader<RateLimiterCacheKey, RateLimiter>() {
+    private LoadingCache<Object, RateLimiter> limiterCache =
+            simpleCache(new CacheLoader<Object, RateLimiter>() {
                 @Override
-                public RateLimiter load(@Nonnull RateLimiterCacheKey cacheKey) {
+                public RateLimiter load(@Nonnull Object cacheKey) {
                     return buildRateLimiter(cacheKey);
                 }
             });
@@ -30,11 +30,20 @@ public abstract class AbstractRateAccessLimiter implements AccessLimiter {
         return rateLimiter.tryAcquire();
     }
 
-    public abstract RateLimiterCacheKey buildRateLimiterCacheKey(HttpServletRequest request);
+    /**
+     * 限流器缓存Key, 默认为请求路径
+     */
+    public Object buildRateLimiterCacheKey(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
 
-    public abstract RateLimiter buildRateLimiter(RateLimiterCacheKey cacheKey);
+    /**
+     * 创建限流器, 并缓存
+     */
+    public abstract RateLimiter buildRateLimiter(Object cacheKey);
 
-    public abstract void updateRateIfNeeded(RateLimiterCacheKey cacheKey, RateLimiter rateLimiter);
-
-    public interface RateLimiterCacheKey {}
+    /**
+     * 更新限流器配置, 默认无更新
+     */
+    public void updateRateIfNeeded(Object cacheKey, RateLimiter rateLimiter) {}
 }

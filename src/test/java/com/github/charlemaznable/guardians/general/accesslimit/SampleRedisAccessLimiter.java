@@ -30,17 +30,12 @@ public class SampleRedisAccessLimiter extends AbstractRedisAccessLimiter {
     }
 
     @Override
-    public String buildRedisKey(HttpServletRequest request) {
-        return request.getRequestURI();
+    public int maxBurstTimeInSeconds(String requestKey) {
+        return burstTimeMap.get(requestKey);
     }
 
     @Override
-    public int maxBurstTimeInSeconds(HttpServletRequest request) {
-        return burstTimeMap.get(request.getRequestURI());
-    }
-
-    @Override
-    public long maxPermitsPerBurstTime(HttpServletRequest request) {
-        return permitsMap.get(request.getRequestURI());
+    public long maxPermitsPerBurstTime(String requestKey) {
+        return permitsMap.get(requestKey);
     }
 }

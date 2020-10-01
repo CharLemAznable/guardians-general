@@ -28,19 +28,19 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
      */
     @Override
     public final boolean tryAcquire(HttpServletRequest request) {
-        val redisKey = buildRedisKey(request);
-        val timerKey = buildRedisTimerKey(redisKey);
+        val requestKey = buildRequestKey(request);
+        val timerKey = buildRedisTimerKey(requestKey);
         val timerBuc = redissonClient.getBucket(timerKey);
-        val counterKey = buildRedisCounterKey(redisKey);
+        val counterKey = buildRedisCounterKey(requestKey);
         val counterBuc = redissonClient.getAtomicLong(counterKey);
 
         if (!timerBuc.isExists()) {
-            val lock = redissonClient.getLock(TIMER_LOCKER + redisKey);
+            val lock = redissonClient.getLock(TIMER_LOCKER + requestKey);
             try {
                 lock.lock();
                 if (!timerBuc.isExists()) {
                     // 最大重置时间(时间窗口), 即每隔maxBurstTime限制指定数量的请求
-                    val maxBurstTime = maxBurstTimeInSeconds(request);
+                    val maxBurstTime = maxBurstTimeInSeconds(requestKey);
                     // 当前时间, 单位(秒)
                     val currentTime = currentTimeMillis() / 1000;
                     // 在当前时间窗口中, 已流逝的时间
@@ -58,21 +58,32 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
             }
         }
 
-        val maxPermits = maxPermitsPerBurstTime(request);
+        val maxPermits = maxPermitsPerBurstTime(requestKey);
         return counterBuc.incrementAndGet() <= maxPermits;
     }
 
-    public abstract String buildRedisKey(HttpServletRequest request);
-
-    public String buildRedisTimerKey(String redisKey) {
-        return TIMER_PREFIX + redisKey;
+    /**
+     * 用于区分请求的关键字, 默认为请求路径
+     */
+    public String buildRequestKey(HttpServletRequest request) {
+        return request.getRequestURI();
     }
 
-    public String buildRedisCounterKey(String redisKey) {
-        return COUNTER_PREFIX + redisKey;
+    /**
+     * 计时器RedisKey, 默认为: AccessLimiterTimer:[request-uri]
+     */
+    public String buildRedisTimerKey(String requestKey) {
+        return TIMER_PREFIX + requestKey;
     }
 
-    public abstract int maxBurstTimeInSeconds(HttpServletRequest request);
+    /**
+     * 计数器RedisKey, 默认为: AccessLimiterCounter:[request-uri]
+     */
+    public String buildRedisCounterKey(String requestKey) {
+        return COUNTER_PREFIX + requestKey;
+    }
 
-    public abstract long maxPermitsPerBurstTime(HttpServletRequest request);
+    public abstract int maxBurstTimeInSeconds(String requestKey);
+
+    public abstract long maxPermitsPerBurstTime(String requestKey);
 }
