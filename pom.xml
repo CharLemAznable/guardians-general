@@ -7,11 +7,11 @@
     <parent>
         <groupId>com.github.charlemaznable</groupId>
         <artifactId>complex-dependencies</artifactId>
-        <version>0.4.10-SNAPSHOT</version>
+        <version>0.4.11-SNAPSHOT</version>
     </parent>
 
     <artifactId>guardians-general</artifactId>
-    <version>0.6.10-SNAPSHOT</version>
+    <version>0.6.11-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Guardians General Kits</name>
@@ -25,7 +25,7 @@
     </scm>
 
     <properties>
-        <guardians-core.version>0.5.10-SNAPSHOT</guardians-core.version>
+        <guardians-core.version>0.5.11-SNAPSHOT</guardians-core.version>
         <joda-time.version>2.10.6</joda-time.version>
 
         <embedded-redis.version>0.6</embedded-redis.version>
