@@ -26,7 +26,7 @@
 
     <properties>
         <guardians-core.version>0.6.1-SNAPSHOT</guardians-core.version>
-        <joda-time.version>2.10.8</joda-time.version>
+        <joda-time.version>2.10.10</joda-time.version>
 
         <embedded-redis.version>0.6</embedded-redis.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
