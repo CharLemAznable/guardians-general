@@ -15,6 +15,11 @@ import static com.github.charlemaznable.guardians.spring.GuardianContext.respons
 @Slf4j
 public abstract class LoggingAsyncAbstractGuardian extends EventBusCachedExecutor {
 
+    public LoggingAsyncAbstractGuardian() {
+        super();
+        this.periodSupplier(() -> 0L);
+    }
+
     @Guard(true)
     public boolean preGuard() {
         post(new PreGuardEvent() {});
