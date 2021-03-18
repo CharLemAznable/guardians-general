@@ -90,8 +90,9 @@ public class CustomUniqueVisitorCounterTest {
                     "UV:/custom-counter/index@" + now).count();
             log.info("result UV: " + uv);
             // redis hyperloglog standard error 0.81%
-            assertTrue(uv <= COUNT * 1.0081);
-            assertTrue(uv >= COUNT * 0.9919);
+            // 95%置信区间: count±2*0.81%
+            assertTrue(uv <= COUNT * 1.0162);
+            assertTrue(uv >= COUNT * 0.9838);
         });
     }
 
