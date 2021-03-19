@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.Duration;
 
 import static com.github.charlemaznable.core.codec.Json.unJson;
-import static com.github.charlemaznable.core.lang.Await.awaitOfMillis;
+import static com.github.charlemaznable.core.lang.Await.awaitForMillis;
 import static java.lang.System.currentTimeMillis;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -132,7 +132,7 @@ public class SampleRedisAccessLimiterTest {
             responseMap2 = unJson(responseContent2);
             assertEquals("Access has been Denied", responseMap2.get("error"));
 
-            awaitOfMillis(1000);
+            awaitForMillis(1000);
 
             return true;
         });
