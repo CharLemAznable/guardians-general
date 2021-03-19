@@ -26,7 +26,6 @@ public class DefaultRedisUniqueVisitorCounter extends EventBusCachedExecutor imp
 
     @Autowired
     public DefaultRedisUniqueVisitorCounter(RedissonClient redissonClient) {
-        this.periodSupplier(() -> 0L);
         this.redissonClient = redissonClient;
     }
 

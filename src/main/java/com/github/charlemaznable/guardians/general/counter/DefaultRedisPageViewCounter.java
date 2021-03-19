@@ -26,7 +26,6 @@ public class DefaultRedisPageViewCounter extends EventBusCachedExecutor implemen
 
     @Autowired
     public DefaultRedisPageViewCounter(RedissonClient redissonClient) {
-        this.periodSupplier(() -> 0L);
         this.redissonClient = redissonClient;
     }
 
