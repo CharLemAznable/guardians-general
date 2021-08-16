@@ -46,7 +46,7 @@ public class DefaultRedisPageViewCounter extends EventBusCachedExecutor implemen
     @Subscribe
     public void countPV(PvAxis pvAxis) {
         val pvKey = buildPvRedisKey(pvAxis.page + "@" + pvAxis.time);
-        redissonClient.getAtomicLong(pvKey).incrementAndGetAsync();
+        redissonClient.getLongAdder(pvKey).increment();
     }
 
     /**

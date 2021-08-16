@@ -62,8 +62,8 @@ public class DefaultRedisCounterTest {
         assertEquals("SUCCESS", responseMap.get("result"));
 
         await().untilAsserted(() -> {
-            val pvMissing = redissonClient.getAtomicLong(
-                    "PV:/default-counter/missing@" + now).get();
+            val pvMissing = redissonClient.getLongAdder(
+                    "PV:/default-counter/missing@" + now).sum();
             assertEquals(0, pvMissing);
 
             val uvMissing = redissonClient.<String>getHyperLogLog(
@@ -107,8 +107,8 @@ public class DefaultRedisCounterTest {
         assertEquals("SUCCESS", responseMap.get("result"));
 
         await().untilAsserted(() -> {
-            val pvIndex = redissonClient.getAtomicLong(
-                    "PV:/default-counter/index@" + now).get();
+            val pvIndex = redissonClient.getLongAdder(
+                    "PV:/default-counter/index@" + now).sum();
             assertEquals(1, pvIndex);
 
             val uvIndex = redissonClient.<String>getHyperLogLog(

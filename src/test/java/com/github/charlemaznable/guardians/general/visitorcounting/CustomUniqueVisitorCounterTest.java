@@ -82,8 +82,8 @@ public class CustomUniqueVisitorCounterTest {
         }
 
         await().untilAsserted(() -> {
-            val pv = redissonClient.getAtomicLong(
-                    "PV:/custom-counter/index@" + now).get();
+            val pv = redissonClient.getLongAdder(
+                    "PV:/custom-counter/index@" + now).sum();
             assertEquals(TIMES, pv);
 
             val uv = redissonClient.<String>getHyperLogLog(
