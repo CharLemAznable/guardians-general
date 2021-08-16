@@ -21,6 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -81,7 +82,7 @@ public class CustomUniqueVisitorCounterTest {
             service[i].join();
         }
 
-        await().untilAsserted(() -> {
+        await().timeout(Duration.ofSeconds(30)).untilAsserted(() -> {
             val pv = redissonClient.getLongAdder(
                     "PV:/custom-counter/index@" + now).sum();
             assertEquals(TIMES, pv);
