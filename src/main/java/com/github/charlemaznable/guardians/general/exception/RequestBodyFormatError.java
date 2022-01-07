@@ -2,7 +2,7 @@ package com.github.charlemaznable.guardians.general.exception;
 
 import com.github.charlemaznable.guardians.exception.GuardianException;
 
-public class RequestBodyFormatError extends GuardianException {
+public final class RequestBodyFormatError extends GuardianException {
 
     private static final long serialVersionUID = 1681830429089773710L;
 
