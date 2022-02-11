@@ -18,7 +18,7 @@ import static com.github.charlemaznable.core.codec.Json.unJson;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
 import static com.github.charlemaznable.core.lang.Mapp.getStr;
 import static com.github.charlemaznable.core.lang.Mapp.newHashMap;
-import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutateResponse;
+import static com.github.charlemaznable.core.spring.MutableHttpServletElf.mutateResponse;
 import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.BODY;
 import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.COOKIE;
 import static com.github.charlemaznable.guardians.general.utils.RequestValueExtractor.HEADER;

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.net.Http.errorText;
-import static com.github.charlemaznable.core.spring.MutableHttpServletUtils.mutableRequest;
+import static com.github.charlemaznable.core.spring.MutableHttpServletElf.mutableRequest;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
