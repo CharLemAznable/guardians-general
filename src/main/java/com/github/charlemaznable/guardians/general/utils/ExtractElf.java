@@ -2,6 +2,7 @@ package com.github.charlemaznable.guardians.general.utils;
 
 import com.github.charlemaznable.guardians.general.RequestValidate;
 import com.github.charlemaznable.guardians.general.RequestValidate.RequestValidateProcessor;
+import lombok.NoArgsConstructor;
 import lombok.val;
 
 import java.util.HashMap;
@@ -14,11 +15,11 @@ import static com.github.charlemaznable.core.lang.Listt.newArrayList;
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static lombok.AccessLevel.PRIVATE;
 import static org.joor.Reflect.onClass;
 
+@NoArgsConstructor(access = PRIVATE)
 public final class ExtractElf {
-
-    private ExtractElf() {}
 
     public static Object extractRequestValidate(RequestValidate requestValidate) {
         val validateType = requestValidate.validateType();

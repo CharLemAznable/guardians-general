@@ -4,11 +4,14 @@ import com.github.charlemaznable.guardians.general.accesslimiter.AbstractRateAcc
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
+
 @Component
 public class SampleRateAccessLimiter extends AbstractRateAccessLimiter {
 
     @Override
-    public RateLimiter buildRateLimiter(Object cacheKey) {
+    @Nonnull
+    public RateLimiter buildRateLimiter(@Nonnull Object cacheKey) {
         return RateLimiter.create(2); // Only 2 access permits per second
     }
 }

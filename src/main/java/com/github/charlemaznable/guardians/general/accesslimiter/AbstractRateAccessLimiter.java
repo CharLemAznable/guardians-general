@@ -1,7 +1,6 @@
 package com.github.charlemaznable.guardians.general.accesslimiter;
 
 import com.github.charlemaznable.guardians.general.AccessLimit.AccessLimiter;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.val;
@@ -11,16 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.charlemaznable.core.lang.LoadingCachee.get;
 import static com.github.charlemaznable.core.lang.LoadingCachee.simpleCache;
+import static com.google.common.cache.CacheLoader.from;
 
 public abstract class AbstractRateAccessLimiter implements AccessLimiter {
 
     private LoadingCache<Object, RateLimiter> limiterCache =
-            simpleCache(new CacheLoader<Object, RateLimiter>() {
-                @Override
-                public RateLimiter load(@Nonnull Object cacheKey) {
-                    return buildRateLimiter(cacheKey);
-                }
-            });
+            simpleCache(from(this::buildRateLimiter));
 
     @Override
     public final boolean tryAcquire(HttpServletRequest request) {
@@ -40,7 +35,8 @@ public abstract class AbstractRateAccessLimiter implements AccessLimiter {
     /**
      * 创建限流器, 并缓存
      */
-    public abstract RateLimiter buildRateLimiter(Object cacheKey);
+    @Nonnull
+    public abstract RateLimiter buildRateLimiter(@Nonnull Object cacheKey);
 
     /**
      * 更新限流器配置, 默认无更新

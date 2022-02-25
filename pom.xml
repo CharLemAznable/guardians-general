@@ -24,7 +24,29 @@
         <url>https://github.com/CharLemAznable/guardians-general</url>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
+        <sonar.projectKey>CharLemAznable_guardians-general</sonar.projectKey>
+
         <guardians-core.version>0.6.6-SNAPSHOT</guardians-core.version>
     </properties>
 
