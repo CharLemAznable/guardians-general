@@ -67,7 +67,7 @@
 
         <dependency>
             <groupId>com.github.charlemaznable</groupId>
-            <artifactId>logback-miner</artifactId>
+            <artifactId>logback-dendrobe</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
