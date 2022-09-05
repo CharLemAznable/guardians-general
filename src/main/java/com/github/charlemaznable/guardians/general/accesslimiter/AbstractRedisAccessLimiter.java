@@ -6,6 +6,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
@@ -49,7 +50,7 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
                     val lastTime = maxBurstTime - passedTime;
                     // 重置计数器的值, 设置有效时间比计时器的有效时间长一秒
                     counterBuc.set(0);
-                    counterBuc.expire(lastTime + 1, TimeUnit.SECONDS);
+                    counterBuc.expire(Duration.ofSeconds(lastTime + 1));
                     // 设置计时器
                     timerBuc.set("0", lastTime, TimeUnit.SECONDS);
                 }
