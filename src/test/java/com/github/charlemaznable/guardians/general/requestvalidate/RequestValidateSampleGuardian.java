@@ -6,11 +6,11 @@ import com.github.charlemaznable.guardians.general.RequestValidateAbstractGuardi
 import com.github.charlemaznable.guardians.general.exception.RequestBodyFormatError;
 import com.github.charlemaznable.guardians.general.exception.RequestValidateGuardianException;
 import com.github.charlemaznable.guardians.general.requestvalidate.RequestValidateController.SampleBody;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static com.github.charlemaznable.core.codec.Json.json;
@@ -36,16 +36,16 @@ public class RequestValidateSampleGuardian implements RequestValidateAbstractGua
     public boolean validateRequest(RequestValidate requestValidate, Object requestValidateObject) {
         if (PARAMETER == requestValidate.extractorType()) {
             assertTrue(requestValidateObject instanceof Map);
-            assertTrue(((Map) requestValidateObject).isEmpty());
+            assertTrue(((Map<?, ?>) requestValidateObject).isEmpty());
         } else if (PATH == requestValidate.extractorType()) {
             assertTrue(requestValidateObject instanceof Map);
-            checkNotBlank(getStr((Map) requestValidateObject, "accessId"),
+            checkNotBlank(getStr((Map<?, ?>) requestValidateObject, "accessId"),
                     new RequestValidateGuardianException("Missing Request AccessId"));
         } else if (HEADER == requestValidate.extractorType()) {
             assertTrue(requestValidateObject instanceof Map);
-            checkNotBlank(getStr((Map) requestValidateObject, "accessId"),
+            checkNotBlank(getStr((Map<?, ?>) requestValidateObject, "accessId"),
                     new RequestValidateGuardianException("Missing Request AccessId"));
-            checkNotBlank(getStr((Map) requestValidateObject, "userId"),
+            checkNotBlank(getStr((Map<?, ?>) requestValidateObject, "userId"),
                     new RequestValidateGuardianException("Missing Request UserId"));
         } else if (COOKIE == requestValidate.extractorType()) {
             assertTrue(requestValidateObject instanceof SampleBody);

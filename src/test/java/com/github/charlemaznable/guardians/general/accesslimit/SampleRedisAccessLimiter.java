@@ -2,20 +2,20 @@ package com.github.charlemaznable.guardians.general.accesslimit;
 
 import com.github.charlemaznable.core.lang.Mapp;
 import com.github.charlemaznable.guardians.general.accesslimiter.AbstractRedisAccessLimiter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Component
 public class SampleRedisAccessLimiter extends AbstractRedisAccessLimiter {
 
-    private Map<String, Integer> burstTimeMap = Mapp.of(
+    private final Map<String, Integer> burstTimeMap = Mapp.of(
             "/sampleRedis/index", 1,
             "/sampleRedis/tenSeconds", 10);
-    private Map<String, Integer> permitsMap = Mapp.of(
+    private final Map<String, Integer> permitsMap = Mapp.of(
             "/sampleRedis/index", 2,
             "/sampleRedis/tenSeconds", 2);
 

@@ -2,8 +2,11 @@ package com.github.charlemaznable.guardians.general.exception;
 
 import com.github.charlemaznable.guardians.exception.GuardianException;
 
+import java.io.Serial;
+
 public final class CountingGuardianException extends GuardianException {
 
+    @Serial
     private static final long serialVersionUID = 1734358029235846657L;
 
     public CountingGuardianException() {

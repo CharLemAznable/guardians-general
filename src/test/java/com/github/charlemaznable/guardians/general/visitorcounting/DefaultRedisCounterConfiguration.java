@@ -1,6 +1,8 @@
 package com.github.charlemaznable.guardians.general.visitorcounting;
 
 import com.github.charlemaznable.guardians.spring.GuardiansImport;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.redisson.Redisson;
@@ -11,9 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import redis.embedded.RedisServer;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 @EnableWebMvc
 @Configuration

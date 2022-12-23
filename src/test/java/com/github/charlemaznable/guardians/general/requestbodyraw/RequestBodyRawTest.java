@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.requestbodyraw;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = RequestBodyRawConfiguration.class)
 @WebAppConfiguration
@@ -44,7 +44,7 @@ public class RequestBodyRawTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(post("/requestBodyRaw/error"))
+        val response = mockMvc.perform(post("/requestBodyRaw/error").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -55,15 +55,14 @@ public class RequestBodyRawTest {
     @SneakyThrows
     @Test
     public void testParam() {
-        var response = mockMvc.perform(post("/requestBodyRaw/index"))
+        var response = mockMvc.perform(post("/requestBodyRaw/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("Missing Request Body", responseMap.get("error"));
 
-        response = mockMvc.perform(post("/requestBodyRaw/index")
-                .content("requestbody"))
+        response = mockMvc.perform(post("/requestBodyRaw/index").content("requestbody"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();

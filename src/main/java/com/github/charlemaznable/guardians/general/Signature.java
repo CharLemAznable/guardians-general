@@ -5,10 +5,10 @@ import com.github.charlemaznable.guardians.general.utils.ByteCodec;
 import com.github.charlemaznable.guardians.general.utils.Hasher;
 import com.github.charlemaznable.guardians.general.utils.RequestBodyFormat;
 import com.github.charlemaznable.guardians.general.utils.RequestValueExtractor;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.val;
 import org.springframework.core.annotation.AliasFor;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

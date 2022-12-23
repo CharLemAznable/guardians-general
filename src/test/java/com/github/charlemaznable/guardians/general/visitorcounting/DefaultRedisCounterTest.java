@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.visitorcounting;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -27,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DefaultRedisCounterConfiguration.class)
 @WebAppConfiguration
@@ -40,7 +40,7 @@ public class DefaultRedisCounterTest {
     private MutableHttpServletFilter mutableHttpServletFilter;
     @Autowired
     private RedissonClient redissonClient;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @BeforeAll
     public void setup() {
@@ -54,7 +54,7 @@ public class DefaultRedisCounterTest {
     public void testDefaultRedisCounter() {
         val now = dateTimeFormatter.print(DateTime.now());
 
-        var response = mockMvc.perform(get("/default-counter/missing"))
+        var response = mockMvc.perform(get("/default-counter/missing").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
@@ -71,35 +71,35 @@ public class DefaultRedisCounterTest {
             assertEquals(0, uvMissing);
         });
 
-        response = mockMvc.perform(get("/default-counter/abstract-page-view"))
+        response = mockMvc.perform(get("/default-counter/abstract-page-view").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("Counting Exception: Page View Counter Type Error", responseMap.get("error"));
 
-        response = mockMvc.perform(get("/default-counter/exception-page-view"))
+        response = mockMvc.perform(get("/default-counter/exception-page-view").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("Counting Exception: PageViewCountingException", responseMap.get("error"));
 
-        response = mockMvc.perform(get("/default-counter/abstract-unique-visitor"))
+        response = mockMvc.perform(get("/default-counter/abstract-unique-visitor").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("Counting Exception: Unique Visitor Counter Type Error", responseMap.get("error"));
 
-        response = mockMvc.perform(get("/default-counter/exception-unique-visitor"))
+        response = mockMvc.perform(get("/default-counter/exception-unique-visitor").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("Counting Exception: UniqueVisitorCountingException", responseMap.get("error"));
 
-        response = mockMvc.perform(get("/default-counter/index"))
+        response = mockMvc.perform(get("/default-counter/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();

@@ -2,7 +2,6 @@ package com.github.charlemaznable.guardians.general.uniquenonsense;
 
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SampleRedisUniqueCheckerConfiguration.class)
 @WebAppConfiguration
@@ -46,21 +46,21 @@ public class SampleRedisUniqueCheckerTest {
     @SneakyThrows
     @Test
     public void testSampleRedisUniqueCheckerUnlimit() {
-        var response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123"))
+        var response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123"))
+        response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123"))
+        response = mockMvc.perform(get("/unique-nonsense/unlimit?nonsense=123").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -71,21 +71,21 @@ public class SampleRedisUniqueCheckerTest {
     @SneakyThrows
     @Test
     public void testSampleRedisUniqueChecker() {
-        var response = mockMvc.perform(get("/unique-nonsense/index"))
+        var response = mockMvc.perform(get("/unique-nonsense/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("Access has been Denied: Missing Nonsense Field: nonsense", responseMap.get("error"));
 
-        response = mockMvc.perform(get("/unique-nonsense/index?nonsense=123"))
+        response = mockMvc.perform(get("/unique-nonsense/index?nonsense=123").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/unique-nonsense/index?nonsense=123"))
+        response = mockMvc.perform(get("/unique-nonsense/index?nonsense=123").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -94,14 +94,14 @@ public class SampleRedisUniqueCheckerTest {
 
         await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-            var response2 = mockMvc.perform(get("/unique-nonsense/index?nonsense=123"))
+            var response2 = mockMvc.perform(get("/unique-nonsense/index?nonsense=123").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             var responseContent2 = response2.getContentAsString();
             var responseMap2 = unJson(responseContent2);
             assertEquals("SUCCESS", responseMap2.get("result"));
 
-            response2 = mockMvc.perform(get("/unique-nonsense/index?nonsense=123"))
+            response2 = mockMvc.perform(get("/unique-nonsense/index?nonsense=123").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();

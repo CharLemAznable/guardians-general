@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DecryptionSimpleConfiguration.class)
 @WebAppConfiguration
@@ -48,7 +49,7 @@ public class DecryptionSimpleTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(get("/decryption/error"))
+        val response = mockMvc.perform(get("/decryption/error").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -59,23 +60,23 @@ public class DecryptionSimpleTest {
     @SneakyThrows
     @Test
     public void testDefaultGet() {
-        val response = mockMvc.perform(get("/decryption/defaultGet"))
+        val response = mockMvc.perform(get("/decryption/defaultGet").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
         assertEquals("Missing Request Cipher Text: p", responseMap.get("error"));
 
-        val response2 = mockMvc.perform(get("/decryption/defaultGet")
-                .param("p", "content=Content内容"))
+        val response2 = mockMvc.perform(get("/decryption/defaultGet").content("")
+                        .param("p", "content=Content内容"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent2 = response2.getContentAsString();
         val responseMap2 = unJson(responseContent2);
         assertEquals("Decryption Failed", responseMap2.get("error"));
 
-        val response3 = mockMvc.perform(get("/decryption/defaultGet")
-                .param("p", base64(AES.encrypt("content=Content内容", "AWESOME MIX VOL1"))))
+        val response3 = mockMvc.perform(get("/decryption/defaultGet").content("")
+                        .param("p", base64(AES.encrypt("content=Content内容", "AWESOME MIX VOL1"))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent3 = response3.getContentAsString();
@@ -86,23 +87,27 @@ public class DecryptionSimpleTest {
     @SneakyThrows
     @Test
     public void testDefaultPost() {
-        val response = mockMvc.perform(post("/decryption/defaultPost"))
+        val response = mockMvc
+                .perform(post("/decryption/defaultPost")
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
         assertEquals("Missing Request Cipher Text: Request Body", responseMap.get("error"));
 
-        val response2 = mockMvc.perform(post("/decryption/defaultPost")
-                .content("content=Content内容"))
+        val response2 = mockMvc
+                .perform(post("/decryption/defaultPost")
+                        .content("content=Content内容"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent2 = response2.getContentAsString();
         val responseMap2 = unJson(responseContent2);
         assertEquals("Decryption Failed", responseMap2.get("error"));
 
-        val response3 = mockMvc.perform(post("/decryption/defaultPost")
-                .content(base64(AES.encrypt("content=Content内容", "AWESOME MIX VOL1"))))
+        val response3 = mockMvc
+                .perform(post("/decryption/defaultPost")
+                        .content(base64(AES.encrypt("content=Content内容", "AWESOME MIX VOL1"))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent3 = response3.getContentAsString();
@@ -113,8 +118,9 @@ public class DecryptionSimpleTest {
     @SneakyThrows
     @Test
     public void testRSA() {
-        val response = mockMvc.perform(post("/decryption/rsa")
-                .content(base64(RSA.pubEncrypt("content=Content内容", RSA.publicKey(publicKey)))))
+        val response = mockMvc
+                .perform(post("/decryption/rsa")
+                        .content(base64(RSA.pubEncrypt("content=Content内容", RSA.publicKey(publicKey)))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();

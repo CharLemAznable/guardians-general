@@ -3,11 +3,10 @@ package com.github.charlemaznable.guardians.general.riven;
 import com.github.charlemaznable.guardians.general.Decryption.DecryptedTextPostProcessor;
 import com.github.charlemaznable.guardians.general.DecryptionAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.DecryptionGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotNull;
 import static com.github.charlemaznable.core.net.Http.errorText;

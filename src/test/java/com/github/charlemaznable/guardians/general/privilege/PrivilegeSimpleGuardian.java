@@ -2,11 +2,11 @@ package com.github.charlemaznable.guardians.general.privilege;
 
 import com.github.charlemaznable.guardians.general.PrivilegeAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.PrivilegeGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.github.charlemaznable.core.codec.Json.json;

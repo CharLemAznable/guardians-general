@@ -7,7 +7,6 @@ import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import com.github.charlemaznable.guardians.general.signature.SignatureSimpleController.RSASignatureKeySupplier;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SignatureSimpleConfiguration.class)
 @WebAppConfiguration
@@ -52,7 +52,7 @@ public class SignatureSimpleTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(get("/signature/error"))
+        val response = mockMvc.perform(get("/signature/error").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -63,7 +63,7 @@ public class SignatureSimpleTest {
     @SneakyThrows
     @Test
     public void testDefaultGet() {
-        val response = mockMvc.perform(get("/signature/defaultGet"))
+        val response = mockMvc.perform(get("/signature/defaultGet").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -71,8 +71,9 @@ public class SignatureSimpleTest {
         assertEquals("Missing Request Signature: signature", responseMap.get("error"));
 
         val response2 = mockMvc.perform(get("/signature/defaultGet")
-                .param("content", "Content内容")
-                .param("signature", DigestHMAC.MD5.digestHex("content=内容Content", DEFAULT_SIGNATURE_KEY)))
+                        .param("content", "Content内容")
+                        .param("signature", DigestHMAC.MD5.digestHex("content=内容Content", DEFAULT_SIGNATURE_KEY))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent2 = response2.getContentAsString();
@@ -80,8 +81,9 @@ public class SignatureSimpleTest {
         assertEquals("Signature Mismatch", responseMap2.get("error"));
 
         val response3 = mockMvc.perform(get("/signature/defaultGet")
-                .param("content", "Content内容")
-                .param("signature", DigestHMAC.MD5.digestHex("content=Content内容", DEFAULT_SIGNATURE_KEY)))
+                        .param("content", "Content内容")
+                        .param("signature", DigestHMAC.MD5.digestHex("content=Content内容", DEFAULT_SIGNATURE_KEY))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent3 = response3.getContentAsString();
@@ -93,7 +95,7 @@ public class SignatureSimpleTest {
     @SneakyThrows
     @Test
     public void testDefaultPost() {
-        val response = mockMvc.perform(post("/signature/defaultPost"))
+        val response = mockMvc.perform(post("/signature/defaultPost").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -101,8 +103,8 @@ public class SignatureSimpleTest {
         assertEquals("Missing Request Signature: signature", responseMap.get("error"));
 
         val response2 = mockMvc.perform(post("/signature/defaultPost")
-                .content("content=Content内容&signature="
-                        + DigestHMAC.MD5.digestBase64("content=内容Content", DEFAULT_SIGNATURE_KEY)))
+                        .content("content=Content内容&signature="
+                                + DigestHMAC.MD5.digestBase64("content=内容Content", DEFAULT_SIGNATURE_KEY)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent2 = response2.getContentAsString();
@@ -110,8 +112,8 @@ public class SignatureSimpleTest {
         assertEquals("Signature Mismatch", responseMap2.get("error"));
 
         val response3 = mockMvc.perform(post("/signature/defaultPost")
-                .content("content=Content内容&=emptyKey&emptyValue=&signature="
-                        + DigestHMAC.MD5.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
+                        .content("content=Content内容&=emptyKey&emptyValue=&signature="
+                                + DigestHMAC.MD5.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent3 = response3.getContentAsString();
@@ -125,8 +127,9 @@ public class SignatureSimpleTest {
     @Test
     public void testDigest() {
         var response = mockMvc.perform(get("/signature/md5")
-                .param("content", "Content内容")
-                .param("signature", Digest.MD5.digestBase64("content=Content内容")))
+                        .param("content", "Content内容")
+                        .param("signature", Digest.MD5.digestBase64("content=Content内容"))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
@@ -135,8 +138,9 @@ public class SignatureSimpleTest {
         assertEquals(Digest.MD5.digestBase64("content=Content内容"), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/sha1")
-                .param("content", "Content内容")
-                .param("signature", Digest.SHA1.digestBase64("content=Content内容")))
+                        .param("content", "Content内容")
+                        .param("signature", Digest.SHA1.digestBase64("content=Content内容"))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -145,8 +149,9 @@ public class SignatureSimpleTest {
         assertEquals(Digest.SHA1.digestBase64("content=Content内容"), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/sha256")
-                .param("content", "Content内容")
-                .param("signature", Digest.SHA256.digestBase64("content=Content内容")))
+                        .param("content", "Content内容")
+                        .param("signature", Digest.SHA256.digestBase64("content=Content内容"))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -155,8 +160,9 @@ public class SignatureSimpleTest {
         assertEquals(Digest.SHA256.digestBase64("content=Content内容"), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/sha384")
-                .param("content", "Content内容")
-                .param("signature", Digest.SHA384.digestBase64("content=Content内容")))
+                        .param("content", "Content内容")
+                        .param("signature", Digest.SHA384.digestBase64("content=Content内容"))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -165,8 +171,9 @@ public class SignatureSimpleTest {
         assertEquals(Digest.SHA384.digestBase64("content=Content内容"), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/sha512")
-                .param("content", "Content内容")
-                .param("signature", Digest.SHA512.digestBase64("content=Content内容")))
+                        .param("content", "Content内容")
+                        .param("signature", Digest.SHA512.digestBase64("content=Content内容"))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -179,8 +186,9 @@ public class SignatureSimpleTest {
     @Test
     public void testDigestHMAC() {
         var response = mockMvc.perform(get("/signature/hmacsha1")
-                .param("content", "Content内容")
-                .param("signature", DigestHMAC.SHA1.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
+                        .param("content", "Content内容")
+                        .param("signature", DigestHMAC.SHA1.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
@@ -189,8 +197,9 @@ public class SignatureSimpleTest {
         assertEquals(DigestHMAC.SHA1.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/hmacsha256")
-                .param("content", "Content内容")
-                .param("signature", DigestHMAC.SHA256.digestHex("content=Content内容", DEFAULT_SIGNATURE_KEY).toUpperCase()))
+                        .param("content", "Content内容")
+                        .param("signature", DigestHMAC.SHA256.digestHex("content=Content内容", DEFAULT_SIGNATURE_KEY).toUpperCase())
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -199,8 +208,9 @@ public class SignatureSimpleTest {
         assertEquals(DigestHMAC.SHA256.digestHex("content=Content内容", DEFAULT_SIGNATURE_KEY).toUpperCase(), responseMap.get("signature"));
 
         response = mockMvc.perform(get("/signature/hmacsha512")
-                .param("content", "Content内容")
-                .param("signature", DigestHMAC.SHA512.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY)))
+                        .param("content", "Content内容")
+                        .param("signature", DigestHMAC.SHA512.digestBase64("content=Content内容", DEFAULT_SIGNATURE_KEY))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -213,8 +223,9 @@ public class SignatureSimpleTest {
     @Test
     public void testSHA1WithRSA() {
         val response = mockMvc.perform(get("/signature/sha1withrsa")
-                .param("content", "Content内容")
-                .param("signature", SHAXWithRSA.SHA1_WITH_RSA.signBase64("content=Content内容", RSASignatureKeySupplier.privateKey)))
+                        .param("content", "Content内容")
+                        .param("signature", SHAXWithRSA.SHA1_WITH_RSA.signBase64("content=Content内容", RSASignatureKeySupplier.privateKey))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -228,8 +239,9 @@ public class SignatureSimpleTest {
     @Test
     public void testSHA256WithRSA() {
         var response = mockMvc.perform(get("/signature/sha256withrsa")
-                .param("content", "Content内容")
-                .param("signature", SHAXWithRSA.SHA256_WITH_RSA.signHex("content=Content内容", RSASignatureKeySupplier.privateKey)))
+                        .param("content", "Content内容")
+                        .param("signature", SHAXWithRSA.SHA256_WITH_RSA.signHex("content=Content内容", RSASignatureKeySupplier.privateKey))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
@@ -239,8 +251,9 @@ public class SignatureSimpleTest {
                 toStr(responseMap.get("signature")), RSASignatureKeySupplier.publicKey));
 
         response = mockMvc.perform(get("/signature/sha256withrsa2")
-                .param("content", "Content内容")
-                .param("signature", SHAXWithRSA.SHA256_WITH_RSA.signHex("content=Content内容", RSASignatureKeySupplier.privateKey)))
+                        .param("content", "Content内容")
+                        .param("signature", SHAXWithRSA.SHA256_WITH_RSA.signHex("content=Content内容", RSASignatureKeySupplier.privateKey))
+                        .content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();

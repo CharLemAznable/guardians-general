@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general.utils;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.val;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;

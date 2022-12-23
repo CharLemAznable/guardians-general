@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.accesslimit;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SampleRateAccessLimiterConfiguration.class)
 @WebAppConfiguration
@@ -48,7 +48,7 @@ public class SampleRateAccessLimiterTest {
     @SneakyThrows
     @Test
     public void testSampleRate() {
-        val response = mockMvc.perform(get("/sampleRate/index"))
+        val response = mockMvc.perform(get("/sampleRate/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -57,21 +57,21 @@ public class SampleRateAccessLimiterTest {
 
         await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-            var response2 = mockMvc.perform(get("/sampleRate/index"))
+            var response2 = mockMvc.perform(get("/sampleRate/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             var responseContent2 = response2.getContentAsString();
             var responseMap2 = unJson(responseContent2);
             assertEquals("SUCCESS", responseMap2.get("result"));
 
-            response2 = mockMvc.perform(get("/sampleRate/index"))
+            response2 = mockMvc.perform(get("/sampleRate/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();
             responseMap2 = unJson(responseContent2);
             assertEquals("SUCCESS", responseMap2.get("result"));
 
-            response2 = mockMvc.perform(get("/sampleRate/index"))
+            response2 = mockMvc.perform(get("/sampleRate/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();
@@ -80,21 +80,21 @@ public class SampleRateAccessLimiterTest {
 
             await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-                var response3 = mockMvc.perform(get("/sampleRate/index"))
+                var response3 = mockMvc.perform(get("/sampleRate/index").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 var responseContent3 = response3.getContentAsString();
                 var responseMap3 = unJson(responseContent3);
                 assertEquals("SUCCESS", responseMap3.get("result"));
 
-                response3 = mockMvc.perform(get("/sampleRate/index"))
+                response3 = mockMvc.perform(get("/sampleRate/index").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 responseContent3 = response3.getContentAsString();
                 responseMap3 = unJson(responseContent3);
                 assertEquals("SUCCESS", responseMap3.get("result"));
 
-                response3 = mockMvc.perform(get("/sampleRate/index"))
+                response3 = mockMvc.perform(get("/sampleRate/index").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 responseContent3 = response3.getContentAsString();

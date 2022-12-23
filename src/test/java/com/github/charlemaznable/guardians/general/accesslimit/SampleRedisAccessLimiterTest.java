@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.accesslimit;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SampleRedisAccessLimiterConfiguration.class)
 @WebAppConfiguration
@@ -49,35 +49,35 @@ public class SampleRedisAccessLimiterTest {
     @SneakyThrows
     @Test
     public void testSampleRedisUnlimit() {
-        var response = mockMvc.perform(get("/sampleRedis/unlimit"))
+        var response = mockMvc.perform(get("/sampleRedis/unlimit").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/unlimit"))
+        response = mockMvc.perform(get("/sampleRedis/unlimit").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/unlimit"))
+        response = mockMvc.perform(get("/sampleRedis/unlimit").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/unlimit"))
+        response = mockMvc.perform(get("/sampleRedis/unlimit").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/unlimit"))
+        response = mockMvc.perform(get("/sampleRedis/unlimit").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -88,21 +88,21 @@ public class SampleRedisAccessLimiterTest {
     @SneakyThrows
     @Test
     public void testSampleRedis() {
-        var response = mockMvc.perform(get("/sampleRedis/index"))
+        var response = mockMvc.perform(get("/sampleRedis/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/index"))
+        response = mockMvc.perform(get("/sampleRedis/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
         assertEquals("SUCCESS", responseMap.get("result"));
 
-        response = mockMvc.perform(get("/sampleRedis/index"))
+        response = mockMvc.perform(get("/sampleRedis/index").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
@@ -111,21 +111,21 @@ public class SampleRedisAccessLimiterTest {
 
         await().pollDelay(Duration.ofMillis(1000)).until(() -> {
 
-            var response2 = mockMvc.perform(get("/sampleRedis/index"))
+            var response2 = mockMvc.perform(get("/sampleRedis/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             var responseContent2 = response2.getContentAsString();
             var responseMap2 = unJson(responseContent2);
             assertEquals("SUCCESS", responseMap2.get("result"));
 
-            response2 = mockMvc.perform(get("/sampleRedis/index"))
+            response2 = mockMvc.perform(get("/sampleRedis/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();
             responseMap2 = unJson(responseContent2);
             assertEquals("SUCCESS", responseMap2.get("result"));
 
-            response2 = mockMvc.perform(get("/sampleRedis/index"))
+            response2 = mockMvc.perform(get("/sampleRedis/index").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             responseContent2 = response2.getContentAsString();
@@ -144,7 +144,7 @@ public class SampleRedisAccessLimiterTest {
         await().forever().until(() -> {
             if ((currentTimeMillis() / 1000) % 10 != 5) return false;
 
-            var response = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+            var response = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             var responseContent = response.getContentAsString();
@@ -152,21 +152,21 @@ public class SampleRedisAccessLimiterTest {
             assertEquals("SUCCESS", responseMap.get("result"));
 
             await().forever().pollDelay(Duration.ofMillis(10000)).untilAsserted(() -> {
-                var response2 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                var response2 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 var responseContent2 = response2.getContentAsString();
                 var responseMap2 = unJson(responseContent2);
                 assertEquals("SUCCESS", responseMap2.get("result"));
 
-                response2 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                response2 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 responseContent2 = response2.getContentAsString();
                 responseMap2 = unJson(responseContent2);
                 assertEquals("SUCCESS", responseMap2.get("result"));
 
-                response2 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                response2 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
                 responseContent2 = response2.getContentAsString();
@@ -174,21 +174,21 @@ public class SampleRedisAccessLimiterTest {
                 assertEquals("Access has been Denied", responseMap2.get("error"));
 
                 await().forever().pollDelay(Duration.ofMillis(5000)).untilAsserted(() -> {
-                    var response3 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                    var response3 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                             .andExpect(status().isOk())
                             .andReturn().getResponse();
                     var responseContent3 = response3.getContentAsString();
                     var responseMap3 = unJson(responseContent3);
                     assertEquals("SUCCESS", responseMap3.get("result"));
 
-                    response3 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                    response3 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                             .andExpect(status().isOk())
                             .andReturn().getResponse();
                     responseContent3 = response3.getContentAsString();
                     responseMap3 = unJson(responseContent3);
                     assertEquals("SUCCESS", responseMap3.get("result"));
 
-                    response3 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                    response3 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                             .andExpect(status().isOk())
                             .andReturn().getResponse();
                     responseContent3 = response3.getContentAsString();
@@ -196,7 +196,7 @@ public class SampleRedisAccessLimiterTest {
                     assertEquals("Access has been Denied", responseMap3.get("error"));
 
                     await().forever().pollDelay(Duration.ofMillis(5000)).untilAsserted(() -> {
-                        val response4 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                        val response4 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                                 .andExpect(status().isOk())
                                 .andReturn().getResponse();
                         val responseContent4 = response4.getContentAsString();
@@ -204,7 +204,7 @@ public class SampleRedisAccessLimiterTest {
                         assertEquals("Access has been Denied", responseMap4.get("error"));
 
                         await().forever().pollDelay(Duration.ofMillis(5000)).untilAsserted(() -> {
-                            val response5 = mockMvc.perform(get("/sampleRedis/tenSeconds"))
+                            val response5 = mockMvc.perform(get("/sampleRedis/tenSeconds").content(""))
                                     .andExpect(status().isOk())
                                     .andReturn().getResponse();
                             val responseContent5 = response5.getContentAsString();

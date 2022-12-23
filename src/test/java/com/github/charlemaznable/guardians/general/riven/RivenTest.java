@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.riven;
 import com.github.charlemaznable.core.spring.MutableHttpServletFilter;
 import lombok.SneakyThrows;
 import lombok.val;
-import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = RivenTestConfiguration.class)
 @WebAppConfiguration
@@ -50,28 +50,30 @@ public class RivenTest {
     @Test
     public void testSample() {
         val content = "SampleContent";
-        var response = mockMvc.perform(post("/guard/test"))
+        var response = mockMvc.perform(post("/guard/test")
+                        .content(""))
                 .andExpect(status().isForbidden())
                 .andReturn().getResponse().getContentAsString();
         assertEquals(FORBIDDEN.getReasonPhrase(), response);
 
         response = mockMvc.perform(post("/guard/test")
-                .header("App-Id", "test"))
+                        .header("App-Id", "test")
+                        .content(""))
                 .andExpect(status().isForbidden())
                 .andReturn().getResponse().getContentAsString();
         assertEquals(FORBIDDEN.getReasonPhrase(), response);
 
         response = mockMvc.perform(post("/guard/test")
-                .header("App-Id", "test")
-                .content(base64(pubEncrypt(content, publicKey(PUB_KEY)))))
+                        .header("App-Id", "test")
+                        .content(base64(pubEncrypt(content, publicKey(PUB_KEY)))))
                 .andExpect(status().isForbidden())
                 .andReturn().getResponse().getContentAsString();
         assertEquals(FORBIDDEN.getReasonPhrase(), response);
 
         response = mockMvc.perform(post("/guard/test")
-                .header("App-Id", "test")
-                .content(base64(pubEncrypt(content, publicKey(PUB_KEY))))
-                .header("App-Sign", SHA256_WITH_RSA.signBase64(content, PRV_KEY)))
+                        .header("App-Id", "test")
+                        .content(base64(pubEncrypt(content, publicKey(PUB_KEY))))
+                        .header("App-Sign", SHA256_WITH_RSA.signBase64(content, PRV_KEY)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         assertEquals(content, response);

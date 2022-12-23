@@ -4,6 +4,7 @@ import com.github.charlemaznable.core.lang.concurrent.EventBusCachedExecutor;
 import com.github.charlemaznable.guardians.general.Counter;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.joda.time.DateTime;
@@ -12,8 +13,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class DefaultRedisPageViewCounter extends EventBusCachedExecutor implements Counter {

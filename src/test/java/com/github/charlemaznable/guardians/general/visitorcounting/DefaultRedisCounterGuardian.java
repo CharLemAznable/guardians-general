@@ -2,11 +2,10 @@ package com.github.charlemaznable.guardians.general.visitorcounting;
 
 import com.github.charlemaznable.guardians.general.CountingAbstractGuardian;
 import com.github.charlemaznable.guardians.general.exception.CountingGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.codec.Json.json;
 import static com.github.charlemaznable.core.codec.Json.unJson;

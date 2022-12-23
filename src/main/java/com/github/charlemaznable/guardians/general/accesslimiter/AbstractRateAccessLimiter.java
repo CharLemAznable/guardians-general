@@ -3,19 +3,20 @@ package com.github.charlemaznable.guardians.general.accesslimiter;
 import com.github.charlemaznable.guardians.general.AccessLimit.AccessLimiter;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.RateLimiter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.val;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 
 import static com.github.charlemaznable.core.lang.LoadingCachee.get;
 import static com.github.charlemaznable.core.lang.LoadingCachee.simpleCache;
 import static com.google.common.cache.CacheLoader.from;
 
+@SuppressWarnings("UnstableApiUsage")
 public abstract class AbstractRateAccessLimiter implements AccessLimiter {
 
-    private LoadingCache<Object, RateLimiter> limiterCache =
-            simpleCache(from(this::buildRateLimiter));
+    private final LoadingCache<Object, RateLimiter> limiterCache
+            = simpleCache(from(this::buildRateLimiter));
 
     @Override
     public final boolean tryAcquire(HttpServletRequest request) {

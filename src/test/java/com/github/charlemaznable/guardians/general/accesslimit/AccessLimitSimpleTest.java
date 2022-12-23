@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AccessLimitSimpleConfiguration.class)
 @WebAppConfiguration
@@ -46,7 +47,7 @@ public class AccessLimitSimpleTest {
     @SneakyThrows
     @Test
     public void testSimple() {
-        val response = mockMvc.perform(get("/accessLimit/simple"))
+        val response = mockMvc.perform(get("/accessLimit/simple").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -56,7 +57,7 @@ public class AccessLimitSimpleTest {
     @SneakyThrows
     @Test
     public void testDefault() {
-        val response = mockMvc.perform(get("/accessLimit/default"))
+        val response = mockMvc.perform(get("/accessLimit/default").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -67,7 +68,7 @@ public class AccessLimitSimpleTest {
     @SneakyThrows
     @Test
     public void testRefuse() {
-        val response = mockMvc.perform(get("/accessLimit/refuse"))
+        val response = mockMvc.perform(get("/accessLimit/refuse").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -78,7 +79,7 @@ public class AccessLimitSimpleTest {
     @SneakyThrows
     @Test
     public void testException() {
-        val response = mockMvc.perform(get("/accessLimit/exception"))
+        val response = mockMvc.perform(get("/accessLimit/exception").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();

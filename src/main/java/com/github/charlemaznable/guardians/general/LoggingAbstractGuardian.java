@@ -1,11 +1,10 @@
 package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public abstract class LoggingAbstractGuardian {
 

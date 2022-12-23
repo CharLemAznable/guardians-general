@@ -1,6 +1,6 @@
 package com.github.charlemaznable.guardians.general;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface Counter {
 

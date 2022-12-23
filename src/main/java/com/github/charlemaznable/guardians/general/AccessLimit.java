@@ -1,8 +1,8 @@
 package com.github.charlemaznable.guardians.general;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.annotation.AliasFor;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

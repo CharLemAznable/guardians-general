@@ -2,8 +2,11 @@ package com.github.charlemaznable.guardians.general.exception;
 
 import com.github.charlemaznable.guardians.exception.GuardianException;
 
+import java.io.Serial;
+
 public final class RequestValidateGuardianException extends GuardianException {
 
+    @Serial
     private static final long serialVersionUID = -8736141280861191579L;
 
     public RequestValidateGuardianException() {

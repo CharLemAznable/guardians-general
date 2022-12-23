@@ -5,11 +5,10 @@ import com.github.charlemaznable.guardians.PreGuardian;
 import com.github.charlemaznable.guardians.general.Counter;
 import com.github.charlemaznable.guardians.general.CountingPageView;
 import com.github.charlemaznable.guardians.general.CountingUniqueVisitor;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.codec.Json.jsonOf;
 import static com.github.charlemaznable.core.net.Http.responseJson;

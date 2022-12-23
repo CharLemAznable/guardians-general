@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = PrivilegeSimpleConfiguration.class)
 @WebAppConfiguration
@@ -43,7 +44,7 @@ public class PrivilegeSimpleTest {
     @SneakyThrows
     @Test
     public void testError() {
-        val response = mockMvc.perform(get("/privilege/error"))
+        val response = mockMvc.perform(get("/privilege/error").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -55,7 +56,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testAdminAdmin() {
         val response = mockMvc.perform(get("/privilege/admin")
-                .param("accessId", "admin"))
+                        .param("accessId", "admin").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -67,7 +68,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testAdminUser() {
         val response = mockMvc.perform(get("/privilege/admin")
-                .param("accessId", "user"))
+                        .param("accessId", "user").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -79,7 +80,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testAdminGuest() {
         val response = mockMvc.perform(get("/privilege/admin")
-                .param("accessId", "guest"))
+                        .param("accessId", "guest").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -91,7 +92,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testUserAdmin() {
         val response = mockMvc.perform(get("/privilege/user")
-                .param("accessId", "admin"))
+                        .param("accessId", "admin").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -103,7 +104,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testUserUser() {
         val response = mockMvc.perform(get("/privilege/user")
-                .param("accessId", "user"))
+                        .param("accessId", "user").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -115,7 +116,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testUserGuest() {
         val response = mockMvc.perform(get("/privilege/user")
-                .param("accessId", "guest"))
+                        .param("accessId", "guest").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -127,7 +128,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testGuestAdmin() {
         val response = mockMvc.perform(get("/privilege/guest")
-                .param("accessId", "admin"))
+                        .param("accessId", "admin").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -139,7 +140,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testGuestUser() {
         val response = mockMvc.perform(get("/privilege/guest")
-                .param("accessId", "user"))
+                        .param("accessId", "user").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -151,7 +152,7 @@ public class PrivilegeSimpleTest {
     @Test
     public void testGuestGuest() {
         val response = mockMvc.perform(get("/privilege/guest")
-                .param("accessId", "guest"))
+                        .param("accessId", "guest").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();

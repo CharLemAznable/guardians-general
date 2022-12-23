@@ -4,10 +4,9 @@ import com.github.charlemaznable.core.lang.concurrent.EventBusCachedExecutor;
 import com.github.charlemaznable.guardians.Guard;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.response;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 
+@SuppressWarnings("UnstableApiUsage")
 @Component
 public class SampleRateAccessLimiter extends AbstractRateAccessLimiter {
 

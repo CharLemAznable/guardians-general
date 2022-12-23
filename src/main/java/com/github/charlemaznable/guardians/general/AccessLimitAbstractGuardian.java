@@ -2,10 +2,9 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
 import com.github.charlemaznable.guardians.general.exception.AccessLimitGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.spring.SpringContext.getBeanOrCreate;
 import static com.github.charlemaznable.guardians.spring.GuardianContext.request;

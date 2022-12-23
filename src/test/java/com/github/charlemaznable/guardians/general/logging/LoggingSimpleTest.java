@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LoggingSimpleConfiguration.class)
 @WebAppConfiguration
@@ -45,7 +46,7 @@ public class LoggingSimpleTest {
     @SneakyThrows
     @Test
     public void testSimple() {
-        val response = mockMvc.perform(get("/logging/simple"))
+        val response = mockMvc.perform(get("/logging/simple").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -57,7 +58,7 @@ public class LoggingSimpleTest {
     @Test
     public void testException() {
         assertDoesNotThrow(() -> {
-            val response = mockMvc.perform(get("/logging/exception"))
+            val response = mockMvc.perform(get("/logging/exception").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             val responseContent = response.getContentAsString();
@@ -69,7 +70,7 @@ public class LoggingSimpleTest {
     @SneakyThrows
     @Test
     public void testAsyncSimple() {
-        val response = mockMvc.perform(get("/logging/async/simple"))
+        val response = mockMvc.perform(get("/logging/async/simple").content(""))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
@@ -83,7 +84,7 @@ public class LoggingSimpleTest {
     @Test
     public void testAsyncException() {
         assertDoesNotThrow(() -> {
-            val response = mockMvc.perform(get("/logging/async/exception"))
+            val response = mockMvc.perform(get("/logging/async/exception").content(""))
                     .andExpect(status().isOk())
                     .andReturn().getResponse();
             val responseContent = response.getContentAsString();

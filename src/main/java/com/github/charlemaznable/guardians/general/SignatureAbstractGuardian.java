@@ -2,10 +2,9 @@ package com.github.charlemaznable.guardians.general;
 
 import com.github.charlemaznable.guardians.Guard;
 import com.github.charlemaznable.guardians.general.exception.SignatureGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.charlemaznable.core.lang.Condition.blankThen;
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
@@ -19,6 +18,7 @@ import static java.util.Objects.isNull;
 
 public interface SignatureAbstractGuardian {
 
+    @SuppressWarnings("DuplicatedCode")
     @Guard(true)
     default boolean preGuard(Signature signatureAnnotation) {
         checkNotNull(signatureAnnotation, new SignatureGuardianException(

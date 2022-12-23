@@ -5,13 +5,13 @@ import com.github.charlemaznable.guardians.general.RequestValidate;
 import com.github.charlemaznable.guardians.general.RequestValidateAbstractGuardian;
 import com.github.charlemaznable.guardians.general.Signature.SignatureKeySupplier;
 import com.github.charlemaznable.guardians.general.exception.RequestValidateGuardianException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static com.github.charlemaznable.core.lang.Condition.checkNotBlank;
