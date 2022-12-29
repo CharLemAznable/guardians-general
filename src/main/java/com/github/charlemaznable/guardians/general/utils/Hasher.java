@@ -6,14 +6,14 @@ import com.github.charlemaznable.core.crypto.SHAXWithRSA;
 
 public enum Hasher {
 
-    @Deprecated
+    @SuppressWarnings("DeprecatedIsStillUsed") @Deprecated
     MD5 {
         @Override
         public final boolean verify(String plainText, String signText, ByteCodec codec, String key) {
             return codec.encode(Digest.MD5.digest(plainText)).equals(signText);
         }
     },
-    @Deprecated
+    @SuppressWarnings("DeprecatedIsStillUsed") @Deprecated
     SHA1 {
         @Override
         public final boolean verify(String plainText, String signText, ByteCodec codec, String key) {

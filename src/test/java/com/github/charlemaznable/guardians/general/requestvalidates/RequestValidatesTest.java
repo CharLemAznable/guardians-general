@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = RequestValidatesConfiguration.class)
 @WebAppConfiguration
@@ -73,14 +74,14 @@ public class RequestValidatesTest {
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("paramAccessId", responseMap.get("accessId"));
-        Map responseAll = (Map) responseMap.get("responseAll");
-        assertTrue(((Map) responseAll.get("PARAMETER")).isEmpty());
-        assertEquals("pathAccessId", ((Map) responseAll.get("PATH")).get("accessId"));
-        assertEquals("headerAccessId", ((Map) responseAll.get("HEADER")).get("accessId"));
-        assertEquals("headerUserId", ((Map) responseAll.get("HEADER")).get("userId"));
-        assertEquals("cookieAccessId", ((Map) responseAll.get("COOKIE")).get("accessId"));
-        assertEquals("cookieUserId", ((Map) responseAll.get("COOKIE")).get("userId"));
-        assertEquals("bodyAccessId", ((Map) responseAll.get("BODY")).get("accessId"));
-        assertEquals("bodyUserId", ((Map) responseAll.get("BODY")).get("userId"));
+        Map<?, ?> responseAll = (Map<?, ?>) responseMap.get("responseAll");
+        assertTrue(((Map<?, ?>) responseAll.get("PARAMETER")).isEmpty());
+        assertEquals("pathAccessId", ((Map<?, ?>) responseAll.get("PATH")).get("accessId"));
+        assertEquals("headerAccessId", ((Map<?, ?>) responseAll.get("HEADER")).get("accessId"));
+        assertEquals("headerUserId", ((Map<?, ?>) responseAll.get("HEADER")).get("userId"));
+        assertEquals("cookieAccessId", ((Map<?, ?>) responseAll.get("COOKIE")).get("accessId"));
+        assertEquals("cookieUserId", ((Map<?, ?>) responseAll.get("COOKIE")).get("userId"));
+        assertEquals("bodyAccessId", ((Map<?, ?>) responseAll.get("BODY")).get("accessId"));
+        assertEquals("bodyUserId", ((Map<?, ?>) responseAll.get("BODY")).get("userId"));
     }
 }

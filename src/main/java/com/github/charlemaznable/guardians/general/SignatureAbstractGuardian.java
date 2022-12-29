@@ -19,6 +19,7 @@ import static java.util.Objects.isNull;
 
 public interface SignatureAbstractGuardian {
 
+    @SuppressWarnings("DuplicatedCode")
     @Guard(true)
     default boolean preGuard(Signature signatureAnnotation) {
         checkNotNull(signatureAnnotation, new SignatureGuardianException(

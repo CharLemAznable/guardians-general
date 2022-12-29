@@ -12,9 +12,10 @@ import static com.github.charlemaznable.core.lang.LoadingCachee.get;
 import static com.github.charlemaznable.core.lang.LoadingCachee.simpleCache;
 import static com.google.common.cache.CacheLoader.from;
 
+@SuppressWarnings("UnstableApiUsage")
 public abstract class AbstractRateAccessLimiter implements AccessLimiter {
 
-    private LoadingCache<Object, RateLimiter> limiterCache =
+    private final LoadingCache<Object, RateLimiter> limiterCache =
             simpleCache(from(this::buildRateLimiter));
 
     @Override

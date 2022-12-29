@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = CustomUniqueVisitorCounterConfiguration.class)
@@ -51,9 +52,9 @@ public class CustomUniqueVisitorCounterTest {
     private MutableHttpServletFilter mutableHttpServletFilter;
     @Autowired
     private RedissonClient redissonClient;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-    private List<String> usernames = new ArrayList<>();
-    private AtomicInteger index = new AtomicInteger(0);
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private final List<String> usernames = new ArrayList<>();
+    private final AtomicInteger index = new AtomicInteger(0);
 
     @BeforeAll
     public void setup() {

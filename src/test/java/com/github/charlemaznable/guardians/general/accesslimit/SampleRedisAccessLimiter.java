@@ -12,10 +12,10 @@ import java.util.Map;
 @Component
 public class SampleRedisAccessLimiter extends AbstractRedisAccessLimiter {
 
-    private Map<String, Integer> burstTimeMap = Mapp.of(
+    private final Map<String, Integer> burstTimeMap = Mapp.of(
             "/sampleRedis/index", 1,
             "/sampleRedis/tenSeconds", 10);
-    private Map<String, Integer> permitsMap = Mapp.of(
+    private final Map<String, Integer> permitsMap = Mapp.of(
             "/sampleRedis/index", 2,
             "/sampleRedis/tenSeconds", 2);
 

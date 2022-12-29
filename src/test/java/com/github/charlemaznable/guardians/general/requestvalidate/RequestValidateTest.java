@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = RequestValidateConfiguration.class)
 @WebAppConfiguration
@@ -71,14 +72,14 @@ public class RequestValidateTest {
         var responseContent = response.getContentAsString();
         var responseMap = unJson(responseContent);
         assertEquals("paramAccessId", responseMap.get("accessId"));
-        assertTrue(((Map) responseMap.get("response")).isEmpty());
+        assertTrue(((Map<?, ?>) responseMap.get("response")).isEmpty());
 
         response = mockMvc.perform(get("/requestValidate/param"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         responseContent = response.getContentAsString();
         responseMap = unJson(responseContent);
-        assertTrue(((Map) responseMap.get("response")).isEmpty());
+        assertTrue(((Map<?, ?>) responseMap.get("response")).isEmpty());
     }
 
     @SneakyThrows
@@ -89,7 +90,7 @@ public class RequestValidateTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("pathAccessId", ((Map) responseMap.get("response")).get("accessId"));
+        assertEquals("pathAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
     }
 
     @SneakyThrows
@@ -102,8 +103,8 @@ public class RequestValidateTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("headerAccessId", ((Map) responseMap.get("response")).get("accessId"));
-        assertEquals("headerUserId", ((Map) responseMap.get("response")).get("userId"));
+        assertEquals("headerAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
+        assertEquals("headerUserId", ((Map<?, ?>) responseMap.get("response")).get("userId"));
     }
 
     @SneakyThrows
@@ -135,8 +136,8 @@ public class RequestValidateTest {
                 .andReturn().getResponse();
         val responseContent = response.getContentAsString();
         val responseMap = unJson(responseContent);
-        assertEquals("cookieAccessId", ((Map) responseMap.get("response")).get("accessId"));
-        assertEquals("cookieUserId", ((Map) responseMap.get("response")).get("userId"));
+        assertEquals("cookieAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
+        assertEquals("cookieUserId", ((Map<?, ?>) responseMap.get("response")).get("userId"));
     }
 
     @SneakyThrows
@@ -170,8 +171,8 @@ public class RequestValidateTest {
         var responseMap = unJson(responseContent);
         assertEquals("bodyAccessId", responseMap.get("accessId"));
         assertEquals("bodyUserId", responseMap.get("userId"));
-        assertEquals("bodyAccessId", ((Map) responseMap.get("response")).get("accessId"));
-        assertEquals("bodyUserId", ((Map) responseMap.get("response")).get("userId"));
+        assertEquals("bodyAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
+        assertEquals("bodyUserId", ((Map<?, ?>) responseMap.get("response")).get("userId"));
 
         response = mockMvc.perform(post("/requestValidate/bodyJson")
                 .contentType(APPLICATION_JSON)
@@ -182,8 +183,8 @@ public class RequestValidateTest {
         responseMap = unJson(responseContent);
         assertEquals("bodyAccessId", responseMap.get("accessId"));
         assertEquals("bodyUserId", responseMap.get("userId"));
-        assertEquals("bodyAccessId", ((Map) responseMap.get("response")).get("accessId"));
-        assertEquals("bodyUserId", ((Map) responseMap.get("response")).get("userId"));
+        assertEquals("bodyAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
+        assertEquals("bodyUserId", ((Map<?, ?>) responseMap.get("response")).get("userId"));
 
         response = mockMvc.perform(post("/requestValidate/bodyXml")
                 .contentType(APPLICATION_XML)
@@ -194,8 +195,8 @@ public class RequestValidateTest {
         responseMap = unJson(responseContent);
         assertEquals("bodyAccessId", responseMap.get("accessId"));
         assertEquals("bodyUserId", responseMap.get("userId"));
-        assertEquals("bodyAccessId", ((Map) responseMap.get("response")).get("accessId"));
-        assertEquals("bodyUserId", ((Map) responseMap.get("response")).get("userId"));
+        assertEquals("bodyAccessId", ((Map<?, ?>) responseMap.get("response")).get("accessId"));
+        assertEquals("bodyUserId", ((Map<?, ?>) responseMap.get("response")).get("userId"));
     }
 
     @SneakyThrows

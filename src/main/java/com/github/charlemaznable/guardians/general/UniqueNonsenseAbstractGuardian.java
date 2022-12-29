@@ -19,6 +19,7 @@ import static java.util.Objects.isNull;
 
 public interface UniqueNonsenseAbstractGuardian {
 
+    @SuppressWarnings("DuplicatedCode")
     @Guard(true)
     default boolean preGuard(UniqueNonsense uniqueNonsenseAnnotation) {
         checkNotNull(uniqueNonsenseAnnotation, new UniqueNonsenseGuardianException(
