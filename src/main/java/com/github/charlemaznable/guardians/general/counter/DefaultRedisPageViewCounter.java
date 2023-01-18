@@ -11,10 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DefaultRedisPageViewCounter extends EventBusCachedExecutor implements Counter {
 
     private static final String PV_PREFIX = "PV:";
@@ -23,7 +20,6 @@ public class DefaultRedisPageViewCounter extends EventBusCachedExecutor implemen
 
     private final RedissonClient redissonClient;
 
-    @Autowired
     public DefaultRedisPageViewCounter(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }

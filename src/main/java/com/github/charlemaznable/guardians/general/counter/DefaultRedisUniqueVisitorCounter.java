@@ -11,10 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DefaultRedisUniqueVisitorCounter extends EventBusCachedExecutor implements Counter {
 
     private static final String UV_PREFIX = "UV:";
@@ -23,7 +20,6 @@ public class DefaultRedisUniqueVisitorCounter extends EventBusCachedExecutor imp
 
     private final RedissonClient redissonClient;
 
-    @Autowired
     public DefaultRedisUniqueVisitorCounter(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }
