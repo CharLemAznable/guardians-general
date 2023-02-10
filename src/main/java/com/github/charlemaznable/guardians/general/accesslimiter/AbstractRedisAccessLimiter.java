@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.accesslimiter;
 import com.github.charlemaznable.guardians.general.AccessLimit.AccessLimiter;
 import lombok.val;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
@@ -19,7 +18,6 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
 
     private final RedissonClient redissonClient;
 
-    @Autowired
     public AbstractRedisAccessLimiter(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }

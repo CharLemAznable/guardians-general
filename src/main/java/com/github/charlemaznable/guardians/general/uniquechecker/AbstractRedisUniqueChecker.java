@@ -3,7 +3,6 @@ package com.github.charlemaznable.guardians.general.uniquechecker;
 import com.github.charlemaznable.guardians.general.UniqueNonsense.UniqueChecker;
 import lombok.val;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +13,6 @@ public abstract class AbstractRedisUniqueChecker implements UniqueChecker {
 
     private final RedissonClient redissonClient;
 
-    @Autowired
     public AbstractRedisUniqueChecker(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }
