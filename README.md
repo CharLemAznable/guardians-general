@@ -39,6 +39,6 @@ Guardians通用模块.
 <dependency>
   <groupId>com.github.charlemaznable</groupId>
   <artifactId>guardians-general</artifactId>
-  <version>2023.0.5-SNAPSHOT</version>
+  <version>2023.1.0-SNAPSHOT</version>
 </dependency>
 ```
