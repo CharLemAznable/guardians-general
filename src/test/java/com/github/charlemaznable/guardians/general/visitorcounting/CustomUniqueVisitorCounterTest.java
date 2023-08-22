@@ -27,7 +27,6 @@ import static com.github.charlemaznable.core.codec.Json.unJson;
 import static java.lang.Runtime.getRuntime;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -87,8 +86,7 @@ public class CustomUniqueVisitorCounterTest {
             log.info("result UV: " + uv);
             // redis hyperloglog standard error 0.81%
             // 95%置信区间: count±2*0.81%
-            assertTrue(uv <= COUNT * 1.0162);
-            assertTrue(uv >= COUNT * 0.9838);
+            assertEquals(1., 1. * uv / COUNT, 2 * 0.0081);
         });
     }
 
