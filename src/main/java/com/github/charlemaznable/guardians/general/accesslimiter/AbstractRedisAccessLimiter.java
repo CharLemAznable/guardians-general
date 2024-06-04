@@ -6,7 +6,6 @@ import lombok.val;
 import org.redisson.api.RedissonClient;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -50,7 +49,7 @@ public abstract class AbstractRedisAccessLimiter implements AccessLimiter {
                     counterBuc.set(0);
                     counterBuc.expire(Duration.ofSeconds(lastTime + 1));
                     // 设置计时器
-                    timerBuc.set("0", lastTime, TimeUnit.SECONDS);
+                    timerBuc.set("0", Duration.ofSeconds(lastTime));
                 }
             } finally {
                 lock.unlock();

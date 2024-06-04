@@ -4,7 +4,7 @@ import com.github.charlemaznable.guardians.general.UniqueNonsense.UniqueChecker;
 import lombok.val;
 import org.redisson.api.RedissonClient;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 public abstract class AbstractRedisUniqueChecker implements UniqueChecker {
 
@@ -29,7 +29,7 @@ public abstract class AbstractRedisUniqueChecker implements UniqueChecker {
             lock.lock();
             if (nonsenseBuc.isExists()) return false;
             val limitTime = uniqueLimitTimeInSeconds(nonsense);
-            nonsenseBuc.set("0", limitTime, TimeUnit.SECONDS);
+            nonsenseBuc.set("0", Duration.ofSeconds(limitTime));
             return true;
         } finally {
             lock.unlock();
